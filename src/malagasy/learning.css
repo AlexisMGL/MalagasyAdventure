@@ -33,3 +33,5 @@
   .ma-in-session .ma-footer{min-height:55px;padding:14px 0}
 }
 @media(prefers-reduced-motion:reduce){.ma-finale-confetti,.ma-finale-medal,.ma-scene-takeaway{animation:none!important;transition:none!important}.ma-live-session .ma-choice,.ma-live-session .ma-primary,.ma-conversation-intro .ma-primary{transition:none!important;transform:none!important}}
+
+.ma-keyboard-hint { color: var(--ma-text-muted, #52695f); font-size: .78rem; margin: 12px 0 0; }

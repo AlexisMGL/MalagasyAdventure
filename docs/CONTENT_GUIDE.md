@@ -48,7 +48,7 @@ Les `sourceIds` sont obligatoires en interne. Les liens, attributions et limites
 
 ## Prononcer les sélections
 
-Déclarer `selectionLanguage: 'mg'` lorsque les choix, les jetons ou la colonne gauche d’association sont tous malgaches. Pour une question mixte, fournir `spokenSelections` avec seulement les libellés malgaches exacts. Ne pas marquer les distracteurs français et ne pas déduire la langue de la bonne réponse. Régénérer la banque MMS puis les profils Mia avec les scripts documentés dans [MALAGASY_VOICES.md](MALAGASY_VOICES.md). Chaque sélection lue doit avoir son propre fichier entier ; ne pas assembler des extraits.
+Déclarer `selectionLanguage: 'mg'` lorsque les choix, les jetons ou la colonne gauche d’association sont tous malgaches. Pour une question mixte, fournir `spokenSelections` avec seulement les libellés malgaches exacts. Ne pas marquer les distracteurs français et ne pas déduire la langue de la bonne réponse. La banque active est OmniVoice : voir [MALAGASY_VOICES.md](MALAGASY_VOICES.md). Ne pas régénérer les candidats existants sans demande dédiée ; `npm run audio:activate-omnivoice` copie uniquement les fichiers déjà présents, après contrôle de leurs empreintes. Chaque sélection lue doit avoir son propre fichier entier ; ne pas assembler des extraits.
 
 ## Ajouter un monde
 

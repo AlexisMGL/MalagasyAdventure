@@ -20,6 +20,7 @@
     "audio:plan": "node scripts/malagasy-neural.mjs --plan",
     "audio:generate": "node scripts/malagasy-neural.mjs",
     "audio:review": "node scripts/malagasy-audio-review.mjs --port 5191",
+    "audio:activate-omnivoice": "node scripts/activate-malagasy-omnivoice.mjs",
     "audio:check": "node scripts/check-malagasy-neural.mjs"
   },
   "devDependencies": {

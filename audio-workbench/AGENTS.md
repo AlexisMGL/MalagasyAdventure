@@ -1,9 +1,9 @@
 # Atelier audio malgache — consignes
 
-La dernière demande utilisateur est de travailler **uniquement l’audio**, sans modifier le site à ce stade, et de choisir exclusivement des solutions permettant une publication gratuite. Elle prime sur les intégrations proposées dans le prompt audio et les expériences précédentes.
+La dernière demande utilisateur du 27 octobre 2026 active les candidats OmniVoice homme/femme existants sur le site, sans les recalculer, et limite `review-audio.cmd` à OmniVoice. Conserver les évaluations pour la future revue malgachophone. Les solutions doivent permettre une publication gratuite. Elle prime sur les intégrations proposées dans le prompt audio et les expériences précédentes.
 
 - Préserver les quatre apps, les trois unités malgaches, leurs textes, parcours et sauvegardes. La vision pédagogique reste dans [les consignes de l’app](../src/malagasy/AGENTS.md).
-- Les candidats restent ici, hors de `src/` et `public/`. Aucune nouvelle voix n’est activée par une génération ou une revue. Une intégration au site attend une demande ultérieure.
+- Les fichiers auteur restent ici. Une copie identique des entrées du manifeste est publiée dans `public/malagasy/voices/omnivoice/`. Une revue ou génération ne remplace pas automatiquement cette copie ; aucune régénération n’est demandée.
 - Corriger la faiblesse des mots courts (`Eny`, `Tsia`) et la rupture de timbre de Mia sur `Azafady`. Une référence synthétique fixe par personnage doit accompagner mots et phrases ; conserver la différence Mia/Lova sans changer la voix d’un mot à l’autre.
 - Conserver exactement les mots malgaches existants. Ne pas inventer de transcriptions phonétiques ou modifier l’orthographe pour tromper un moteur. La variante écrite `Aza fady` est déjà une réponse acceptée dans le contenu ; elle reste une entrée distincte.
 - Vérifier le support explicite de la langue et l’accès gratuit réel. Une offre générique multilingue ou un essai avec carte bancaire ne suffit pas. Aucun appel payant, serveur permanent, base obligatoire ni secret frontend.

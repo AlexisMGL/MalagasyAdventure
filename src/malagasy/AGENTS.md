@@ -88,6 +88,8 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 
 ## Audio et oral
 
+- **Dernière demande du 27 octobre 2026 : activer les candidats OmniVoice existants pour Mia et Lova, sans régénération.** Ce choix remplace les voix MMS, le traitement de hauteur de Mia et le remplacement humain d’Azafady dans la sélection active. Conserver les fichiers, empreintes, licences et avis existants. `review-audio.cmd` affiche uniquement OmniVoice. Les choix sont sélectionnables par chiffres et validables avec Entrée.
+
 - **Priorité utilisateur du 27 octobre 2026 : faire réciter les dialogues par une voix numérique malgache**, pour donner de la vie aux leçons et couvrir les phrases que l’on ne trouvera pas toutes dans une banque d’enregistrements. Cette demande remplace le choix intermédiaire de se limiter aux huit références humaines disponibles.
 - Utiliser un modèle qui prend réellement en charge le malgache, avec sa provenance et sa licence. Ne jamais présenter une TTS française/anglaise comme du malgache ni promettre une prononciation « toujours correcte » à partir du seul nom du modèle.
 - Prévoir lecture, pause, reprise, relecture, vitesse lente, chargement, erreur et muet via le manifeste audio et son service. Une écoute doit réellement jouer un asset valide avant sa notation.

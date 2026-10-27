@@ -26,6 +26,12 @@ export function normalizeDialogueTranscript(text: string): string {
     .trim().replace(/\s+/g, ' ').replace(/[.!?…]+$/u, '').trim();
 }
 
+export function matchesDialogueTranscript(asset: AudioAsset, text: string): boolean {
+  const key = normalizeDialogueTranscript(text);
+  return normalizeDialogueTranscript(asset.transcript) === key
+    || asset.spokenText !== undefined && normalizeDialogueTranscript(asset.spokenText) === key;
+}
+
 /** Synthetic speech is an explicit, technically generated asset, never a native review. */
 export function isPlayableDialogueAsset(asset: AudioAsset): boolean {
   return asset.status === 'verified' || asset.status === 'synthetic'
@@ -59,7 +65,7 @@ export class DialogueAudioPlayer {
     const asset = this.assets.get(cue.audioId);
     return !!asset && isPlayableDialogueAsset(asset) && !!asset.url.trim() && !!asset.sourceId.trim()
       && !!normalizeDialogueTranscript(cue.text)
-      && normalizeDialogueTranscript(asset.transcript) === normalizeDialogueTranscript(cue.text);
+      && matchesDialogueTranscript(asset, cue.text);
   }
 
   /**

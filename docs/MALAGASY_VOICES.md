@@ -1,6 +1,14 @@
+# Voix actives : OmniVoice
+
+À la demande utilisateur du 27 octobre 2026, les **102 enregistrements OmniVoice existants** (51 énoncés × Mia/Lova) sont actifs. Les maîtres WAV écoutés dans l’atelier sont copiés octet pour octet, sans génération, réencodage ni traitement de hauteur. `npm run audio:activate-omnivoice` vérifie les SHA-256 et copie uniquement les entrées du manifeste vers `public/malagasy/voices/omnivoice/`, avec provenance, références et licences ; il prépare `src/malagasy/omnivoice-voices.ts`. Cette commande n’est jamais lancée au build. La banque conserve le statut `synthetic` / `model-generated` ; une revue malgachophone reste à effectuer. Les anciennes banques MMS/profils et références humaines sont conservées pour la traçabilité, mais ne sont plus sélectionnées par défaut. `review-audio.cmd` propose uniquement OmniVoice et conserve les avis et leur historique.
+
+Les chiffres 1–9 (rangée AZERTY ou pavé numérique) sélectionnent la réponse affichée. Entrée vérifie le choix ou la réponse saisie ; le bouton Continuer accepte ensuite Entrée. La sélection conserve sa lecture audio habituelle.
+
+## Historique MMS et références humaines
+
 # Voix malgaches — banque locale et contrôle de prononciation
 
-**Dernière étape, audio uniquement :** l’utilisateur demande maintenant des essais de meilleure qualité, exclusivement gratuits, sans changer le site. Le lot et l’outil de revue sont hors de `src/` et `public/`, dans `audio-workbench/`. Voir [la préparation locale actuelle](MALAGASY_NEURAL_SETUP.md), [la comparaison des offres gratuites](MALAGASY_TTS_COMPARISON.md) et [les consignes audio](../audio-workbench/AGENTS.md). Les workflows Cloud historiques décrits plus bas ne sont pas sélectionnés pour cette étape ; aucune clé ni génération payante n’est nécessaire.
+Les paragraphes suivants conservent l’historique de préparation MMS et de comparaison. La sélection active décrite ci-dessus prévaut ; aucune nouvelle synthèse n’est demandée.
 
 Le lecteur de dialogue utilise des fichiers de langue identifiés dans le manifeste de l’app. Il ne doit jamais remplacer un fichier manquant par une voix française/anglaise du navigateur, ni présenter une sortie de synthèse comme une prononciation certifiée.
 

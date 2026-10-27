@@ -24,8 +24,8 @@ async function fixture() {
   const root = await mkdtemp(join(tmpdir(), 'malagasy-review-'));
   await put(root, 'public/malagasy/voices/mms/salama.wav', original);
   await put(root, 'public/malagasy/voices/mms/manifest.json', JSON.stringify({ model: 'mms', recordings: [{ id: 'mms.salama', transcript: 'Salama!', url: '/malagasy/voices/mms/salama.wav', sha256: hash(original), duration: 1.1 }] }));
-  await put(root, 'audio-workbench/generated/omnivoice/audio/salama.ogg', Buffer.from('OggSnew synthetic audio'));
-  await put(root, 'audio-workbench/generated/omnivoice/manifest.json', JSON.stringify({ model: 'omnivoice', recordings: [{ id: 'omni.mia.salama', transcript: 'Salama!', character: 'mia', file: 'audio/salama.ogg', duration: 1.2 }] }));
+  await put(root, 'audio-workbench/generated/omnivoice/audio/salama.wav', original);
+  await put(root, 'audio-workbench/generated/omnivoice/manifest.json', JSON.stringify({ model: 'omnivoice', recordings: [{ id: 'omni.mia.salama', transcript: 'Salama!', character: 'mia', file: 'audio/salama.wav', sha256: hash(original), duration: 1.2 }] }));
   const server = createReviewServer({ root }); server.listen(0, '127.0.0.1'); await once(server, 'listening');
   const base = `http://127.0.0.1:${server.address().port}`;
   return { root, server, base, async close() {
@@ -38,14 +38,14 @@ async function post(base, body, headers = {}) {
   return fetch(base + '/api/review', { method: 'POST', headers: { 'content-type': 'application/json', ...headers }, body: JSON.stringify(body) });
 }
 
-test('catalogue compares actual current and candidate files without exposing local paths', async () => {
+test('catalogue exposes only OmniVoice, even when legacy site files exist, without local paths', async () => {
   const fixture = await fixtureFactory();
   try {
     const result = await (await fetch(fixture.base + '/api/catalog')).json();
-    assert.equal(result.assets.length, 2);
+    assert.equal(result.assets.length, 1);
     assert.equal(result.assets[0].sha256, hash(original));
-    assert.equal(result.assets[0].group, result.assets[1].group);
-    assert.equal(result.assets[1].character, 'mia');
+    assert.equal(result.assets[0].variant, 'omnivoice');
+    assert.equal(result.assets[0].character, 'mia');
     assert.equal(result.assets[0].file, undefined);
     assert.equal(result.assets[0].reviewIsCurrent, false);
     assert.equal(result.assets[0].manifestHashMatches, true);
@@ -123,11 +123,11 @@ test('a master path cannot escape the inventoried audio directory', async () => 
     await put(fixture.root, manifestFile, JSON.stringify(manifest));
     const catalog = await (await fetch(fixture.base + '/api/catalog')).json();
     const candidate = catalog.assets.find(asset => asset.variant === 'omnivoice');
-    assert.equal(candidate.playbackFormat, 'OGG');
+    assert.equal(candidate.playbackFormat, 'WAV');
     assert.equal(candidate.playbackSha256, candidate.sha256);
     assert.match(catalog.warnings.join(' '), /maître WAV absent ou invalide/);
     const audio = await fetch(fixture.base + candidate.audioUrl);
-    assert.equal(audio.headers.get('content-type'), 'audio/ogg');
+    assert.equal(audio.headers.get('content-type'), 'audio/wav');
   } finally { await fixture.close(); }
 });
 
@@ -140,7 +140,7 @@ test('review save persists its exact audio hash and rejects a stale browser vers
     const saved = JSON.parse(await readFile(join(fixture.root, 'audio-workbench/reviews.json'), 'utf8'));
     assert.equal(saved.entries[first.key].sha256, first.sha256);
     assert.equal(saved.entries[first.key].rating, 'good');
-    const audioFile = join(fixture.root, 'public/malagasy/voices/mms/salama.wav');
+    const audioFile = join(fixture.root, 'audio-workbench/generated/omnivoice/audio/salama.wav');
     await writeFile(audioFile, Buffer.from('RIFFchangedWAVEnew bytes'));
     assert.equal((await post(fixture.base, entry)).status, 409);
     const current = (await (await fetch(fixture.base + '/api/catalog')).json()).assets[0];
@@ -192,8 +192,7 @@ test('manifest traversal and remote URLs never expose arbitrary files', async ()
       { id: 'linked', transcript: 'Linked', file: 'audio/bridge/private.wav' },
     ] }));
     const result = await loadAudioCatalog(fixture.root);
-    assert.equal(result.assets.length, 1);
-    assert.equal(result.assets[0].id, 'mms.salama');
+    assert.equal(result.assets.length, 0);
   } finally { await fixture.close(); }
 });
 

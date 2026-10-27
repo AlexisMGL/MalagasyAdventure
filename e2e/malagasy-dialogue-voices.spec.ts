@@ -51,13 +51,53 @@ async function toPractice(page: Page): Promise<void> {
 }
 test.beforeEach(async ({ page }) => observeVoiceAudio(page));
 
+test('number row, AZERTY and numpad select without submitting; Enter validates and continues', async ({ page }) => {
+  await openFirstDialogue(page); await toPractice(page);
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.ma-feedback')).toHaveCount(0);
+  await expect(page.locator('#ma-submit')).toBeDisabled();
+  const choices = await page.locator('[data-choice]').evaluateAll(nodes => nodes.map(node => node.getAttribute('data-choice')));
+  const correct = choices.indexOf('Salama') + 1;
+  await page.locator('.ma-keyboard-hint').click();
+  await page.keyboard.press('Digit1');
+  await expect(page.locator('[data-choice]').nth(0)).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.ma-feedback')).toHaveCount(0);
+  await page.keyboard.press('Digit9');
+  await expect(page.locator('[data-choice]').nth(0)).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('[data-action="exit-lesson"]').click();
+  await page.keyboard.press('Digit2');
+  await expect(page.locator('[data-choice]').nth(0)).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Poursuivre la leçon' }).click();
+  // French AZERTY sends '&' on the physical Digit1 key without Shift.
+  await page.locator('#ma-question').dispatchEvent('keydown', { key: '&', code: 'Digit1', bubbles: true });
+  await expect(page.locator('[data-choice]').nth(0)).toHaveAttribute('aria-pressed', 'true');
+  await page.keyboard.press(`Numpad${correct}`);
+  await expect(page.locator('[data-choice="Salama"]')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.ma-feedback')).toHaveCount(0);
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.ma-feedback.correct')).toBeVisible();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('[data-exercise-id]')).toHaveAttribute('data-exercise-id', 'exercise-01-01-b');
+  await page.keyboard.press('Digit1'); await page.keyboard.press('Enter'); await page.keyboard.press('Enter');
+  await page.keyboard.press('Digit1'); await page.keyboard.press('Enter'); await page.keyboard.press('Enter');
+  for (const [left, right] of [['Salama', 'Bonjour'], ['Veloma', 'Au revoir'], ['Misaotra', 'Merci']]) {
+    await page.locator(`[data-left="${left}"]`).click(); await page.locator(`[data-right="${right}"]`).click();
+  }
+  await page.locator('#ma-submit').click(); await page.keyboard.press('Enter');
+  await expect(page.locator('#ma-answer')).toBeVisible();
+  await page.locator('#ma-answer').focus(); await page.keyboard.type('123');
+  await expect(page.locator('#ma-answer')).toHaveValue('123');
+  await page.locator('#ma-answer').fill('Veloma'); await page.keyboard.press('Enter');
+  await expect(page.locator('.ma-feedback.correct')).toBeVisible();
+});
+
 test('a real Malagasy model voice starts with a dialogue turn and its speaker button replays it', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
   await openFirstDialogue(page);
   await expect.poll(() => starts(page)).toBe(1);
   await expect.poll(async () => (await audit(page)).records[0]?.events.includes('ended')).toBe(true);
   const first = (await audit(page)).records[0];
-  expect(first.source).toMatch(/\/malagasy\/voices\/mms\/audio-mms-[a-f0-9]+\.wav$/); expect(first.duration).toBeGreaterThan(.1);
+  expect(first.source).toMatch(/\/malagasy\/voices\/omnivoice\/masters\/audio-neural-lova-[a-f0-9]+\.wav$/); expect(first.duration).toBeGreaterThan(.1);
   await page.locator('[data-action="replay-dialogue"]').first().click();
   await expect.poll(() => starts(page)).toBe(2);
   await expect.poll(async () => (await audit(page)).records.at(-1)?.events.includes('ended')).toBe(true);
@@ -72,7 +112,7 @@ test('new turns queue without overlap and navigation cancels the spoken phrase',
   await expect.poll(() => starts(page)).toBe(1);
   await page.locator('[data-action="advance-dialogue"]').click();
   await expect.poll(() => starts(page)).toBe(2);
-  expect((await audit(page)).records.at(-1)?.source).toContain('/malagasy/voices/profiles/');
+  expect((await audit(page)).records.at(-1)?.source).toContain('/malagasy/voices/omnivoice/masters/audio-neural-mia-');
   expect((await audit(page)).records.at(-1)?.rate).toBe(1);
   expect((await audit(page)).maxConcurrent).toBe(1);
   await page.locator('.ma-speech').last().locator('[data-action="replay-dialogue"]').click();
@@ -95,7 +135,7 @@ test('Malagasy choices speak on selection, French stays silent and gaps never re
   await expect.poll(() => starts(page)).toBe(beforeStarts + 1);
   await page.locator('[data-choice="Salama"]').click();
   await expect.poll(() => starts(page)).toBe(beforeStarts + 2);
-  expect((await audit(page)).records.at(-1)?.source).toContain('/profiles/');
+  expect((await audit(page)).records.at(-1)?.source).toContain('/omnivoice/masters/audio-neural-mia-');
   expect((await audit(page)).maxConcurrent).toBe(1);
   await page.locator('[data-choice="Salama"]').click(); // A second click also replays the answer.
   await expect.poll(() => starts(page)).toBe(beforeStarts + 3);
@@ -112,7 +152,7 @@ test('Malagasy choices speak on selection, French stays silent and gaps never re
   await page.locator('[data-choice="Azafady"]').click();
   await expect.poll(async () => (await audit(page)).records.length).toBe(missing + 1);
   await expect.poll(async () => (await audit(page)).records.at(-1)?.events.includes('playing')).toBe(true);
-  expect((await audit(page)).records.at(-1)?.source).toBe('/malagasy/voices/commons-azafady.ogg');
+  expect((await audit(page)).records.at(-1)?.source).toBe('/malagasy/voices/omnivoice/masters/audio-neural-mia-57d9d9154bb3c126.wav');
   await page.locator('#ma-submit').click(); await page.locator('[data-action="next-exercise"]').click();
   await expect.poll(async () => (await audit(page)).active).toBe(0);
   const associations = (await audit(page)).records.length;
@@ -155,7 +195,7 @@ test('mute stops the current voice and unmute leaves old lines silent until manu
 });
 
 test('a failed voice asset reports an error while the written dialogue and answer remain usable', async ({ page }) => {
-  await page.route('**/malagasy/voices/mms/*.wav', route => route.fulfill({ status: 503, contentType: 'text/plain', body: 'Unavailable in this failure scenario' }));
+  await page.route('**/malagasy/voices/omnivoice/masters/*.wav', route => route.fulfill({ status: 503, contentType: 'text/plain', body: 'Unavailable in this failure scenario' }));
   await openFirstDialogue(page);
   await expect(page.locator('.ma-speech[data-voice-state="error"]')).toBeVisible();
   await expect(page.locator('[data-action="replay-dialogue"]').first()).toBeEnabled();

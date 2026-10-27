@@ -5,6 +5,7 @@ import { MAP_SOURCES } from './map-sources';
 import { DIALOGUE_RECORDINGS, VOICE_SOURCES } from './voice-recordings';
 import { SYNTHETIC_RECORDINGS, SYNTHETIC_VOICE_SOURCES } from './synthetic-voices';
 import { PROFILE_RECORDINGS, PROFILE_VOICE_SOURCES } from './voice-profiles';
+import { OMNIVOICE_RECORDINGS, OMNIVOICE_SOURCES } from './omnivoice-voices';
 
 const PC = 'peacecorps-intro', KEENAN = 'keenan-subject-final', ARTICLE = 'parker-article';
 const dictionary = (word: string, supports: string): Source => ({
@@ -47,7 +48,7 @@ export const SOURCES: Source[] = [
     license: 'Conditions UNESCO ; description paraphrasée, aucune photographie ou carte reprise.' },
   ...MAP_SOURCES,
   ...VOICE_SOURCES,
-  ...SYNTHETIC_VOICE_SOURCES, ...PROFILE_VOICE_SOURCES,
+  ...SYNTHETIC_VOICE_SOURCES, ...PROFILE_VOICE_SOURCES, ...OMNIVOICE_SOURCES,
 ];
 
 const L = {
@@ -282,5 +283,5 @@ export const UNITS: Unit[] = [
   ] as [string, number, string, string, string[]][]).map(([id, number, title, description, objectives]) => ({ id, worldId: 'world-01', number, title, malagasyTitle: 'À venir', description, lessonIds: [], implemented: false, objectives })),
 ];
 /** Explicitly synthetic dialogue voices plus published human references; no listening XP. */
-export const AUDIO: AudioAsset[] = [...SYNTHETIC_RECORDINGS, ...PROFILE_RECORDINGS, ...DIALOGUE_RECORDINGS];
+export const AUDIO: AudioAsset[] = [...OMNIVOICE_RECORDINGS, ...SYNTHETIC_RECORDINGS, ...PROFILE_RECORDINGS, ...DIALOGUE_RECORDINGS];
 export const CONTENT: Content = { worlds: WORLDS, units: UNITS, lessons: LESSONS, exercises: EXERCISES, concepts: CONCEPTS, vocabulary: VOCABULARY, sources: SOURCES, audio: AUDIO };

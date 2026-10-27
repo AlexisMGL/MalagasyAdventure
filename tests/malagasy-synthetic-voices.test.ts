@@ -7,7 +7,7 @@ import { SYNTHETIC_RECORDINGS, SYNTHETIC_VOICE_SOURCES } from '../src/malagasy/s
 import { recordingForTurn, recordingForSelection } from '../src/malagasy/voice-bank';
 import { PROFILE_RECORDINGS, PROFILE_VOICE_SOURCES } from '../src/malagasy/voice-profiles';
 import { spokenSelectionsForExercise } from '../src/malagasy/spoken-selections';
-import { normalizeDialogueTranscript } from '../src/malagasy/dialogue-audio';
+import { normalizeDialogueTranscript, matchesDialogueTranscript, DialogueAudioPlayer } from '../src/malagasy/dialogue-audio';
 import { createProgress, introduceLesson, selectMixedExercises } from '../src/malagasy/engine';
 import type { AudioAsset, DialogueTurn, Exercise } from '../src/malagasy/types';
 
@@ -64,10 +64,10 @@ describe('Complete generated Malagasy dialogue voices', () => {
     for (const turn of completeTurns) {
       const asset = recordingForTurn(turn);
       expect(asset, `${turn.speaker}: ${turn.text}`).toBeDefined();
-      const corrected = normalizeDialogueTranscript(turn.text) === 'azafady';
-      expect(asset!.status, turn.text).toBe(corrected ? 'verified' : 'synthetic');
-      expect(asset!.verification).toBe(corrected ? 'published-pronunciation' : 'model-generated');
-      expect(normalizeDialogueTranscript(asset!.transcript)).toBe(normalizeDialogueTranscript(turn.text));
+      expect(asset!.status, turn.text).toBe('synthetic');
+      expect(asset!.verification).toBe('model-generated');
+      expect(matchesDialogueTranscript(asset!, turn.text)).toBe(true);
+      expect(new DialogueAudioPlayer([asset!]).hasPlayable({ key: 'coverage', audioId: asset!.id, text: turn.text })).toBe(true);
     }
     const quotes = completeTurns.filter(turn => /[«»]/u.test(turn.text));
     expect(quotes.length).toBeGreaterThan(0);
@@ -85,7 +85,7 @@ describe('Complete generated Malagasy dialogue voices', () => {
         if (authored.includes(text)) {
           spoken++;
           expect(asset, `${exercise.id}: ${text}`).toBeDefined();
-          expect(normalizeDialogueTranscript(asset!.transcript)).toBe(normalizeDialogueTranscript(text));
+          expect(matchesDialogueTranscript(asset!, text)).toBe(true);
         } else { silent++; expect(asset, `${exercise.id}: ${text}`).toBeUndefined(); }
       }
       expect(recordingForSelection(exercise, 'un texte non proposé')).toBeUndefined();
@@ -96,15 +96,15 @@ describe('Complete generated Malagasy dialogue voices', () => {
     expect(recordingForSelection(mixed, 'Un verbe être écrit')).toBeUndefined();
   });
 
-  it('uses the unmodified human Azafady correction in both characters and selected answers', () => {
+  it('uses each character-specific OmniVoice Azafady in dialogues and selected answers', () => {
     for (const speaker of ['lova', 'mia'] as const) {
       const corrected = recordingForTurn({ speaker, text: 'AZAFADY!', translation: '' });
-      expect(corrected?.id).toBe('audio-commons-azafady');
-      expect(corrected?.url).toBe('/malagasy/voices/commons-azafady.ogg');
+      expect(corrected?.id).toBe(`audio-neural-${speaker}-57d9d9154bb3c126`);
+      expect(corrected?.url).toContain(`/omnivoice/masters/audio-neural-${speaker}-`);
       expect(corrected?.processing).toBeUndefined();
     }
     const exercise = CONTENT.exercises.find(item => item.id === 'exercise-01-01-c')!;
-    expect(recordingForSelection(exercise, 'Azafady')?.id).toBe('audio-commons-azafady');
+    expect(recordingForSelection(exercise, 'Azafady')?.id).toBe('audio-neural-mia-57d9d9154bb3c126');
     expect(recordingForTurn({ speaker: 'mia', text: 'Azafady, …', translation: '' })).toBeUndefined();
   });
 
@@ -133,8 +133,8 @@ describe('Complete generated Malagasy dialogue voices', () => {
       let energy = 0, peak = 0;
       for (const sample of decoded.samples) { energy += sample * sample; peak = Math.max(peak, Math.abs(sample)); }
       expect(peak).toBeLessThan(.99); expect(Math.sqrt(energy / decoded.samples.length)).toBeGreaterThan(.001);
-      const mia = recordingForTurn({ speaker: 'mia', text: asset.transcript, translation: '' });
-      const lova = recordingForTurn({ speaker: 'lova', text: asset.transcript, translation: '' });
+      const mia = recordingForTurn({ speaker: 'mia', text: asset.transcript, translation: '' }, [...PROFILE_RECORDINGS, ...SYNTHETIC_RECORDINGS]);
+      const lova = recordingForTurn({ speaker: 'lova', text: asset.transcript, translation: '' }, SYNTHETIC_RECORDINGS);
       expect(mia?.id).toBe(asset.id); expect(lova?.id).toBe(original.id);
       expect(CONTENT.audio.find(entry => entry.id === asset.id)).toEqual(asset);
       expect(PROFILE_VOICE_SOURCES.some(source => source.id === asset.sourceId)).toBe(true);

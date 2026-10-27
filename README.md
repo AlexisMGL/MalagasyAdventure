@@ -29,7 +29,7 @@ L’aperçu de production est sur **http://127.0.0.1:4174**. Playwright utilise 
 
 ## Atelier audio
 
-Les 102 candidats OmniVoice, maîtres WAV, références synthétiques, attributions et éventuelles évaluations sont conservés dans `audio-workbench/`. **Ils ne sont pas activés dans l’app.** L’atelier lit les WAV PCM pour rester utilisable sans décodeur Opus.
+À la demande utilisateur du 27 octobre 2026, les **102 enregistrements OmniVoice existants** (51 énoncés × Mia/Lova) sont actifs. Les maîtres WAV écoutés dans l’atelier sont copiés octet pour octet, sans génération, réencodage ni traitement de hauteur. `npm run audio:activate-omnivoice` vérifie les SHA-256 et copie uniquement les entrées du manifeste vers `public/malagasy/voices/omnivoice/`, avec provenance, références et licences ; il prépare `src/malagasy/omnivoice-voices.ts`. Cette commande n’est jamais lancée au build. La banque conserve le statut `synthetic` / `model-generated` ; une revue malgachophone reste à effectuer. Les anciennes banques MMS/profils et références humaines sont conservées pour la traçabilité, mais ne sont plus sélectionnées par défaut. `review-audio.cmd` propose uniquement OmniVoice et conserve les avis et leur historique.
 
 Double-cliquer **`review-audio.cmd`**, ou lancer `npm run audio:review`, puis ouvrir **http://127.0.0.1:5191**. L’atelier d’Arcade sur 5190 peut rester ouvert : ce sont deux copies indépendantes.
 

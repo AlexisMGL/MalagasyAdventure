@@ -37,7 +37,8 @@ export const TYPE_LABELS: Record<Exercise['type'], string> = {
   dialogue: 'À vous de parler', culture: 'Escale culturelle', listening: 'Tendez l’oreille',
 };
 export function renderAnswerControls(exercise: Exercise, draft: AnswerDraft, disabled = false): string {
-  return EXERCISE_RENDERERS[exercise.type](exercise, draft, disabled);
+  const controls = EXERCISE_RENDERERS[exercise.type](exercise, draft, disabled);
+  return controls + (exercise.choices?.length && !disabled ? '<p class="ma-keyboard-hint">Clavier : 1–9 pour choisir · Entrée pour vérifier.</p>' : '');
 }
 export function renderTask(exercise: Exercise, draft: AnswerDraft, disabled = false, assessment = false): string {
   return `<div class="ma-task-type" data-exercise-id="${e(exercise.id)}">${TYPE_LABELS[exercise.type]}</div>${exercise.dialogue?.length ? renderDialogue(exercise.dialogue, { sceneId: exercise.id, showTranslationControl: !assessment || disabled }) : exercise.context ? `<div class="ma-exercise-context">${e(exercise.context).replace(/\n/g, '<br>')}</div>` : ''}<h2 id="ma-question">${e(exercise.question)}</h2><div class="ma-answer-controls">${renderAnswerControls(exercise, draft, disabled)}</div>`;

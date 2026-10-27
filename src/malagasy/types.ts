@@ -53,6 +53,8 @@ export interface Exercise {
 }
 export interface AudioAsset {
   id: string; url: string; sourceId: string; transcript: string;
+  /** Exact spoken text declared by the authoring manifest (e.g. without quotation marks). */
+  spokenText?: string;
   status: 'verified' | 'pending' | 'synthetic';
   character?: CharacterId | 'any';
   performer?: string;

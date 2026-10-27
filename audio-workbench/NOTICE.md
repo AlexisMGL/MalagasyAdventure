@@ -1,6 +1,6 @@
 # Notices de l’atelier audio
 
-Ces fichiers sont des essais audio hors du site. Ils ne remplacent pas les voix publiées et ne constituent pas une banque relue par un malgachophone.
+Les 102 candidats du manifeste OmniVoice sont activés sur le site à la demande utilisateur du 27 octobre 2026, avec les mêmes maîtres WAV et sans régénération. Ils restent des sorties synthétiques, sans revue malgachophone complète.
 
 ## Synthèse
 
@@ -29,4 +29,4 @@ L’atelier lit les anciens fichiers sans les modifier : Meta MMS malgache et co
 - [Conseils pour la génération de clips courts](https://github.com/k2-fsa/OmniVoice/blob/master/docs/tips.md) : référence vocale recommandée.
 - [Comparaison Gemini, MMS, OmniVoice et quotas gratuits](../docs/MALAGASY_TTS_COMPARISON.md).
 
-Une éventuelle activation future devra conserver les notices adaptées dans Sources & crédits. Aucun changement des crédits du site n’est effectué à cette étape.
+Les notices et attributions sont conservées dans Sources & crédits ainsi que dans la copie publiée sous /malagasy/voices/omnivoice/, avec les accords complets du codec.

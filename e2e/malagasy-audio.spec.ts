@@ -3,9 +3,9 @@ import { expect, test } from '@playwright/test';
 /** Render the real motifs, rather than asserting an oscillator implementation. */
 for (const mode of ['success', 'correction', 'muted', 'unit'] as const) {
   test(`Malagasy ${mode} sound has a controlled, finite output`, async ({ page }) => {
-    // The catalog does not instantiate language audio. Each fresh page gets a fresh module context.
+    // The standalone welcome screen creates no AudioContext until a learner action.
     await page.goto('/');
-    await expect(page.locator('.arcade-game').first()).toBeVisible();
+    await expect(page.locator('.ma-world-hero')).toBeVisible();
     const rendered = await page.evaluate(async sound => {
       const offline = new OfflineAudioContext(1, 72_000, 48_000);
       let created = 0;

@@ -1,6 +1,6 @@
 # Préparation audio gratuite, hors du site
 
-La demande la plus récente limite ce travail à **l’audio**, sans modifier l’application ni activer ses nouvelles voix. Le lot candidat est donc dans `audio-workbench/`, jamais dans `src/` ou `public/`. La publication Netlify et les quatre expériences restent identiques. Aucun fournisseur payant, compte Cloud, clé API, base ou serveur d’inférence permanent n’est utilisé.
+Mise à jour du 27 octobre 2026 : les candidats OmniVoice existants sont désormais copiés à l’identique dans le site, sans régénération. La préparation décrite plus bas reste un historique et un outil auteur ; elle n’est requise ni au build ni à la lecture. Voir [la banque active](MALAGASY_VOICES.md).
 
 ## État de l’audio existant
 

@@ -8,7 +8,7 @@ Ce dépôt est maintenant la copie de travail indépendante de Malagasy Adventur
 
 La demande de séparation remplace les anciennes consignes imposant de garder Malagasy Adventure dans le dépôt Arcade. Les autres demandes produit restent applicables : trois premières unités, apprentissage par dialogues, sources seulement dans Sources & crédits, progression compatible, qualité avant quantité, déploiement gratuit.
 
-L’extraction ne change ni le parcours, ni les illustrations, ni les textes, ni les voix actives. Les candidats OmniVoice et leur atelier sont conservés hors du site ; leur activation attend toujours une demande dédiée. Les anciennes contraintes d’intégration au catalogue figurant dans les documents historiques ne doivent pas faire réintroduire les autres jeux.
+L’extraction ne change ni le parcours, ni les illustrations, ni les textes, ni les voix actives. Mise à jour du 27 octobre 2026 : la demande dédiée active les 102 candidats OmniVoice existants, copiés à l’identique sans régénération. L’atelier conserve uniquement OmniVoice et les avis existants. Les anciennes contraintes d’intégration au catalogue figurant dans les documents historiques ne doivent pas faire réintroduire les autres jeux.
 
 ## Architecture et vérification
 
