@@ -1,0 +1,32 @@
+[
+  {
+    "id": "omnivoice-malagasy",
+    "title": "Voix numériques malgaches : OmniVoice",
+    "author": "Han Zhu et collaborateurs — k2-fsa/OmniVoice ; personnages synthétiques Afterhours",
+    "url": "https://huggingface.co/k2-fsa/OmniVoice",
+    "category": "audio",
+    "consulted": true,
+    "supports": "Synthèse en malgache du Plateau (plt), fichiers de phrases entières. Une référence générée et fixe pour chaque personnage conserve son timbre, y compris sur les mots courts. Aucun clonage d’une personne réelle. Sorties de modèle sans validation native phrase par phrase.",
+    "license": "Code Apache 2.0 ; modèle CC-BY-NC, version non précisée dans sa fiche. Restriction non commerciale conservée. https://huggingface.co/k2-fsa/OmniVoice#license"
+  },
+  {
+    "id": "higgs-audio-tokenizer",
+    "title": "Codec Higgs Audio 2 inclus dans OmniVoice",
+    "author": "Boson AI USA, Inc. ; notices Meta Llama 3",
+    "category": "audio",
+    "consulted": true,
+    "url": "https://huggingface.co/k2-fsa/OmniVoice/blob/c5fdb5ccb189668d56333f77ba2629f4cd7535f4/audio_tokenizer/LICENSE",
+    "supports": "Codec de décodage des sons générés ; ne constitue pas un moteur linguistique malgache indépendant.",
+    "license": "Boson Higgs Audio 2 Community License et accords Llama 3, copies dans audio-workbench/licenses et notices dans audio-workbench/NOTICE.md."
+  },
+  {
+    "id": "omnivoice-language-support",
+    "title": "Langues et génération de clips courts OmniVoice",
+    "author": "k2-fsa / OmniVoice",
+    "category": "audio",
+    "consulted": true,
+    "url": "https://github.com/k2-fsa/OmniVoice/blob/master/docs/languages.md",
+    "supports": "Malgache du Plateau plt explicitement listé. Les conseils du projet recommandent une référence vocale pour les clips courts.",
+    "license": "Documentation consultée ; code Apache 2.0, conditions des poids distinctes."
+  }
+]

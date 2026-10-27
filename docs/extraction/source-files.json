@@ -1,0 +1,1847 @@
+{
+  "sourceRepository": "C:\\Users\\alallement\\Documents\\pr\\Bomberman2026",
+  "copiedAt": "2026-10-27T13:10:35.787Z",
+  "copies": [
+    "src/malagasy",
+    "public/malagasy",
+    "audio-workbench",
+    "public/favicon.svg",
+    "public/_redirects",
+    ".gitignore",
+    ".nvmrc",
+    "netlify.toml",
+    "tsconfig.json",
+    "review-audio.cmd",
+    "tests/malagasy-dialogue-audio.test.ts",
+    "tests/malagasy-dialogues.test.ts",
+    "tests/malagasy-engine.test.ts",
+    "tests/malagasy-map.test.ts",
+    "tests/malagasy-synthetic-voices.test.ts",
+    "tests/malagasy-voice-bank.test.ts",
+    "e2e/malagasy-audio.spec.ts",
+    "e2e/malagasy-dialogue-voices.spec.ts",
+    "e2e/malagasy.spec.ts",
+    "scripts/check-malagasy-neural.mjs",
+    "scripts/generate-malagasy-mms.mjs",
+    "scripts/generate-malagasy-neural.py",
+    "scripts/generate-malagasy-profiles.mjs",
+    "scripts/malagasy-audio-review.mjs",
+    "scripts/malagasy-audio-review.test.mjs",
+    "scripts/malagasy-neural.mjs",
+    "scripts/malagasy-voices.mjs",
+    "scripts/malagasy-voices.test.mjs",
+    "scripts/prepare-malagasy-neural.mjs",
+    "scripts/prepare-malagasy-neural.test.mjs",
+    "scripts/test_malagasy_neural.py",
+    "docs/ARCHITECTURE.md",
+    "docs/CONTENT_GUIDE.md",
+    "docs/CURRICULUM.md",
+    "docs/LANGUAGE_SOURCES.md",
+    "docs/MALAGASY_AUDIO_REVIEW.md",
+    "docs/MALAGASY_AUDIO_SOURCES.md",
+    "docs/MALAGASY_DELIVERY.md",
+    "docs/MALAGASY_NEURAL_SETUP.md",
+    "docs/MALAGASY_REFINEMENT.md",
+    "docs/MALAGASY_TTS_COMPARISON.md",
+    "docs/MALAGASY_VOICES.md",
+    "docs/REVIEW_ENGINE.md",
+    "docs/ROADMAP.md"
+  ],
+  "preserved": [
+    {
+      "path": "src/malagasy/AGENTS.md",
+      "bytes": 18413,
+      "sha256": "8242c51b77218606fc8566573e0e870eabd114f09daafa2d65d222ff711dc354"
+    },
+    {
+      "path": "src/malagasy/art.ts",
+      "bytes": 4693,
+      "sha256": "b2c8bcc841dea92a115298fdf7299c5cee72fdcfcd8f05b58fce8c6c990a6542"
+    },
+    {
+      "path": "src/malagasy/audio.ts",
+      "bytes": 4472,
+      "sha256": "aed51be6fee5bf06d1dc4d56a9f977ae2155ba9f6e83a35e956909aff0385b74"
+    },
+    {
+      "path": "src/malagasy/characters.ts",
+      "bytes": 5889,
+      "sha256": "6303dc019b9b70ff05a85f521121f9684b6b9d04275d54cda59b87bb58450e7f"
+    },
+    {
+      "path": "src/malagasy/content.ts",
+      "bytes": 51039,
+      "sha256": "a7535367048f436ed95c39b04bab37d7edb39122b94f44ca64a953850604df2f"
+    },
+    {
+      "path": "src/malagasy/dialogue-audio.ts",
+      "bytes": 9113,
+      "sha256": "7f4d97f8461c47237dd5ae6fe9835d696f0370f0289a91a80f1d83351584b8ca"
+    },
+    {
+      "path": "src/malagasy/dialogue-content.ts",
+      "bytes": 14116,
+      "sha256": "968e8e9813670e3b198d5ebc3f1f6a1c7add4197952e132f5af8712936398e8f"
+    },
+    {
+      "path": "src/malagasy/dialogue-view.ts",
+      "bytes": 5949,
+      "sha256": "f56886415bb71f78ee2ad6531602807f06e5da12255af90d3af19cc32619fc88"
+    },
+    {
+      "path": "src/malagasy/dialogue.css",
+      "bytes": 12828,
+      "sha256": "2b0bbac805937af4fceb28146c729414bbce638a7bf2ac3cfa6a2df4cb342026"
+    },
+    {
+      "path": "src/malagasy/engine.ts",
+      "bytes": 21521,
+      "sha256": "81f53c03140ceacbe2c1c7d2ae82254529014fd2a2ac9fc4de98ee6764926a29"
+    },
+    {
+      "path": "src/malagasy/exercise-view.ts",
+      "bytes": 6248,
+      "sha256": "e19ccc1e537b6c76df1b7f25a00a270437fd6ebde6ce4c7636bbeb03abee6e61"
+    },
+    {
+      "path": "src/malagasy/learning.css",
+      "bytes": 20005,
+      "sha256": "8e26733b0659a482e16d72cb71746a4dca0eeec95715bb11d92950f679d8e70e"
+    },
+    {
+      "path": "src/malagasy/lesson-view.ts",
+      "bytes": 11654,
+      "sha256": "4be0818d013ad725962a940340da3af62aceffedbc144f505d405d8f726a9a98"
+    },
+    {
+      "path": "src/malagasy/madagascar-coast.json",
+      "bytes": 9867,
+      "sha256": "bf1037809f7280f0239f8a3d3b4e813a57093648eece5bc4c629a6f65b3a3b6a"
+    },
+    {
+      "path": "src/malagasy/main.ts",
+      "bytes": 46020,
+      "sha256": "ca32b667c2c66c27549f2932f4968128a6fb4cdab6cb72fd27ea00497c3642b4"
+    },
+    {
+      "path": "src/malagasy/map-sources.ts",
+      "bytes": 1051,
+      "sha256": "175998446ec9bb670cdd872b8777ffa06d38660f9e11aa5f677220a1f5d098df"
+    },
+    {
+      "path": "src/malagasy/map.css",
+      "bytes": 5118,
+      "sha256": "524c6ee95eb3e1a63dfb01800e743277136ba34f1365e6c821244aea3334986e"
+    },
+    {
+      "path": "src/malagasy/map.ts",
+      "bytes": 9484,
+      "sha256": "9ab76bf92f0332e3b18602f0de2bcaa10f86005cb4f7d9edac79ebb89672a87f"
+    },
+    {
+      "path": "src/malagasy/recording-references.json",
+      "bytes": 5613,
+      "sha256": "75a92d850e2bb8eb00a26611b7fe5a384cda365f279064b2ce4cd0e15553fdd6"
+    },
+    {
+      "path": "src/malagasy/session.ts",
+      "bytes": 619,
+      "sha256": "6cce6c895d36673b38dd3578e925a54d42d241f9a144e75bf5d873825133c4ec"
+    },
+    {
+      "path": "src/malagasy/spoken-selections.ts",
+      "bytes": 415,
+      "sha256": "a836c96b2226dbeb4924645096e02617468b1af2aa121d433a68074708523c9d"
+    },
+    {
+      "path": "src/malagasy/storage.ts",
+      "bytes": 8494,
+      "sha256": "4651d6d20daf310faaae48756e4e079b8b9684f22e97d24938a777d8fd26e8b6"
+    },
+    {
+      "path": "src/malagasy/style.css",
+      "bytes": 52383,
+      "sha256": "21f4ae9872cc558a82a8587dc8befeae1121fcc1098b928ba5e84b5b305b2ea9"
+    },
+    {
+      "path": "src/malagasy/synthetic-voices.ts",
+      "bytes": 17803,
+      "sha256": "1128f4acff49d5798c69081aab2ad142bcc31e9ccaa00dc223206c3344924ce4"
+    },
+    {
+      "path": "src/malagasy/types.ts",
+      "bytes": 3861,
+      "sha256": "f85eb3b3df869cddd241b93eadfed75f902d7e4051c7fe8cd5fc6de1ecc20a26"
+    },
+    {
+      "path": "src/malagasy/voice-bank.ts",
+      "bytes": 1898,
+      "sha256": "d2827ec5d3d2f6b260127130a7b3976d596ba60d68924e9ba801f77135b68602"
+    },
+    {
+      "path": "src/malagasy/voice-plan.json",
+      "bytes": 7110,
+      "sha256": "043b188ba6d3adbfa221fa26ddc5f725872114e92e05242356a2e4c315a2f5e3"
+    },
+    {
+      "path": "src/malagasy/voice-profiles.ts",
+      "bytes": 24039,
+      "sha256": "403077952818aeb05bf7c0bb45f35ced68a9295ffd13a1c59ade8d7920ea30e5"
+    },
+    {
+      "path": "src/malagasy/voice-recordings.ts",
+      "bytes": 9337,
+      "sha256": "3cc3dd20cd824c34c67971482eb2060c4faaf59f9bda3a154885d2a4f021aef0"
+    },
+    {
+      "path": "src/malagasy/voices.css",
+      "bytes": 2393,
+      "sha256": "cd8ab9459a60cc6eb73d0cc5a4d2cf09c9c7d8132c0bce33f50ec108e3ad77c9"
+    },
+    {
+      "path": "src/malagasy/worlds.ts",
+      "bytes": 12173,
+      "sha256": "81e40ce045108e474e8173c0ba5503c09bae96228f48996d19ee26a63c1d034a"
+    },
+    {
+      "path": "public/malagasy/voices/attributions.json",
+      "bytes": 5613,
+      "sha256": "75a92d850e2bb8eb00a26611b7fe5a384cda365f279064b2ce4cd0e15553fdd6"
+    },
+    {
+      "path": "public/malagasy/voices/commons-azafady.ogg",
+      "bytes": 41078,
+      "sha256": "972c2ea0bbb07c1aabe4febce4a754aecc606a1ad157e9ac04b9f35dfd99f3fd"
+    },
+    {
+      "path": "public/malagasy/voices/commons-eny.wav",
+      "bytes": 75564,
+      "sha256": "e85dd6bea8bc6f6ed6900e2b45cf573eea65aafc2b27e3d6db35da55999ba8c8"
+    },
+    {
+      "path": "public/malagasy/voices/commons-misaotra.ogg",
+      "bytes": 32693,
+      "sha256": "9bb16debfe94683e08b22d8a7e51397edb217d4b04d5ce45fc2c043adfeebd36"
+    },
+    {
+      "path": "public/malagasy/voices/commons-salama.ogg",
+      "bytes": 26500,
+      "sha256": "8f73582e7485d1c37903baccf8aa135754025ab030173860422437b5ed38ae6b"
+    },
+    {
+      "path": "public/malagasy/voices/commons-tompoko.ogg",
+      "bytes": 25567,
+      "sha256": "a13679a73b6b14039803f9ff2abad96777379e717dfb1a7c1f0f2415af24971c"
+    },
+    {
+      "path": "public/malagasy/voices/commons-tonga-soa.ogg",
+      "bytes": 27199,
+      "sha256": "51ac16037e5ed163c7de65d6f059307ee5cafbe9368449c02dd0ca7583c39d11"
+    },
+    {
+      "path": "public/malagasy/voices/commons-tsia.wav",
+      "bytes": 81708,
+      "sha256": "3df74d51df023a39002688f8edfe1e05ffff9735258a21d7ee1177cec4930f5d"
+    },
+    {
+      "path": "public/malagasy/voices/commons-veloma.ogg",
+      "bytes": 30359,
+      "sha256": "04dd0e4656a8900177d101c9f66378e8557a870ba8c88763e5eb07f4ee10b523"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-05920ab4d50e402c.wav",
+      "bytes": 14700,
+      "sha256": "db899987c74cc5df890700b753f326bf6193c867a4f11c88f46354ac673f6e20"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-0764e2be58c5040b.wav",
+      "bytes": 33644,
+      "sha256": "aeee61bdb9bc431cc0cdcbd7ce0d12d77807a811737bd65f8ba6e829c6e32574"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-0ae80e9e89e4732c.wav",
+      "bytes": 62828,
+      "sha256": "135b433a39a65482f992fb9cdfe0706cfb73c0c258f56a1846c82a2da63d11c2"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-0bba72729ea07b20.wav",
+      "bytes": 49004,
+      "sha256": "33c5d7a78981a2b4f3d3fcbea52c3a67cb57970f9c2ef79b6db1a8179bb0f884"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-0bd0bc77b21c0aa0.wav",
+      "bytes": 17772,
+      "sha256": "6cd91a698e5c24aac977cc34c171c481e92dc016f0185f7eb4ceb24ff4f8a14c"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-0e6750d69414860e.wav",
+      "bytes": 51564,
+      "sha256": "eed9a438d81904785fa07e259897de4031bf7b0966621019aef5c71b3a3e3b95"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-103024800caefeb7.wav",
+      "bytes": 65900,
+      "sha256": "c56eea3823a9811d403a6105860d862ad6582491413dc0235f6836121759b990"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-14c51fd8a11a7512.wav",
+      "bytes": 42348,
+      "sha256": "5074f749c4b7ce0abd6c8003459634bdd52524d77ecdb98391523d0ee1ebc6c6"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-1b06e2003f8420d6.wav",
+      "bytes": 10092,
+      "sha256": "4250491f5b7edfe411cedfcf124f0299642eb88c08c0bcab3c5633eb3544a6a9"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-1f9a0fb93755bc01.wav",
+      "bytes": 53612,
+      "sha256": "d7e56e13fa7d304e241640dcd6492434bacb34a025e7951406c66aa201a12a12"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-221af5634ef0bf9e.wav",
+      "bytes": 59756,
+      "sha256": "252c7a739f7fd8188be09f975e2877369d0e6aa12cd7ba743a89607a86377804"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-2cf824cf5cda9d64.wav",
+      "bytes": 39788,
+      "sha256": "8a2f924f1b8194c248722243cfa5ffa915f7493e3dbb3051a1d862f0b969bb99"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-2fe3269fa210706d.wav",
+      "bytes": 19820,
+      "sha256": "d8b7cf13f75c8b7335f6ebaa75d6ac58d53516098e07f0d01d9df01abcaf3723"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-3186da3e7e347683.wav",
+      "bytes": 21868,
+      "sha256": "65647e931fa85fa161c357ff7d1000c88348e05a073ab0449df7cce74d03b6de"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-32ad1aca2ef116a4.wav",
+      "bytes": 36204,
+      "sha256": "bb67c4f9d920516e749a32335b6c501bbc6200e0ee1b8f4d0c0435b4e4411fce"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-40e1e6eced6f811c.wav",
+      "bytes": 18796,
+      "sha256": "912254ea5b6bb146a3b8a66d16ed669b4500f5f8e1b518c8b8b8bbfdaf3bdc34"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-441b7de4295635c2.wav",
+      "bytes": 76652,
+      "sha256": "6bfd56f87988e75f1c1de5212b5fec02bce522586a0ee8c7183a4898e6f67412"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-4518c2d011e3f4bf.wav",
+      "bytes": 46956,
+      "sha256": "54b8fb597f60713feb89bc68c45e13965dbd96608a66349ada0258b3820b124c"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-45bd554e7b9657c8.wav",
+      "bytes": 49516,
+      "sha256": "c73d72fbe7897b7e8127b7e01a1192e8d468ef65c38a07b1db54ed973586f7ec"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-49664d45805e0961.wav",
+      "bytes": 36204,
+      "sha256": "e2c07ead45d9fdefde4f93ed846e6df14d70da3690f9240201aa21a4922a014f"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-4bd2c412ba70847f.wav",
+      "bytes": 17772,
+      "sha256": "710deebed8695795f29be088b2134fd3f9145eb2024a928804d082f8ef2c2c54"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-5180c82d44fd979e.wav",
+      "bytes": 75628,
+      "sha256": "679c69dca8998cb0ddcfe435345596764c189be00173d920576106096bb7e348"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-57d4677b513386a9.wav",
+      "bytes": 32108,
+      "sha256": "6ca7626f6fa9d4afb4989272383a700653c2fd033254f1e65fd67ded7738a500"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-57d9d9154bb3c126.wav",
+      "bytes": 29548,
+      "sha256": "0eb0026227a8ef0115d8d9a442c059a1317e25c6f632a04c6a1555fb90f1a51a"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-66ea6e304c76c376.wav",
+      "bytes": 56172,
+      "sha256": "2d40537afa6f3c6f2053d9342b7fff44afa82539e638029f91639c3c593f4c5e"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-6bd1a18ed2d19733.wav",
+      "bytes": 40300,
+      "sha256": "27aae45ec38f6fe7cab82334b5e2e6b7ca7ab878c36dd30f1f78996b708fdf20"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-6d7e04068fa604f0.wav",
+      "bytes": 25452,
+      "sha256": "80e881107281871212eea6521970086f38759a28a6116ccd0e122cf6af160965"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-6f47b13a6e54769d.wav",
+      "bytes": 42860,
+      "sha256": "8686a4e3b5650ddc08e383c7015337a033d4e376ba06a4e9ee2feaf2c42aa252"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-7f488a3c244e6fda.wav",
+      "bytes": 17260,
+      "sha256": "e791f7f4c17216e1065cbfcb378d1fac0599ebf0b760d73802fbc960cf0ad0d5"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-8fc438f406e5f9e6.wav",
+      "bytes": 49004,
+      "sha256": "76ae2d1d8159c011f0ebae550ada52edb81646452576f71564d0326aae7aa0c0"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-9390298f3fb0c5b1.wav",
+      "bytes": 19820,
+      "sha256": "091c1a0a952a4b8b02971117b6bddbea5fdfe4d979ff685773384ca3eed5a2c8"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-96b8cfbc25047ba7.wav",
+      "bytes": 57708,
+      "sha256": "7f08ed1d0f7c7c1c6304fe48a7c2769ade15385485f1bafcb35c89f626b78b45"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-96ee1c51404b0b4d.wav",
+      "bytes": 27500,
+      "sha256": "ed9cb9f419cc91e1de36fe119eaba0d392da38d89355797f251d639690973734"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-9a11c13dd91d50d1.wav",
+      "bytes": 53100,
+      "sha256": "0b2c8acdd4e7b08c7c6c56de4400c34b764ad4a0393d368fe52170ca47602cd8"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-ad3c870f0edf1e1b.wav",
+      "bytes": 56172,
+      "sha256": "f21f7e1e0fc39dac0779d42390613674fa9e3ad1070ed9464ab200ba341f158b"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-ae5077d95443b1de.wav",
+      "bytes": 36204,
+      "sha256": "cc623cd35d498d0c28286081c855b8f0bebe9edaa9426fd459380637c54ce294"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-b65c597286364ff2.wav",
+      "bytes": 19820,
+      "sha256": "b70f989003bc9bb22b9ee89c7f9438b886572d9e7b7f9e2f20bee9ef4f391b35"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-b80dd87acd2d224f.wav",
+      "bytes": 59756,
+      "sha256": "4d90c7df264f4a211502eff9c55e8e054c86138066e77eb19d32882b5186c514"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-b9856b4b0b64e8ae.wav",
+      "bytes": 59244,
+      "sha256": "2a00ea56b1dfbe6ef3ea44a405451dfdd714ee9d5adb72ffe0f9f6a5b4427919"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-bd27e09add2412ef.wav",
+      "bytes": 41836,
+      "sha256": "d096bed1699f1ed8d64207b073ce8a8d317f8778a1480aa3e11604d9f061729e"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-c4ba3ab1e3dfa846.wav",
+      "bytes": 71020,
+      "sha256": "f498bc97a8f08ec405ead502732873d890cad78341451805aecb0fc6e21fe25b"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-ca6d739211440d0a.wav",
+      "bytes": 20332,
+      "sha256": "59533596ea7d0400ebfe077da089189c86fa9789e326900aabcaedc9d7764929"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-d28dc90a1060d4e4.wav",
+      "bytes": 14700,
+      "sha256": "fb2d373587704dbf8c697f7195a1aba4a87246d9cb64edf86e36c73cf92b3951"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-d354d655e087f97e.wav",
+      "bytes": 89964,
+      "sha256": "4900d467bd1e741c034c2841bc4833abcbd38c7be7b797d7d54633fe5c83ab9c"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-d3727a532798bfac.wav",
+      "bytes": 16748,
+      "sha256": "0c3c3fd48183cbed24342feac8798dde2e88c0d9d7c05f269a9c54cbc8f0994d"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-d4d0a02dccf6087a.wav",
+      "bytes": 41836,
+      "sha256": "f417eba5cfb187e97476be4fea1c1337d14c886f47e46eae9f55a1621d404aff"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-d6a7cd2a7371b1a1.wav",
+      "bytes": 25452,
+      "sha256": "8144ef6b221093c41f13ad23f8411e84ca38bec0e7a523bf605566f086323dd9"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-de77479652f7df3c.wav",
+      "bytes": 35692,
+      "sha256": "37c6275efe3dd6cca41a32aae01ad2ccb8a78e6e53d162bf5fa8e8797b9fee9c"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-df12033f2c27fd89.wav",
+      "bytes": 63340,
+      "sha256": "f30f486188943062430dad4fa683d4e60540e138d6ba747fb033f66753ed10f4"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-df2459685e0465a1.wav",
+      "bytes": 40300,
+      "sha256": "ba7264bfd2b252e2e9982ba5a41867179b39caf9c4a5aa339544d00a3c214579"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-e566ba7c73f3e426.wav",
+      "bytes": 57708,
+      "sha256": "71b84d1bd51428ea6ab4915773e889b9a8df3862f24962cb01721aa5b2273781"
+    },
+    {
+      "path": "public/malagasy/voices/mms/audio-mms-f4f84956523a1529.wav",
+      "bytes": 63852,
+      "sha256": "de0017b01a3ae65b61367f47d8fb23c55ca42c77a9282b2cae32545ef9f6f626"
+    },
+    {
+      "path": "public/malagasy/voices/mms/manifest.json",
+      "bytes": 30731,
+      "sha256": "253107b3d2227fc008cdf247dbdd442a98494940939b99f856dfdd67466e7274"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-05920ab4d50e402c-mia.wav",
+      "bytes": 14734,
+      "sha256": "4ed9d5df75d77683f08269f61fcc5d71d5880263484bb5a3bf7854fcf1f16a14"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-0764e2be58c5040b-mia.wav",
+      "bytes": 33678,
+      "sha256": "e5b154143857e1090b93de383378bb30f3973d83c4c3a52192a15a0e76d62c91"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-0ae80e9e89e4732c-mia.wav",
+      "bytes": 62862,
+      "sha256": "207fdf896efbf8efd467e8ec917e2d6265e7e82548465284246152f4dbacf71e"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-0bba72729ea07b20-mia.wav",
+      "bytes": 49038,
+      "sha256": "3895e7e55cfbb37a176ed895690f23f4ea43d87f8f82cd02ffae92ced931fed0"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-0bd0bc77b21c0aa0-mia.wav",
+      "bytes": 17806,
+      "sha256": "990376a032904ea9a24b03778ba42645b48b75850b8fa8e79a678d93b2f66228"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-0e6750d69414860e-mia.wav",
+      "bytes": 51598,
+      "sha256": "eead14ca362c87378c5966ca3448261798b761e5dfb5c2a2f1448351e5a754f6"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-103024800caefeb7-mia.wav",
+      "bytes": 65934,
+      "sha256": "6460907a3c0185d2dec0d5b81aa224e1ca762f4ebddb221bea71b27344581294"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-14c51fd8a11a7512-mia.wav",
+      "bytes": 42382,
+      "sha256": "7e738629eecf5a25e8905445e41583b99db2c1a636ef692a1a4d7f465c3515ba"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-1b06e2003f8420d6-mia.wav",
+      "bytes": 10126,
+      "sha256": "78c8d0a47be4a758fc6724993bf9271ab66719f6b35a1de6b51c7075373c1f72"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-1f9a0fb93755bc01-mia.wav",
+      "bytes": 53646,
+      "sha256": "969f59a966ebb1f1cd86d7ca7f45f8ce56e88837db2f070ebc8550e7c49ea3e4"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-221af5634ef0bf9e-mia.wav",
+      "bytes": 59790,
+      "sha256": "ecd81a8bae527beb053e5167564d04622bc2121c9f48026cf8e185572e28642f"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-2cf824cf5cda9d64-mia.wav",
+      "bytes": 39822,
+      "sha256": "37715b4a951ab3f4e8275eddf41683e0b4839757a13fb031841a78a89b6bd499"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-2fe3269fa210706d-mia.wav",
+      "bytes": 19854,
+      "sha256": "ff721031549638293f72afcd417b4cefe5d739adba1affd958b5e24aa595fd59"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-3186da3e7e347683-mia.wav",
+      "bytes": 21902,
+      "sha256": "1e6aa887d27cfc6804069e4d648f02ab9f2f61b685466466f48ba775e26a80b5"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-32ad1aca2ef116a4-mia.wav",
+      "bytes": 36238,
+      "sha256": "94f8849eeacd815f8eeb1b597de8df2edf051adf4beb7f9506cf95a6d004064d"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-40e1e6eced6f811c-mia.wav",
+      "bytes": 18830,
+      "sha256": "f3ff89a37c51e13f4c33b51e9f0ae0bf4782c201449f09d15f8c1a1f7ca9f53b"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-441b7de4295635c2-mia.wav",
+      "bytes": 76686,
+      "sha256": "9df0bca27e2fe98dc54a788775be991f4c698a6a06f28e3155a2dcf53bf8e2d7"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-4518c2d011e3f4bf-mia.wav",
+      "bytes": 46990,
+      "sha256": "33a083d2c3a05543b5f66417c1e4282734e1448fb0348a190816b5cb37bb5230"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-45bd554e7b9657c8-mia.wav",
+      "bytes": 49550,
+      "sha256": "c4b357688cae6bb8969e26cbfc69146a380890ea80a82d6f9f03178bad4b4e9f"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-49664d45805e0961-mia.wav",
+      "bytes": 36238,
+      "sha256": "19d64591f7bec7a6f9875d8f128eb49d523ce21d65d5c6e1fbd7aff3d0af9eae"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-4bd2c412ba70847f-mia.wav",
+      "bytes": 17806,
+      "sha256": "b7215aee047e56e0d045576640cb6033a9d316e25c222a27256cd7630899e31f"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-5180c82d44fd979e-mia.wav",
+      "bytes": 75662,
+      "sha256": "23dbe1ce972dfa7dbdf320c20e0e0d72a8050c170465861c846ab09d3f7bea7d"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-57d4677b513386a9-mia.wav",
+      "bytes": 32142,
+      "sha256": "cf7c0817045f0c6af7aa0bea89d4478f42c9a9c6f8e14968ef32d026447201f3"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-66ea6e304c76c376-mia.wav",
+      "bytes": 56206,
+      "sha256": "5a32505829c67c5ff60076ae4184499c427e71378230b8a11d98ce25dca41dbb"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-6bd1a18ed2d19733-mia.wav",
+      "bytes": 40334,
+      "sha256": "41d6768ef6f92ee4dd6807ac2849b14b3e997295fccc3c6233a203f6d63311ab"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-6d7e04068fa604f0-mia.wav",
+      "bytes": 25486,
+      "sha256": "9aa9de39993951de5891ae3f7d724d9ae31fd07cfa03dc341997bdaf03fc0448"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-6f47b13a6e54769d-mia.wav",
+      "bytes": 42894,
+      "sha256": "ff049b535cc2c399f4d780af0066703eb6cb72df65695ffdeb753d97c084a7b3"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-7f488a3c244e6fda-mia.wav",
+      "bytes": 17294,
+      "sha256": "c7479bae9c0ab77564dca9f0650b3eeb3d4450c8acd1f74dc83f5869f0b754e1"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-8fc438f406e5f9e6-mia.wav",
+      "bytes": 49038,
+      "sha256": "adfc4c305a81a399b00f6f1f91f2f2a486cc7d59e3b4c80ce34b1b202b61839e"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-9390298f3fb0c5b1-mia.wav",
+      "bytes": 19854,
+      "sha256": "28b1f019428bb421e6a83508c4950a8c6e1ad36722e4202fd5941009d5cc0e4d"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-96b8cfbc25047ba7-mia.wav",
+      "bytes": 57742,
+      "sha256": "1c02eb0dcd6f14ac7beadf50e6be7ed24434cb538ca9f537f03b61b4c3ec3b0d"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-96ee1c51404b0b4d-mia.wav",
+      "bytes": 27534,
+      "sha256": "89624885f27abe7052ee25faa8ecde8d228143796be3613047a267a1ac57114c"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-9a11c13dd91d50d1-mia.wav",
+      "bytes": 53134,
+      "sha256": "a2465611fbff3820d6e27d0ca3111e248c7a097d3c86e83225b55102763112e3"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-ad3c870f0edf1e1b-mia.wav",
+      "bytes": 56206,
+      "sha256": "d9a79e021d30660fb75fa9379f8d6b5bb485ff9cf1d006ae117edcff8d7c505c"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-ae5077d95443b1de-mia.wav",
+      "bytes": 36238,
+      "sha256": "a4d64a941a95feb38fa31f467159e6c8fd88a9084955dfa84effa092eee37220"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-b65c597286364ff2-mia.wav",
+      "bytes": 19854,
+      "sha256": "cca39d3da06fd5e52426a3f17fd3dbfb82089a82a2e449e88aea15c1f3a9b772"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-b80dd87acd2d224f-mia.wav",
+      "bytes": 59790,
+      "sha256": "46298b3452bd65985bc6adab2ddb3bbe1854fc4b94f484a1b0dc0d3cf0f41e31"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-b9856b4b0b64e8ae-mia.wav",
+      "bytes": 59278,
+      "sha256": "dc3cdf693af5d7516b104a510f5bb45c1cd7c17f8d52e07226976e87a5daa87b"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-bd27e09add2412ef-mia.wav",
+      "bytes": 41870,
+      "sha256": "44e2b3135739afbc223a385fde80d20e665ec6c9d816b25b293e1b2599886fcd"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-c4ba3ab1e3dfa846-mia.wav",
+      "bytes": 71054,
+      "sha256": "694243b845401d2b2d1a99ecf4605c9f61d48bf6dc0110dcc65ba6aa8f7b1dde"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-ca6d739211440d0a-mia.wav",
+      "bytes": 20366,
+      "sha256": "80c6c1818c860d55d2eaf8b39a5a8510a66dce114619a5b676696caa8be79738"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-d28dc90a1060d4e4-mia.wav",
+      "bytes": 14734,
+      "sha256": "63a81457f737847824310343cb0fd388001e2badc7555051e08fd2ae0525bde5"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-d354d655e087f97e-mia.wav",
+      "bytes": 89998,
+      "sha256": "69f7e7ca216639da70a6be1731bd8e3cc05907660e4cf65aa858d4a34f51be8a"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-d3727a532798bfac-mia.wav",
+      "bytes": 16782,
+      "sha256": "2579af328c0d083a5e61f147cc8b0bc22b05df372f4fdc4cc1d47d1b8dadfbca"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-d4d0a02dccf6087a-mia.wav",
+      "bytes": 41870,
+      "sha256": "2cbbdbc923bba7cd619ab2cc0b3ab2690626cd8771277f97c65654d33c2d894a"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-d6a7cd2a7371b1a1-mia.wav",
+      "bytes": 25486,
+      "sha256": "bb5a60c3d026f918ad6c677f31e7a91faceb7ba43cc7f333f409b8665005b288"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-de77479652f7df3c-mia.wav",
+      "bytes": 35726,
+      "sha256": "09ff91d34fdaca21456426bf31bf3b59adca225771add2222ea387b686e11e1d"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-df12033f2c27fd89-mia.wav",
+      "bytes": 63374,
+      "sha256": "f4247fbe30642dffa3dd679c2d7b9695c3314b52adc7082c25391f2d0372b4f6"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-df2459685e0465a1-mia.wav",
+      "bytes": 40334,
+      "sha256": "1239e9b368681c2c679a2b7fcd00856aa9b7ef4b4c7aa5f5c09d09df7867e295"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-e566ba7c73f3e426-mia.wav",
+      "bytes": 57742,
+      "sha256": "2df621851d3a156555833864bbf2ef192f9f4378bda1e1aa94417c0a68dfbca3"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/audio-mms-f4f84956523a1529-mia.wav",
+      "bytes": 63886,
+      "sha256": "860274d97eeef4c412800ee95ec36788ef8fd4a56b77c6cd5dfe807fd46db3a1"
+    },
+    {
+      "path": "public/malagasy/voices/profiles/manifest.json",
+      "bytes": 47257,
+      "sha256": "c5469956ca8d84233935a3098819291b7bd716e2951376bac53bfa432624352f"
+    },
+    {
+      "path": "audio-workbench/AGENTS.md",
+      "bytes": 2796,
+      "sha256": "9a4b2ddb20a147fb965df8eb60927b6a72a518c81714fd912e7af7dc1318c032"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-05920ab4d50e402c.ogg",
+      "bytes": 7621,
+      "sha256": "f2b1c967f3e53da77fde70a415be4be48d01a37502af378ceeecd509fe49243e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-0764e2be58c5040b.ogg",
+      "bytes": 6719,
+      "sha256": "12c9b6bba200189ddc64980d75b20e983900074e2abb7fef0083fc3589c84a53"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-0ae80e9e89e4732c.ogg",
+      "bytes": 11129,
+      "sha256": "0047800d3e9d028baa36adf634fd1a2833505e4e2348007217f31653289c49de"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-0bba72729ea07b20.ogg",
+      "bytes": 7152,
+      "sha256": "915b14bc7667f30e766d95f77e12224c0aad4fd4e101a5b5a7d2a25723ddc64e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-0bd0bc77b21c0aa0.ogg",
+      "bytes": 7547,
+      "sha256": "086d45a6a61198f3d2f0aa8e65a5ff8841d30b341714bc87b95f9ed3f924a42d"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-0e6750d69414860e.ogg",
+      "bytes": 8832,
+      "sha256": "a09ec190264742f6be5e0f2366955b8e5cb8fc457e74ad602be315a923c0f5a4"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-103024800caefeb7.ogg",
+      "bytes": 9266,
+      "sha256": "93a675442dd6cade63e2b7e9cd6eacd988d59a18b2860c737cfee5d409d0648e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-14c51fd8a11a7512.ogg",
+      "bytes": 6229,
+      "sha256": "a4c82da226154e4a2d4e90117fcde880a794f1dbd2259a86c27acfd9321d1e40"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-1b06e2003f8420d6.ogg",
+      "bytes": 7337,
+      "sha256": "33363e52ebf9bd5925e57df08af5fd2e3ae31bf01907b7a04e6574a6b78337e2"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-1f9a0fb93755bc01.ogg",
+      "bytes": 8595,
+      "sha256": "25c49cfd700be00268f39d9dde5198c4b07573d1fd1d8047a26f15c9bab34d91"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-221af5634ef0bf9e.ogg",
+      "bytes": 11216,
+      "sha256": "48488f3b7e66dca9ba2fa0748858910a58a6230f2e8ed26d824c98a5984b353b"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-2cf824cf5cda9d64.ogg",
+      "bytes": 5421,
+      "sha256": "e481ae08ea0172e8b8c79fc0e40094a53852eb9b0929a29ed6ff36f43a2d0e46"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-2fe3269fa210706d.ogg",
+      "bytes": 7392,
+      "sha256": "919488c20cc76350b7855a0e5b4e5d59c4e23b92edffa4b3fc9ad187dca6d2a7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-3186da3e7e347683.ogg",
+      "bytes": 7675,
+      "sha256": "6314e81c246136e8ceb3e23f3a4af05dd75f9f917a04cbf80805697be72dc352"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-32ad1aca2ef116a4.ogg",
+      "bytes": 4097,
+      "sha256": "8b09483013731f117baed88c4cfbf01b7c29253c16cb22fdc0561f79ce06b031"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-40e1e6eced6f811c.ogg",
+      "bytes": 7156,
+      "sha256": "6ca93b5804c5281ecab959ee6b63069d22f248cc947c1b42dc95e28f14f0bdc3"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-441b7de4295635c2.ogg",
+      "bytes": 13914,
+      "sha256": "b5db2d4a94441905f985f482fd8ec6d2085622abeaa4eebfe861d2d45f05a971"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-4518c2d011e3f4bf.ogg",
+      "bytes": 8969,
+      "sha256": "26144c443d2c8209ae83352e1b873b2de8228301de3b5ef8719c80801fadd7a0"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-45bd554e7b9657c8.ogg",
+      "bytes": 8887,
+      "sha256": "1f66ce5c2896db03391de21496f1a337a19d03d4e098ac19cb8c84fdea759df7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-49664d45805e0961.ogg",
+      "bytes": 7799,
+      "sha256": "b9c7fb4054901fb5a0245119a85220d1ac7ccfc88b750907588775be438857bb"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-4bd2c412ba70847f.ogg",
+      "bytes": 7489,
+      "sha256": "fbd814d2b238393218c41de80971812a4fb5bb258fb005d0a9fff7237c0de84d"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-5180c82d44fd979e.ogg",
+      "bytes": 13203,
+      "sha256": "3e24fcd9d407dc816e9a5a508bd52ece971cd9ea7681fe89644db25678ed3d35"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-57d4677b513386a9.ogg",
+      "bytes": 5814,
+      "sha256": "7e768619482529d40ea479069eec48bda8037551624a08f9a50b78c0abff1324"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-57d9d9154bb3c126.ogg",
+      "bytes": 7305,
+      "sha256": "88523b4f6746368ed56fb61317a2730ba7d021feb6e2a1244b4d2c22afad9ecd"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-66ea6e304c76c376.ogg",
+      "bytes": 8944,
+      "sha256": "b09027a1a9a4811da3bb3bcc1acc3d1d93d2ca7a19baf058decf9acdbccc37ea"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-6bd1a18ed2d19733.ogg",
+      "bytes": 7515,
+      "sha256": "f99b7f16116aed651c4d66ac01c2cdba167805940efa0c0af33e2d1d3cd32b5a"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-6d7e04068fa604f0.ogg",
+      "bytes": 7325,
+      "sha256": "4f1d42b949ba974cfee8d4383402b4b87bb24f98704b1393d88056508f4cd943"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-6f47b13a6e54769d.ogg",
+      "bytes": 7558,
+      "sha256": "3d62f179f99568ca10065570f9aff42a6a6c6ed98be7bbd8729512b409a4be64"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-7f488a3c244e6fda.ogg",
+      "bytes": 7514,
+      "sha256": "352bbf50e28d62136538163e799de7ed021be2193239a9eea8b39cb542a5cba8"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-86dfb085eb61ec09.ogg",
+      "bytes": 8214,
+      "sha256": "d5a6d6cdf33d714069f7806709dee80ce39a7f7f2808d26786f7bb1a0e89b5a3"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-8fc438f406e5f9e6.ogg",
+      "bytes": 6921,
+      "sha256": "ea56bffa86e574d87dc3d188c79cebee7bfe30b0bbb87d8c6c1abdb87188b3df"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-9390298f3fb0c5b1.ogg",
+      "bytes": 7407,
+      "sha256": "2050fe4754d544612f12291ec265b89fb75c65ffa33721934e4980a60247417b"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-96b8cfbc25047ba7.ogg",
+      "bytes": 10936,
+      "sha256": "5dc7973928af05119f6bf64141092f2ef5e33b00076161386ceb0a7dc207b66f"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-96ee1c51404b0b4d.ogg",
+      "bytes": 6477,
+      "sha256": "d4c443fd4a43c87c96b812db3ae177361670548f37b71253badceca382311dc6"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-9a11c13dd91d50d1.ogg",
+      "bytes": 8195,
+      "sha256": "4a1bcac8e4c1111fa9145a834260ed2d30a3b6ee7ea064d162559981e290137b"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-ad3c870f0edf1e1b.ogg",
+      "bytes": 8433,
+      "sha256": "d9b446183c3e61f91e8c46c020e759da5591f1eda4dfd18460307a1664df1b2e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-ae5077d95443b1de.ogg",
+      "bytes": 7542,
+      "sha256": "885277f91c3c75cf9595c0cb794e836f365c59ab45d58a4bc598db9ab80158d3"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-b65c597286364ff2.ogg",
+      "bytes": 7794,
+      "sha256": "82540290db49d04dbcae4fb94e006f6924218d09f682e0539cf9a18ba8b95993"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-b80dd87acd2d224f.ogg",
+      "bytes": 10384,
+      "sha256": "a3259136b085ecdd37ad60f4d66a3256264d135ee9a9e440d1e07e68768ae8cc"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-b9856b4b0b64e8ae.ogg",
+      "bytes": 8675,
+      "sha256": "260a616d79a8da18f4fe37831efb04f0f87ee0d7f8741171ae24d8d7e689ea25"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-bd27e09add2412ef.ogg",
+      "bytes": 5502,
+      "sha256": "809d5ef5f812905ee5fb5e66de9885c358f8f7cb2d2ad73396033da1309ff33d"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-c4ba3ab1e3dfa846.ogg",
+      "bytes": 11456,
+      "sha256": "5521f135bd8a92e9320e5ff86397f12e16573615fc161eee9f83df75076452ef"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-d28dc90a1060d4e4.ogg",
+      "bytes": 7820,
+      "sha256": "cf9de1c8df1bfe9e680e18a0b9ef715cc6cad811d80b0f837bc04de7733a2ffd"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-d354d655e087f97e.ogg",
+      "bytes": 16285,
+      "sha256": "ba91bd00b09b2052b6e0a6fc5cb033f285577cf4ae5eb9d2f65fcf818dd30dd9"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-d6a7cd2a7371b1a1.ogg",
+      "bytes": 7455,
+      "sha256": "c7ffb0984012fb2fbf9d07f78541fbc69357ae4eca06d8cf6f501fcc6cb22ff9"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-dafd5e7931a3d29d.ogg",
+      "bytes": 7849,
+      "sha256": "624a0d31569723552eb99dc86ae4a2b28c25f53592f11af40a62c9466d03c960"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-de77479652f7df3c.ogg",
+      "bytes": 5496,
+      "sha256": "ddb3d6827cb9131cff3e5acb085f04ba21ab2b3d34762faa1aec38b361a8714c"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-df12033f2c27fd89.ogg",
+      "bytes": 8704,
+      "sha256": "5c3ebbe464306b1787d334366c5d7015eff41da02df6bb9da0bf149d5df4e1c5"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-df2459685e0465a1.ogg",
+      "bytes": 4906,
+      "sha256": "80a1ed8d5a8fbff7760d38172ab9adbfe991a3bcf1b9210b5d5e286f29c2399d"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-e566ba7c73f3e426.ogg",
+      "bytes": 9255,
+      "sha256": "525c75583b278b8f270fd270204270801f6070af7d0d9d22451530a36ab81771"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-lova-f4f84956523a1529.ogg",
+      "bytes": 7436,
+      "sha256": "d0c0d4ff1bdb2011f642a22e84eb98c9c2fb51b1ac278f5636b81c675c5fd782"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-05920ab4d50e402c.ogg",
+      "bytes": 7671,
+      "sha256": "94a02710fb44873dfe0debb4367ebde10dc7fa312f34d1658ada6e4577677ece"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-0764e2be58c5040b.ogg",
+      "bytes": 6553,
+      "sha256": "c85da50ea931396c2b721a6b439915a0f98c099b27f333ce26c4ca21b6411f15"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-0ae80e9e89e4732c.ogg",
+      "bytes": 10727,
+      "sha256": "3b559dfe2a77f47a4df946c12f6fb762f255b6368d0d634582971ba2b5cf22a7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-0bba72729ea07b20.ogg",
+      "bytes": 8152,
+      "sha256": "9cf7015b54c7ace44d8ed5ad1a25b80d35be92157115105c2e4638fa2bdc3434"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-0bd0bc77b21c0aa0.ogg",
+      "bytes": 6795,
+      "sha256": "d80140efda3328769235b06d150ea052d7a20901f3464b468d38d27c127a7893"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-0e6750d69414860e.ogg",
+      "bytes": 8310,
+      "sha256": "449f92c8431020b9f82e058e74f16ef29f5e8b36c7509a57c927c6c6929dbac2"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-103024800caefeb7.ogg",
+      "bytes": 8927,
+      "sha256": "be02f3ce5cdfd27a43e55721a56ba237d8b9346cfce94407a269e26b90cdd576"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-14c51fd8a11a7512.ogg",
+      "bytes": 3933,
+      "sha256": "a336b6176eeb36a186e987c0bf07bc26cd74bc45a562715f64220b58515d683c"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-1b06e2003f8420d6.ogg",
+      "bytes": 6274,
+      "sha256": "7dabf302557021901ac03e5680f634ab039cd0d4f994b4f283ce36260c12031c"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-1f9a0fb93755bc01.ogg",
+      "bytes": 11215,
+      "sha256": "5c27b68bcbb53eb5f50d1726a50b41f8504a5e7941538cf6eb0ae51ce5a9927e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-221af5634ef0bf9e.ogg",
+      "bytes": 11530,
+      "sha256": "a9b56dac584464d7c5fdf2ab7ab9fbeb7b401370ff870f7bb3b4964d8f67b9a3"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-2cf824cf5cda9d64.ogg",
+      "bytes": 4822,
+      "sha256": "9e0804f6e1a3dbf41300b2b612515d93eb05ec840f62ca62e553c7a8a101b0eb"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-2fe3269fa210706d.ogg",
+      "bytes": 8151,
+      "sha256": "575dacf102030483f8a243aff14d62ce251ffb2efa63763aaebb21153f7d242b"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-3186da3e7e347683.ogg",
+      "bytes": 7280,
+      "sha256": "e712e53b904cfe78bbf1596c6996153a8d64280c2e03057ec34e4f303e65f25f"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-32ad1aca2ef116a4.ogg",
+      "bytes": 3994,
+      "sha256": "856f6eba473c82222e48d47295bee3cce06555f82f115e1be0b35b7edd3b8034"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-40e1e6eced6f811c.ogg",
+      "bytes": 7181,
+      "sha256": "544feaddac959fba404a20cd74def87f5fbc5c0842026d460abd88ed8d5262c1"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-441b7de4295635c2.ogg",
+      "bytes": 16153,
+      "sha256": "d21c78059068fbd7b486c4da4eb92a29d221c3facf33568f0035fc26d58f88d7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-4518c2d011e3f4bf.ogg",
+      "bytes": 10298,
+      "sha256": "438924743ad51f1fb49451dfa1baf0fdf86273239ff6ed9068d5ac09e75485db"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-45bd554e7b9657c8.ogg",
+      "bytes": 8588,
+      "sha256": "a2e4db6dab7aa55fc01be19c90dbf655256d38cc7a4db52ca355da14527173e6"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-49664d45805e0961.ogg",
+      "bytes": 6707,
+      "sha256": "dbdce5291c5c27171e5466aff69ce94cfd61999d3e796922ebd51e3b8b66cf5b"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-4bd2c412ba70847f.ogg",
+      "bytes": 7020,
+      "sha256": "33b877ddcd3a6e7114be17621e12514f70cdf710b46d5702192c864fa185cbc3"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-5180c82d44fd979e.ogg",
+      "bytes": 12587,
+      "sha256": "71a0858fbb17aa730de50799f73e53d5cc6ceaf1d7663b27b59962003ed75445"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-57d4677b513386a9.ogg",
+      "bytes": 10326,
+      "sha256": "7a322df129c381adca58e452b27e84bcd21490c64fd44b1441f03e1373c07862"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-57d9d9154bb3c126.ogg",
+      "bytes": 6867,
+      "sha256": "053c9883683783c9504cf7000a9a04f2824e624d2e2fb7f09c7561c4c5b441e7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-66ea6e304c76c376.ogg",
+      "bytes": 9944,
+      "sha256": "7423e80e10fd4a5501f03827296732f49966dfa1cdc80b75aeb59f75c3503a52"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-6bd1a18ed2d19733.ogg",
+      "bytes": 7298,
+      "sha256": "327411e7f953e475e85b649e5f413b31ca36ae155e49c29b30d66f5da26e5eb2"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-6d7e04068fa604f0.ogg",
+      "bytes": 7441,
+      "sha256": "1fcd153f50774c01b5cfe8ded6a94e6bb0e2b7fc88d6e32b508a6c9cef66d51e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-6f47b13a6e54769d.ogg",
+      "bytes": 6311,
+      "sha256": "c34991ff22682d0db9d9df3773991c3cf97f5a56eb1ae7ba01581ca73c68049a"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-7f488a3c244e6fda.ogg",
+      "bytes": 7074,
+      "sha256": "888a78306ec119113160ab6d4e7c5315c497c7456d35175d6e537cc28ec89898"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-86dfb085eb61ec09.ogg",
+      "bytes": 8499,
+      "sha256": "c2ba889ae433130edeec8617c13852cb42476004d992340c47522f9f6e1d1aa9"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-8fc438f406e5f9e6.ogg",
+      "bytes": 6582,
+      "sha256": "0322bf8cef5264d71934d9d1714071e847794349b76d52c53f3b80d14095f4f7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-9390298f3fb0c5b1.ogg",
+      "bytes": 7726,
+      "sha256": "f81bd914ab8d360fad6926e26c858be4a97a1400dc45d91530a2cce79ebcac8b"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-96b8cfbc25047ba7.ogg",
+      "bytes": 10612,
+      "sha256": "59a92b7ace2c4ccfa9b67514440c7b9448538e0c812530f303bb03f7a06f5508"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-96ee1c51404b0b4d.ogg",
+      "bytes": 6431,
+      "sha256": "92f121c0e2aff0f7e12518ad91d64d4baf9d5a56ebda6737b789417d7055addd"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-9a11c13dd91d50d1.ogg",
+      "bytes": 10669,
+      "sha256": "5dfa0c8152908a17c0308c66ed8629893174e1476817b5c79442dbe903b414df"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-ad3c870f0edf1e1b.ogg",
+      "bytes": 10020,
+      "sha256": "93707902b873ea584cf0d6bb0be04f06928109b8e6781860dc646fe567b3f6e3"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-ae5077d95443b1de.ogg",
+      "bytes": 5731,
+      "sha256": "66759837cf36ca4265b66cacc1c94356dc4713849639662ad906165742c87dde"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-b65c597286364ff2.ogg",
+      "bytes": 6492,
+      "sha256": "2400f56a2573bfa9bdbe50b5d74489c2585ce31aa59bc043103a0fe852ebba6e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-b80dd87acd2d224f.ogg",
+      "bytes": 9500,
+      "sha256": "fa3ead9a8f2f9d356edcd6b59f45f6476c50bc2a300cf60ab1e726cc1a6e2d09"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-b9856b4b0b64e8ae.ogg",
+      "bytes": 7673,
+      "sha256": "1715b3a7cac662cc434807a4056fd86054d40abc9cc4bae9bf05a7aa7165503c"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-bd27e09add2412ef.ogg",
+      "bytes": 4012,
+      "sha256": "f0afbd04c930673fcbe5d3179961ca968ce6497c6725d2ffa4939de552eb6e25"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-c4ba3ab1e3dfa846.ogg",
+      "bytes": 13093,
+      "sha256": "f2eea307f7cee92d8e2ceb5fda7d7704be0018b81182e6420f36dc9244d532b7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-d28dc90a1060d4e4.ogg",
+      "bytes": 6767,
+      "sha256": "6a3960b68705e90cf74dc3c44382512d86288f2f466457fd32f88aadacf75904"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-d354d655e087f97e.ogg",
+      "bytes": 18822,
+      "sha256": "3985e8c70b3837748e2596f764492588ce842e2ceca7c6d43da9e96fd56c407f"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-d6a7cd2a7371b1a1.ogg",
+      "bytes": 6890,
+      "sha256": "269276d5ce8c471b2eea54e3958e0fc39d00b302a9b8ded36c24286ddc70e808"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-dafd5e7931a3d29d.ogg",
+      "bytes": 6847,
+      "sha256": "e99264c92b0371faeac5b0b02ad62390884950b1f9d90cd76450b92c4d3e6fe4"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-de77479652f7df3c.ogg",
+      "bytes": 6586,
+      "sha256": "7aa02cb18ef51710b44ccae87e36c91dceb96bb36fc28499d67047649f72a2a8"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-df12033f2c27fd89.ogg",
+      "bytes": 7396,
+      "sha256": "1ad60e92eb051c7dbaad7374a85ca7e3b42e76f60db8974466adcac338c3b685"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-df2459685e0465a1.ogg",
+      "bytes": 7547,
+      "sha256": "ff63883163b2b41cc2aa4fe7dd3528198834512111507a2c0e356042d46bdf40"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-e566ba7c73f3e426.ogg",
+      "bytes": 9417,
+      "sha256": "ef75f756b626be8ed091563a83edfe9a5287d8cebcc06a6e63a7f405c1d10774"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/audio/audio-neural-mia-f4f84956523a1529.ogg",
+      "bytes": 8781,
+      "sha256": "ea10edd9e167569b27b036e0fcbeaca7c972cc0642f864da027f3e7d8b8722d2"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/manifest.json",
+      "bytes": 248417,
+      "sha256": "b643a4841598b82ca1e89d21e91f1fb0fdcc6bc459619b266b7c38c7a54c85e7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-05920ab4d50e402c.wav",
+      "bytes": 65324,
+      "sha256": "0f777ba27031e33181f660fe8265f75dd0fcfc3ede7074033316abe556d1d3c7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-0764e2be58c5040b.wav",
+      "bytes": 60044,
+      "sha256": "b30b5179fe9eb939c5bc6af49fe03111b60342b6875649769822b3e27e0f69ce"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-0ae80e9e89e4732c.wav",
+      "bytes": 93644,
+      "sha256": "93a7ad1235e38219ed3b3672312fee82b5e72a8ebc6997ad24c04028fb41cb1e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-0bba72729ea07b20.wav",
+      "bytes": 55724,
+      "sha256": "2152fd057424b4129d7f8d591728c336c6fb4a0867fd4913c607e0933429e14f"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-0bd0bc77b21c0aa0.wav",
+      "bytes": 65324,
+      "sha256": "5c121ca6b30375d5f0b3db9ad4c223a91b4a08b1eb51d3eda029c1bda893cc23"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-0e6750d69414860e.wav",
+      "bytes": 76844,
+      "sha256": "2a7925d5b268d6dcb90b7e0ef7e9ce3f7e908d38dbfcc0b9f3685866f477643c"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-103024800caefeb7.wav",
+      "bytes": 71564,
+      "sha256": "cd6834c756d6f367937c4d0e1910c5fb917a847b51748d69596bf6f599f6e738"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-14c51fd8a11a7512.wav",
+      "bytes": 49484,
+      "sha256": "487d61ad75a6fb6702114d1baddfac3b696d398c1aaf5eb74426c081f0ef3bbe"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-1b06e2003f8420d6.wav",
+      "bytes": 65324,
+      "sha256": "07cec16a6d0d88af03d48df14526bf45b08986aedcf50cba02c58aebb1f65ff1"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-1f9a0fb93755bc01.wav",
+      "bytes": 69164,
+      "sha256": "243e1fdf9cae17f68ae45837e10c0896a792b599f6c9f14928f51637ff3cc55c"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-221af5634ef0bf9e.wav",
+      "bytes": 90284,
+      "sha256": "f6df3beec9594b4381c39e3785b593e86173ab45a7738ab49af6d64a73b909aa"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-2cf824cf5cda9d64.wav",
+      "bytes": 44204,
+      "sha256": "4d1c0c3a22dcba81c82955ba15c90ecab7df102db2265bbea5eb6f15874d8775"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-2fe3269fa210706d.wav",
+      "bytes": 65324,
+      "sha256": "e0c13e24693040dc4130e59de190d29b76f3759d2bdf047e7661e0a629b06b4e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-3186da3e7e347683.wav",
+      "bytes": 65324,
+      "sha256": "f23382545073c296f88cc124bd38a54cc060c01d15e746ca5c41480b73180cfa"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-32ad1aca2ef116a4.wav",
+      "bytes": 33164,
+      "sha256": "1e164fedf7eb5eaee80a0bb8e00f454dd4eb37dac8a1d26dde4b97ffaa010cc7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-40e1e6eced6f811c.wav",
+      "bytes": 65324,
+      "sha256": "3be4fdbed47c1e936eba55eaf19b400f505e1bc3550c4800c12b0153e07d759c"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-441b7de4295635c2.wav",
+      "bytes": 112364,
+      "sha256": "97bddf89979e4d7a8c1095308a2d8f09597525f2bde55570be6a5f5b6f196b10"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-4518c2d011e3f4bf.wav",
+      "bytes": 78284,
+      "sha256": "223424d4651555474ca879588b47f5ec371a3b589d80387459b5ef4688bc43c4"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-45bd554e7b9657c8.wav",
+      "bytes": 77324,
+      "sha256": "4ae95b3754e389ef895c5857cbcdba68328f98000402139bf16f5e097a992d78"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-49664d45805e0961.wav",
+      "bytes": 67244,
+      "sha256": "499a4f4a6c9debd952a4113126737971f7decb16283debc4464abfb2dd7ef355"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-4bd2c412ba70847f.wav",
+      "bytes": 65324,
+      "sha256": "5ae85615d6c8c315df90d789d84797ccf2e02c5068840a047800cc16f6e128d7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-5180c82d44fd979e.wav",
+      "bytes": 105644,
+      "sha256": "18b23747aee04c5183a39aea09e5b127af7f92131379d597e4cc76a51fdb586e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-57d4677b513386a9.wav",
+      "bytes": 44204,
+      "sha256": "f1352dd63b2bfe77fec3beff0961e2495eae23e8b98e071861268a0e40ddcb22"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-57d9d9154bb3c126.wav",
+      "bytes": 55724,
+      "sha256": "46b90324930b29b605ba2343478d04ddc9fbdeec5e108fb508fc9b5ac5e9c66d"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-66ea6e304c76c376.wav",
+      "bytes": 74444,
+      "sha256": "b71be0089823e71a2919e133cb8fdd77c27cfa7c7b033b4d526fb7a90db971f3"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-6bd1a18ed2d19733.wav",
+      "bytes": 64364,
+      "sha256": "3ea05316d6b3a62b697411cc36d606f394f01bfff6f4fcd2fda7b859039e5868"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-6d7e04068fa604f0.wav",
+      "bytes": 65324,
+      "sha256": "03bdb3e4051af60088107f359752039eb744af928c53d8f65ec1929842d36c05"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-6f47b13a6e54769d.wav",
+      "bytes": 64364,
+      "sha256": "3a574643930137ec27d7cb25781af957dcaf0d9be0ac5731e3631f0b02b2cff6"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-7f488a3c244e6fda.wav",
+      "bytes": 65324,
+      "sha256": "aa87e43d9a8abc75c285c5531d3bc72b1315a06708ed53672a712385d6cf1846"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-86dfb085eb61ec09.wav",
+      "bytes": 72044,
+      "sha256": "f4adcd177e8b2315e04e75aeb3805fe489eefc4b8af2a56c852f05ee7bb8c21c"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-8fc438f406e5f9e6.wav",
+      "bytes": 61964,
+      "sha256": "82c89989b189b33a3640cdccac980aee5072afa538abcad3096ace367d420a43"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-9390298f3fb0c5b1.wav",
+      "bytes": 65324,
+      "sha256": "d7939377721823c3920941fa20ca7bb5439b516664f02bdafca813d5a1e77528"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-96b8cfbc25047ba7.wav",
+      "bytes": 93164,
+      "sha256": "82229a358d5800efd59eb8e9d6ec75bc0b37f274590c787a7da548b51be887eb"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-96ee1c51404b0b4d.wav",
+      "bytes": 48524,
+      "sha256": "b0a8194278959f84efc6ed3c747af3de0283b67d7af1ca9f81caa23e8003aa85"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-9a11c13dd91d50d1.wav",
+      "bytes": 72044,
+      "sha256": "462fa87619163c88e1eb3c18242de0febf5fa02a22e000fbe82cbe48945e4b0b"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-ad3c870f0edf1e1b.wav",
+      "bytes": 74444,
+      "sha256": "3cd479bec9366ed633756b3052dde0c80fbb6fc12a2129d6e69fffd49112e430"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-ae5077d95443b1de.wav",
+      "bytes": 64364,
+      "sha256": "c1ac6b56dd1c41b13148550bd74d79f844bf29351e89be45960aad67d7eba019"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-b65c597286364ff2.wav",
+      "bytes": 65324,
+      "sha256": "abb644dba75ca015311b4586221d8fb357d5f923cae59de133f8393ba4aa35f3"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-b80dd87acd2d224f.wav",
+      "bytes": 83564,
+      "sha256": "ec4726f315a5c5ccb49330064f9ebd313f938f225ccf2613f938a17358d6e127"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-b9856b4b0b64e8ae.wav",
+      "bytes": 74924,
+      "sha256": "b839cc77aa085c6b3848efce420ca30cbaf068fb38ad983f29d02e709bd59e6a"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-bd27e09add2412ef.wav",
+      "bytes": 43244,
+      "sha256": "f82163ee369c9db460dbf3be320f81ee3387abbb6e365846b8bf5d12669a29f2"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-c4ba3ab1e3dfa846.wav",
+      "bytes": 92684,
+      "sha256": "a50c48a54a622b59202152af7cfa3af513ea85b3f3d434d600a51e69ba28e518"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-d28dc90a1060d4e4.wav",
+      "bytes": 65324,
+      "sha256": "0525acd0ec96f9efbd2f17bf7fc773bab432a97f389244011faed0db959dae26"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-d354d655e087f97e.wav",
+      "bytes": 134444,
+      "sha256": "12d55d3b73e088f669982a3d737a74676289b7f332e146eb31a2b7885193b8c4"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-d6a7cd2a7371b1a1.wav",
+      "bytes": 65324,
+      "sha256": "5ba7a213c0872cda576a3c0590109849a3e2e4185168d9c644137479b4a4c829"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-dafd5e7931a3d29d.wav",
+      "bytes": 67244,
+      "sha256": "6199b9624e24ddb5e6790adc0fa23ae6fea50ff7ea90cb9d5ba11ece1634e487"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-de77479652f7df3c.wav",
+      "bytes": 42764,
+      "sha256": "0e3962d557798eca7300315ab7e8001e776f3c1c9ab5f060f9f0b6f27e3984b4"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-df12033f2c27fd89.wav",
+      "bytes": 73964,
+      "sha256": "f010028e70e84cf6c2fca456a3407afcbfa77a4793a7887ceb75f4201978a3b3"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-df2459685e0465a1.wav",
+      "bytes": 42284,
+      "sha256": "f0781de427a100b2ab12f27f8789f36e9aa3c03bc526b222e31e328e6c74ed4e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-e566ba7c73f3e426.wav",
+      "bytes": 80204,
+      "sha256": "0a928a1318daf43448bb89159af93446726f4dca2b1c4c342c9d7c40dde2350d"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-lova-f4f84956523a1529.wav",
+      "bytes": 59564,
+      "sha256": "28358a63997042b439dea41f5c0737e4cc133eae69db8b4a286f1d3311412016"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-05920ab4d50e402c.wav",
+      "bytes": 65324,
+      "sha256": "aeaf7d5f853bbd0ecee6ef7f6a2f90d409f4229d9bedf86c3eb01d09c7eb1fec"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-0764e2be58c5040b.wav",
+      "bytes": 53804,
+      "sha256": "9a695fe65a825251b1a859a94e30ae212de09166d89d690ea6d1c6c9db2af552"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-0ae80e9e89e4732c.wav",
+      "bytes": 88844,
+      "sha256": "6097b0bc50d3c8f897ef98e7e7475f1ea0eecd43a19578c2c67acc35d4d574cd"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-0bba72729ea07b20.wav",
+      "bytes": 64844,
+      "sha256": "43fe921780944940f3ce79043979cea44028447c5f94269ba82f1ce5811760da"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-0bd0bc77b21c0aa0.wav",
+      "bytes": 65324,
+      "sha256": "2a2daea4eddff17f7dfa42f1fb3861a4f4cd98923eab5a439b8b64d410f4e93e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-0e6750d69414860e.wav",
+      "bytes": 68684,
+      "sha256": "dcccd4b051cdcf9cab26f67056f6b96d1c89b3743d560ea97f36513d2404f1a5"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-103024800caefeb7.wav",
+      "bytes": 66764,
+      "sha256": "f9f77c78f86ca82911d12ee8e804ee744561106abdd5892bc14ae9b6842482e2"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-14c51fd8a11a7512.wav",
+      "bytes": 33644,
+      "sha256": "b153e904ec84bb7b17fc8edec9024ae2a4b0b2eda42dcb00a546a7daaaec7f10"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-1b06e2003f8420d6.wav",
+      "bytes": 65324,
+      "sha256": "9a234312a12b138c52179ea29b569d281ee5a531f030400b2912941c03aa9475"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-1f9a0fb93755bc01.wav",
+      "bytes": 97964,
+      "sha256": "69c64f122ba85c74866b8809a7735ab23df0aa76565706740aaff07df033efce"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-221af5634ef0bf9e.wav",
+      "bytes": 92204,
+      "sha256": "01962256e0a191bf212b76a2688cf86bf9457692498f10a2ff95d1dda24509be"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-2cf824cf5cda9d64.wav",
+      "bytes": 38924,
+      "sha256": "1e69159c1ca58242f1e34f438030c3ee2f1da445ff14774cb7e9fa24758fc3ec"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-2fe3269fa210706d.wav",
+      "bytes": 78764,
+      "sha256": "16613e5cd43ceaabaeabe9f7bde2e37dbea7a84b179944b144e789c842561057"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-3186da3e7e347683.wav",
+      "bytes": 65324,
+      "sha256": "25b6f0e0c507baf6e57718c621e29952e7060744be13c4930a55ba644ec2003d"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-32ad1aca2ef116a4.wav",
+      "bytes": 32684,
+      "sha256": "a568ab7239e5f574a8f6f2b5e45d995ed90feb220afbf5caf9ccbc1f4b1434f2"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-40e1e6eced6f811c.wav",
+      "bytes": 65324,
+      "sha256": "6dfdec46a4b749cc5d0b26730ee45aee30b5690609e01989353afe5c6a3590d1"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-441b7de4295635c2.wav",
+      "bytes": 140204,
+      "sha256": "1589178063893b251d923b7431414d88181ef1780c3618be18e8c826e9fded93"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-4518c2d011e3f4bf.wav",
+      "bytes": 88364,
+      "sha256": "f4d265f7f0b5b775362ad466e924f24d1f961bafb9747f6e32267c97f5a8be32"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-45bd554e7b9657c8.wav",
+      "bytes": 66764,
+      "sha256": "45a64a93eecd856e945df948a497ea6271ffd81ec610ad67b65082d3772750f1"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-49664d45805e0961.wav",
+      "bytes": 56684,
+      "sha256": "76261cf35e65a7569cc59a672f225c8fa62d672a197f97f5b5c363620e9faeb6"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-4bd2c412ba70847f.wav",
+      "bytes": 65324,
+      "sha256": "960d5790ff38447c9b931ca50b36363c236e48fda3d65afb1d00e2889d0ebe7d"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-5180c82d44fd979e.wav",
+      "bytes": 99884,
+      "sha256": "3961702fe090b267e2631ca969b0e3aae57cf338fdd30898b4a3f5a7e406f982"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-57d4677b513386a9.wav",
+      "bytes": 88364,
+      "sha256": "a6d76b6e7938951afbe8c321eb1369aa57b82cd9b975bc0ad5bb7673e22a8e3e"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-57d9d9154bb3c126.wav",
+      "bytes": 55244,
+      "sha256": "778e1c162f9fd5a0777502351ddf44ff3d1cd8a8c896ef9619daa8560355d916"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-66ea6e304c76c376.wav",
+      "bytes": 85004,
+      "sha256": "fb467c682780499ac61810841f05f116501adfb9dc01de886f477bc2de195328"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-6bd1a18ed2d19733.wav",
+      "bytes": 57644,
+      "sha256": "662caeba940d890a36bf669e347d1b77a869c21b2173942a134cbbbc33b2518d"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-6d7e04068fa604f0.wav",
+      "bytes": 65324,
+      "sha256": "687c82496dea381eb111ffdaaf772563bc5304b9751cb883c60c9e22a3c6a8d9"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-6f47b13a6e54769d.wav",
+      "bytes": 49004,
+      "sha256": "f39c8e07154d2648c240652f8b833efe577d14a52ca1e3f6feb7593f2e0eb41d"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-7f488a3c244e6fda.wav",
+      "bytes": 65324,
+      "sha256": "7d3c70cd4bb4784f69c8149e5cad0b6ed66c4984746f39680d2df9e0651b7604"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-86dfb085eb61ec09.wav",
+      "bytes": 68684,
+      "sha256": "3864c24d63a2de631794ed758d81dd94b0c1b595b7c7100353164400f4bced77"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-8fc438f406e5f9e6.wav",
+      "bytes": 50924,
+      "sha256": "d9581d12d2fd382b3d3902b500920b4d5e25aeb37b0afb14308b466b432eb107"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-9390298f3fb0c5b1.wav",
+      "bytes": 78764,
+      "sha256": "c42e15a535b173806c494609ce043bb6cce5c8ad89c9ca469bc98ca0f3752147"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-96b8cfbc25047ba7.wav",
+      "bytes": 87404,
+      "sha256": "2fb8800cad18eef7510875d72ae72e651868729a51b5c857fcf52431374b9de3"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-96ee1c51404b0b4d.wav",
+      "bytes": 50444,
+      "sha256": "d0ed6a016bba05048bdda8215f8389a29c220534f033aca550b7a9933478ed69"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-9a11c13dd91d50d1.wav",
+      "bytes": 90284,
+      "sha256": "5d92d00165ad337d7d4e9d97565ae26c94c1372bf26681d3865619e483d2b964"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-ad3c870f0edf1e1b.wav",
+      "bytes": 84524,
+      "sha256": "0e305c6896f14220042e2083ab61a41054677d29d202ab48cae45b2c1aaf44df"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-ae5077d95443b1de.wav",
+      "bytes": 43724,
+      "sha256": "e451b3bd799a1e3d077d769641583849c8d8d0892c921de379ced95abd8eb0dc"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-b65c597286364ff2.wav",
+      "bytes": 65324,
+      "sha256": "504a719a07c7164d18268eed558e2f17ea981216a6fdc7914261166ae8d94bca"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-b80dd87acd2d224f.wav",
+      "bytes": 79724,
+      "sha256": "d9aed5612cd374cda390b4cc5e54bbc5fcedc74fc59d62588d618396185f5553"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-b9856b4b0b64e8ae.wav",
+      "bytes": 62924,
+      "sha256": "e817c2b4180abd2a7669074deb8ebadf63a26f53841845c84ea217f6d14c7cb2"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-bd27e09add2412ef.wav",
+      "bytes": 31724,
+      "sha256": "023b3d134d8977462bb8026adea84739fb3fbf082a547fb0f6af154f6077aad5"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-c4ba3ab1e3dfa846.wav",
+      "bytes": 108524,
+      "sha256": "eba0ad4ec941131c283ce1b0ff5c6c11fbfe826cc7b19c73d14ef9aa94a0c8d4"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-d28dc90a1060d4e4.wav",
+      "bytes": 65324,
+      "sha256": "f74f55228c956b31a011011bfc840ecc8c64bd7d2347d7535be3ae43982f00a7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-d354d655e087f97e.wav",
+      "bytes": 142604,
+      "sha256": "80c7cb6dc0a700aff628f36f3b4b508cc3c8f5db8011a3e0b94d3828e3bd7928"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-d6a7cd2a7371b1a1.wav",
+      "bytes": 65324,
+      "sha256": "27d45744e15d8c22c78f2699137fcdeb597f1197f497c13cb1e71a2ee0f4f391"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-dafd5e7931a3d29d.wav",
+      "bytes": 55724,
+      "sha256": "cd140142ac8f366313c411508a7332c21ec96e7be3c8fbe26052d1fcd8876be7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-de77479652f7df3c.wav",
+      "bytes": 50924,
+      "sha256": "69ce336741bdf0fb0ac2d5ffa22267949bcc8743fe238f8da20df5149f4a514c"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-df12033f2c27fd89.wav",
+      "bytes": 61484,
+      "sha256": "c2c5bd4021c8557d7e7c43cd239ba48812bcb88aac5f466eb0871116933c7e97"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-df2459685e0465a1.wav",
+      "bytes": 65804,
+      "sha256": "82ebb542a267e659a8fe18b1d9c7672d169caf986a00c6414a7e1381b861e801"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-e566ba7c73f3e426.wav",
+      "bytes": 75404,
+      "sha256": "b713119659c45121a1fa12776fe2f9028e9968aa9539e73ccf827fcfc3b08ce7"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/masters/audio-neural-mia-f4f84956523a1529.wav",
+      "bytes": 72524,
+      "sha256": "74d3e1ab8242be43abd991c4eee9a8036f9e16f9120a633162c71597d9a3cad6"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/references/lova.wav",
+      "bytes": 350924,
+      "sha256": "accbe57fef428b0f88fa25288ffea4f890e3120cec0e7df9df7a66a116f45dcd"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/references/mia.wav",
+      "bytes": 359084,
+      "sha256": "5fd6867f45f2f7d956f05dc5942cd16f6a47e5a2d1a5299cc713ae0e08e2ee36"
+    },
+    {
+      "path": "audio-workbench/generated/omnivoice/sources.json",
+      "bytes": 1947,
+      "sha256": "981c02b28ce5270505974577eee8fca370a234597bc6a607e0004f2f77f55ced"
+    },
+    {
+      "path": "audio-workbench/licenses/BOSON_HIGGS_AUDIO_2_LICENSE.txt",
+      "bytes": 9171,
+      "sha256": "ac933dc084d119bd20401956b90d11ae87c248b2da62622cd580d82cdf2fa049"
+    },
+    {
+      "path": "audio-workbench/licenses/META_LLAMA_3_LICENSE_AND_USE_POLICY.txt",
+      "bytes": 12403,
+      "sha256": "4fa551d4f938f68b8c1e6afa9d28befb70e3f33f75d0753248d530364aeea40f"
+    },
+    {
+      "path": "audio-workbench/NOTICE.md",
+      "bytes": 3117,
+      "sha256": "efa95ac2a70e1230b8244016d77288e380b87a91c7dc7a4110bef3a14e1efaa2"
+    },
+    {
+      "path": "audio-workbench/REPORT.md",
+      "bytes": 6561,
+      "sha256": "57c8f6194205d8097ddf44ce99fef6d7d232c4151f2bcad02670a7cad9d31afa"
+    },
+    {
+      "path": "audio-workbench/validation.json",
+      "bytes": 652,
+      "sha256": "22fae341de66ec91e85c578b9792477636130fb6a15d490dd944f1d84f3e50a4"
+    }
+  ]
+}
