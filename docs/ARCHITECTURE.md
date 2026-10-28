@@ -1,6 +1,6 @@
 # Malagasy Adventure — architecture
 
-Malagasy Adventure est une application autonome en TypeScript strict, DOM natif et Vite. Le dépôt ne contient pas le catalogue Arcade ni ses autres jeux. `/` et `/malagasy-adventure` ouvrent la même application statique, sans compte, framework supplémentaire ou backend permanent.
+Malagasy Adventure est une application autonome en TypeScript strict, DOM natif et Vite. Le dépôt ne contient pas le catalogue Arcade ni ses autres jeux. `/` et `/malagasy-adventure` ouvrent la même application statique. Le mode découverte reste local ; un compte Supabase facultatif sauvegarde la progression, sans framework ajouté ni serveur applicatif permanent.
 
 ## Modules et responsabilités
 
@@ -16,6 +16,10 @@ Malagasy Adventure est une application autonome en TypeScript strict, DOM natif 
 | `src/malagasy/world-path.ts`, `world-path.css` | Chemin des 36 étapes du monde 1 ; états courant, disponible, validé et verrouillé dérivés du moteur de progression. |
 | `src/malagasy/engine.ts` | Réponses acceptées, déblocage, mélange, maîtrise, révisions, XP et validation du contenu. |
 | `src/malagasy/storage.ts` | Chargement, sérialisation et validation du schéma de sauvegarde. |
+| `src/malagasy/account.ts`, `account-view.ts`, `account.css` | Compte mail/mot de passe, inscription, récupération et choix explicite entre deux carnets. |
+| `src/malagasy/cloud-sync.ts` | Synchronisation différée et sérialisée, validation v1, révisions et conflits entre appareils. |
+| `src/malagasy/supabase.ts`, `supabase/migrations/` | Client public, transport et schéma Postgres privé par utilisateur avec RLS. |
+| `src/malagasy/history-curriculum.ts` | Programme culturel détaillé des mondes futurs et sources historiques des crédits. |
 | `src/malagasy/exercise-view.ts` | Registre des rendus d’exercices, brouillon de réponse et échappement HTML. |
 | `src/malagasy/audio.ts` | Audio linguistique vérifié et effets de réponse synthétisés localement. |
 | `src/malagasy/dialogue-audio.ts` | File de lecture des répliques, relecture, annulation, muet et gestion des politiques audio du navigateur. |
@@ -78,7 +82,11 @@ Si la sauvegarde locale est illisible, `loadProgress` conserve son texte origina
 
 La validation du contenu vérifie chaque leçon contre la fermeture de ses propres prérequis, indépendamment du parcours global : une notion apprise dans une branche facultative ne peut pas être présumée connue dans une autre branche.
 
-Il n’existe pas encore de migration entre deux versions, puisque seul le schéma v1 existe. Ajouter une migration explicite avant d’accepter un ancien schéma. La sauvegarde locale n’est pas un mécanisme anti-triche et ne remplace pas un futur compte synchronisé.
+Il n’existe pas encore de migration entre deux versions de sauvegarde, puisque seul le schéma v1 existe. Ajouter une migration explicite avant d’accepter un ancien schéma. La sauvegarde n’est pas un mécanisme anti-triche. La migration SQL initialise uniquement le stockage serveur et ne change pas le contrat JSON v1.
+
+Le carnet invité garde sa clé d’origine. Les caches des comptes utilisent cette clé suivie de `.account.<uuid>` ; une déconnexion retrouve le carnet invité, sans transférer le carnet d’un utilisateur au suivant. Une première connexion peut reprendre le carnet invité. `CloudProgressSync` valide les réponses distantes par `parseSave`, charge automatiquement un carnet distant sur un appareil vierge et demande un choix si deux carnets diffèrent. Les requêtes sont sérialisées et portent une révision attendue : une modification concurrente suspend l’envoi jusqu’au choix explicite. Les erreurs réseau conservent le cache local et exposent un état d’attente ; retour en ligne, retour à l’onglet et bouton de synchronisation permettent une reprise. L’arrêt d’une instance invalide ses callbacks et temporisations.
+
+Supabase Auth gère les mots de passe et sessions. La table `learning_progress` ne contient que `user_id`, `progress` v1, `revision` et une date serveur. Les politiques SELECT/INSERT/UPDATE restreignent chaque opération à `auth.uid() = user_id`. L’accès anonyme est révoqué. La fonction de sauvegarde s’exécute en `SECURITY INVOKER`, vérifie aussi l’utilisateur explicitement attendu et applique un contrôle atomique de révision. Le navigateur ne reçoit qu’une clé publiable. Voir [la configuration effective et les limites mail](SUPABASE.md).
 
 La vue de sauvegarde permet de télécharger cette copie pour examen ; elle n’est pas automatiquement réparée ni présentée comme importable.
 
@@ -87,7 +95,7 @@ La vue de sauvegarde permet de télécharger cette copie pour examen ; elle n’
 - **Nouvelle unité/monde** : seulement après nouvelle demande d’extension du périmètre actuel. Ajouter les dialogues, données et sources, vérifier les prérequis et le quiz, puis passer `implemented` à vrai. Voir [CONTENT_GUIDE.md](CONTENT_GUIDE.md).
 - **Nouveau type d’exercice** : étendre `ExerciseType`, enregistrer son validateur dans `exerciseValidators` et son rendu dans `EXERCISE_RENDERERS`, ajouter la validation de configuration et un test comportemental.
 - **Enregistrement linguistique** : ajouter une entrée `AudioAsset` documentée, une transcription entière et son degré de contrôle linguistique, puis la référence d’une réplique. Vérifier la licence avant diffusion. Une écoute notée exige un fichier validé adapté et ne se déduit pas de la seule disponibilité d’une référence de dialogue.
-- **Compte distant** : implémenter un adaptateur de stockage et une stratégie de conflit ; ne pas confondre les identifiants de contenu et ceux d’un utilisateur.
+- **Compte distant** : conserver le schéma portable et l’isolation par utilisateur ; toute évolution de la synchronisation doit tester les pertes réseau, conflits et changements de session.
 
 ## Construction et hébergement
 

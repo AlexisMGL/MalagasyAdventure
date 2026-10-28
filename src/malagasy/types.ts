@@ -1,12 +1,13 @@
 /** Stable IDs are the contract between authored content, engines and browser saves. */
 export interface Source {
   id: string; title: string; author: string; url: string;
-  category: 'language' | 'grammar' | 'dictionary' | 'geography' | 'audio';
+  category: 'language' | 'grammar' | 'dictionary' | 'geography' | 'history' | 'audio';
   consulted: boolean; supports: string; license: string; date?: string;
 }
 export interface World {
   id: string; number: number; name: string; subtitle: string; description: string;
   vocabulary: string[]; grammar: string[]; skills: string[]; culture: string;
+  cultureTopics?: string[]; cultureSourceIds?: string[];
   coordinates: [number, number]; prerequisites: string[]; estimatedHours: number;
   implemented: boolean;
 }

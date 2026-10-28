@@ -70,7 +70,7 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 
 - L’utilisateur a rejeté la première carte dessinée à main levée. Utiliser un contour géographique traçable et une projection cohérente pour le littoral et les destinations.
 - Soigner la silhouette de Madagascar, les îles, les repères, les chevauchements et l’accessibilité des étapes. Une jolie décoration ne justifie pas des points placés hors de leur position géographique.
-- Le dernier monde représente tout Madagascar : ne pas l’inventer comme un nouveau lieu en mer. Les deux étapes d’Antananarivo doivent rester distinguables.
+- Le dernier monde représente tout Madagascar : ne pas l’inventer comme un nouveau lieu en mer. À la demande du 28 octobre 2026, l’étape 19 est Maroantsetra ; conserver son identifiant `world-19`, déplacer son ancrage et ne pas réintroduire l’ancienne seconde visite à Antananarivo.
 - Les décalages nécessaires pour des étapes proches restent reliés à leur ancrage. Les données Natural Earth intégrées sont simplifiées et citées aux crédits ; cette carte n’est pas un outil de navigation.
 
 ## Sources et exactitude
@@ -111,11 +111,11 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 - Les schémas typés et **IDs stables**, jamais les positions de tableaux, relient mondes, unités, leçons, exercices, concepts, dialogues, sources et assets.
 - Ajouter un monde principalement par ses données ; enregistrer un nouveau format via rendu, validateur et contrôles dédiés. Pas de conditions propres au monde 1 dans les moteurs génériques.
 - Éviter les gros fichiers qui mêlent corpus et logique, les dépendances inutiles et les infrastructures spéculatives.
-- Sauvegarder automatiquement dans le navigateur. Conserver une abstraction de stockage compatible avec une future synchronisation, sans implémenter de compte aujourd’hui.
+- Demande du 28 octobre 2026 : proposer un compte Supabase par mail/mot de passe, récupération par mail et sauvegarde privée de progression. Garder le mode découverte sans compte, la sauvegarde locale et l’export/import v1. Cette demande remplace les anciennes exclusions des comptes et du cloud.
 - L’export JSON comprend progression, paramètres, XP/niveaux dérivés, réussites, séries, maîtrise, échéances, historique et dates. Valider et prévisualiser l’import, puis demander confirmation avant remplacement ; refuser les données corrompues ou malveillantes.
 - Conserver un numéro de schéma et des migrations explicites lors d’une évolution incompatible. Ne pas renommer les IDs livrés sans migration ; préserver les anciennes sauvegardes.
 - Prévenir de la portée locale des données et permettre une sauvegarde portable. Conserver une copie de récupération des données locales illisibles lorsque c’est possible.
-- Comptes, cloud, multijoueur, classements, tuteur IA, abonnements, mobile natif et scoring vocal avancé restent des pistes futures. Aucun faux service annoncé comme actif.
+- Multijoueur, classements, tuteur IA, abonnements, mobile natif et scoring vocal avancé restent des pistes futures. Aucun faux service annoncé comme actif. La disponibilité publique des mails dépend du SMTP et des URL Auth du projet dédié ; ne pas prétendre qu’ils sont configurés sans vérification.
 
 ## Vérification
 

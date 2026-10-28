@@ -52,11 +52,13 @@ Ce dépôt possède son propre `package.json`, son lockfile et sa configuration 
 - Commande de build : **`npm run build`**.
 - Dossier publié : **`dist`**.
 - Node : **22**.
-- Hébergement : site statique, sans base, API payante ou serveur d’inférence.
+- Hébergement : site statique, sans serveur d’inférence ; Supabase Auth et base privée facultatifs pour le compte et la progression.
 
 Le nouveau dépôt peut être importé comme **nouveau projet Netlify Free** après création de son remote Git. Pour une publication manuelle, envoyer uniquement `dist`. Voir [le guide de déploiement](docs/DEPLOYMENT.md). Aucun site public ou dépôt distant n’est créé automatiquement par cette extraction.
 
 Un domaine ou port différent possède son propre stockage navigateur. Pour retrouver une progression existante, utiliser **Ma sauvegarde → Exporter** dans l’ancienne copie puis **Importer** dans la nouvelle. Les IDs, clés et le format v1 restent inchangés.
+
+Le **mode découverte** permet de commencer immédiatement sans compte. **Mon compte** propose inscription, connexion mail/mot de passe et récupération du mot de passe. Un compte sauvegarde le carnet sur Supabase ; l’import/export reste disponible. Le projet Supabase indépendant est créé avec ses politiques d’accès privées. Les mails publics et leurs redirections demandent encore la configuration décrite dans [SUPABASE.md](docs/SUPABASE.md).
 
 ## Documentation et consignes
 

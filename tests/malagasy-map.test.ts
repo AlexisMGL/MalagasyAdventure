@@ -26,11 +26,16 @@ describe('Madagascar geographic map', () => {
     expect(northX).toBeGreaterThan(southX);
     expect(southY - northY).toBeGreaterThan((northX - southX) * 4);
   });
-  it('separates both Antananarivo visits while keeping their actual shared anchor', () => {
-    const first = markerPosition(WORLDS[0]), later = markerPosition(WORLDS[18]);
-    expect(first.anchor).toEqual(later.anchor);
-    expect(first.marker).toEqual(first.anchor);
-    expect(Math.hypot(first.marker[0] - later.marker[0], first.marker[1] - later.marker[1])).toBeGreaterThan(40);
+  it('moves the stable world-19 destination to Maroantsetra without retaining the capital offset', () => {
+    const world = WORLDS.find(candidate => candidate.id === 'world-19')!;
+    expect(world.name).toBe('Maroantsetra');
+    expect(world.coordinates).toEqual([-15.43527, 49.73794]);
+    expect(world.prerequisites).toEqual(['world-18']);
+    expect(world.implemented).toBe(false);
+    const position = markerPosition(world);
+    expect(position.marker).toEqual(position.anchor);
+    expect(position.anchor).not.toEqual(markerPosition(WORLDS[0]).anchor);
+    expect(renderWorldMap(WORLDS)).toContain('19. Maroantsetra');
   });
   it('makes every destination keyboard inspectable and keeps the national final out of city geography', () => {
     const map = renderWorldMap(WORLDS);

@@ -232,7 +232,10 @@ export function validateContent(content: Content): string[] {
     };
     for (const item of items) visit(item.id);
   };
-  for (const world of content.worlds) refs(world.id, 'worlds', world.prerequisites);
+  for (const world of content.worlds) {
+    refs(world.id, 'worlds', world.prerequisites);
+    if (world.cultureTopics?.length) sources(world.id, world.cultureSourceIds ?? []);
+  }
   for (const unit of content.units) {
     refs(unit.id, 'worlds', [unit.worldId]); refs(unit.id, 'lessons', unit.lessonIds);
     if (unit.implemented && !unit.lessonIds.length) errors.push(`${unit.id}: unité jouable vide`);

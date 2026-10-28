@@ -124,3 +124,45 @@ export function saveProgress(progress: Progress, storage?: SaveStorage): boolean
   try { (storage ?? globalThis.localStorage).setItem(SAVE_KEY, serializeSave(progress)); return true; }
   catch { return false; }
 }
+
+/** Account caches must never share the guest key or another user's recovery copy. */
+function accountSaveKey(userId: string): string | null {
+  return typeof userId === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)
+    ? `${SAVE_KEY}.account.${userId.toLowerCase()}` : null;
+}
+
+export function loadAccountProgress(userId: string, content?: Content, storage?: SaveStorage): Progress | null {
+  const key = accountSaveKey(userId);
+  if (key === null) return null;
+  let target: SaveStorage | undefined;
+  let json: string | null = null;
+  try {
+    target = storage ?? globalThis.localStorage;
+    json = target.getItem(key);
+    return json === null ? null : parseSave(json, content);
+  } catch {
+    if (target && json !== null && json.length <= MAX_BYTES) {
+      try {
+        const recoveryKey = `${key}.recovery`;
+        if (target.getItem(recoveryKey) === null) target.setItem(recoveryKey, json);
+      } catch { /* A blocked browser store must not prevent learning. */ }
+    }
+    return null;
+  }
+}
+
+export function saveAccountProgress(progress: Progress, userId: string, storage?: SaveStorage): boolean {
+  const key = accountSaveKey(userId);
+  if (key === null) return false;
+  try { (storage ?? globalThis.localStorage).setItem(key, serializeSave(progress)); return true; }
+  catch { return false; }
+}
+
+export function loadAccountRecovery(userId: string, storage?: SaveStorage): string | null {
+  const key = accountSaveKey(userId);
+  if (!key) return null;
+  try {
+    const json = (storage ?? globalThis.localStorage).getItem(`${key}.recovery`);
+    return json !== null && json.length <= MAX_BYTES ? json : null;
+  } catch { return null; }
+}

@@ -55,8 +55,30 @@ Chaque monde a un identifiant `world-01` à `world-20`. Les métadonnées exécu
 | 16 | Isalo — Un monde vivant | Paysages, biodiversité, protection | Descriptions complexes, causes et conséquences | Expliquer un enjeu environnemental |
 | 17 | Tôlanaro — Changer de perspective | Idées, société, décisions | Voix et structure informationnelle approfondies | Reformuler et nuancer un point de vue |
 | 18 | Sainte-Marie — Raconter plus loin | Récits, voyages, émotions | Subordination et discours rapporté | Comprendre et produire un récit suivi |
-| 19 | Antananarivo — Madagascar aujourd’hui | Médias, société, débats | Argumentation, connecteurs, registres | Soutenir une discussion de société |
+| 19 | Maroantsetra — Madagascar aujourd’hui | Médias, société, débats | Argumentation, connecteurs, registres | Soutenir une discussion de société |
 | 20 | Madagascar — Le grand voyage | Consolidation générale | Intégration et adaptation au contexte | Communiquer avec davantage d’autonomie |
+
+## Histoire, pouvoirs et groupes culturels — programme renforcé le 28 octobre 2026
+
+Les grandes questions historiques font partie du programme prévu. Leurs thèmes détaillés apparaissent dans les fiches de destination et sont reliés aux sources par `CULTURE_CURRICULUM` dans `src/malagasy/history-curriculum.ts`. Les leçons historiques des mondes 2–20 restent à rédiger, vérifier et accompagner de dialogues ; ces métadonnées ne constituent pas des leçons jouables.
+
+| Mondes | Thèmes de travail prévus |
+| --- | --- |
+| 3, 5, 10, 19 | Groupes culturels et ethnies : noms, histoires, mobilités, identifications et diversité interne. Plusieurs exemples régionaux seront croisés, sans réduire une personne à un groupe ni dessiner des territoires ethniques figés. |
+| 9, 11 | Royaumes sakalava du Menabe et du Boeny, Andriandahifotsy et Andriamandisoarivo ; échanges, pouvoirs et traite dans l’océan Indien. |
+| 12 | Opérations et occupation militaires britanniques en 1942 contre Vichy, passage à la France libre en 1943, conséquences pour les habitants. |
+| 15 | Andrianampoinimerina, Radama Ier, Ranavalona Ire, Radama II, Rasoherina, Ranavalona II et Ranavalona III ; Rainilaiarivony comme Premier ministre ; réformes, conquêtes, religions, résistances et autres royaumes. |
+| 15 | Relations britanniques au XIXe siècle : traité de 1817, appui au royaume, missions et école ; rivalités avec la France. Il ne s’agit pas d’une colonie britannique au XIXe siècle. |
+| 17 | Conquête et annexion françaises, fin de la monarchie, exil, résistances, travail forcé et inégalités coloniales. Les documents coloniaux seront contextualisés et confrontés aux voix malgaches. |
+| 18 | Nationalisme, MDRM, insurrection de 1947, répression de 1947–1948, mémoires et débats sur les bilans. Aucun chiffre controversé ne sera présenté sans attribution. |
+| 19 | Mouvements politiques, négociations, indépendance du 26 juin 1960 et héritages de la décolonisation ; histoire nationale abordée depuis une rencontre à Maroantsetra. |
+| 20 | Frise cumulative et récit argumenté reliant les périodes, les régions et plusieurs perspectives. |
+
+Le classement usuel en « dix-huit ethnies » sera étudié comme une catégorisation historique et discutée, pas comme une liste naturelle, exhaustive et immuable. La découverte de ces identités n’implique pas l’enseignement de leurs variétés linguistiques à la place du malgache standard.
+
+Les sources et leurs limites sont consignées dans [LANGUAGE_SOURCES.md](LANGUAGE_SOURCES.md) et dans le registre affiché uniquement dans « Sources & crédits ». La rédaction des futurs cours demandera des documents supplémentaires et une relecture historique et malgachophone, notamment sur les mémoires régionales. Aucun nouveau texte malgache ni enregistrement n’a été ajouté pour cette mise à jour.
+
+L’étape 19 devient **Maroantsetra**, avec l’identifiant inchangé `world-19` et les mêmes prérequis. Son ancrage cartographique est celui de la ville, à environ −15,43527 / 49,73794 ; l’ancien décalage destiné à distinguer deux visites dans la capitale est supprimé. Les sauvegardes v1 conservent leurs identifiants.
 
 ## Choix de séquence et précautions linguistiques
 

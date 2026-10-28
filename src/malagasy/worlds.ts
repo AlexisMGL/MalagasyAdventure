@@ -1,4 +1,5 @@
 import type { World } from './types';
+import { CULTURE_CURRICULUM } from './history-curriculum';
 
 /**
  * Destinations are a curriculum, not administrative divisions or a road itinerary.
@@ -100,7 +101,7 @@ const planned: Omit<World, 'id' | 'number' | 'prerequisites' | 'implemented'>[] 
     vocabulary: ['Opinions', 'Activités', 'Préférences', 'Choix'],
     grammar: ['Accord et désaccord', 'Expressions d’opinion', 'Justification', 'Comparaisons développées'],
     skills: ['Donner son avis', 'Expliquer une préférence', 'Réagir à une opinion'],
-    culture: 'Une étape dans le Nord.', coordinates: [-12.28, 49.29], estimatedHours: 8,
+    culture: 'Le Nord pendant la Seconde Guerre mondiale : intervention et occupation britanniques en 1942, puis administration de la France libre.', coordinates: [-12.28, 49.29], estimatedHours: 8,
   },
   {
     name: 'Nosy Be', subtitle: 'Et si on essayait ?',
@@ -124,7 +125,7 @@ const planned: Omit<World, 'id' | 'number' | 'prerequisites' | 'implemented'>[] 
     vocabulary: ['Patrimoine', 'Histoire', 'Traditions', 'Lieux de mémoire'],
     grammar: ['Constructions relatives', 'Descriptions développées', 'Récit historique'],
     skills: ['Présenter un lieu historique', 'Expliquer une tradition', 'Relier des événements'],
-    culture: 'La colline royale et son patrimoine vivant, documentés par l’UNESCO.', coordinates: [-18.75917, 47.56278], estimatedHours: 9,
+    culture: 'Souverains et souveraines, autres royaumes de l’île, relations britanniques et rivalités françaises : une histoire politique à partir de la colline royale.', coordinates: [-18.75917, 47.56278], estimatedHours: 9,
   },
   {
     name: 'Isalo', subtitle: 'Un monde vivant',
@@ -140,7 +141,7 @@ const planned: Omit<World, 'id' | 'number' | 'prerequisites' | 'implemented'>[] 
     vocabulary: ['Idées abstraites', 'Décisions', 'Vie sociale', 'Points de vue'],
     grammar: ['Système des voix approfondi', 'Structure informationnelle', 'Choix du constituant mis en avant'],
     skills: ['Reformuler une idée', 'Interpréter des perspectives variées', 'Nuancer une explication'],
-    culture: 'Diversité des points de vue et des rencontres.', coordinates: [-25.03, 46.99], estimatedHours: 10,
+    culture: 'Conquête et colonisation françaises : résistances, violences, travail forcé et lecture critique des points de vue.', coordinates: [-25.03, 46.99], estimatedHours: 10,
   },
   {
     name: 'Sainte-Marie', subtitle: 'Raconter plus loin',
@@ -148,15 +149,15 @@ const planned: Omit<World, 'id' | 'number' | 'prerequisites' | 'implemented'>[] 
     vocabulary: ['Récits', 'Voyages', 'Culture', 'Émotions'],
     grammar: ['Subordination', 'Discours rapporté', 'Organisation d’un récit long'],
     skills: ['Raconter une expérience détaillée', 'Rapporter des propos', 'Comprendre un récit suivi'],
-    culture: 'Histoires et souvenirs d’une étape insulaire.', coordinates: [-16.90, 49.90], estimatedHours: 9,
+    culture: 'Nationalisme, insurrection de 1947 et répression : comprendre les récits et les mémoires de la décolonisation.', coordinates: [-16.90, 49.90], estimatedHours: 9,
   },
   {
-    name: 'Antananarivo', subtitle: 'Madagascar aujourd’hui',
-    description: 'Reviens dans la capitale avec des moyens plus riches pour discuter de sujets de société.',
+    name: 'Maroantsetra', subtitle: 'Madagascar aujourd’hui',
+    description: 'À Maroantsetra, relie histoires locales, indépendance et diversité culturelle pour discuter de sujets de société.',
     vocabulary: ['Médias', 'Société', 'Actualité', 'Débats quotidiens'],
     grammar: ['Argumentation', 'Connecteurs développés', 'Nuances de discours', 'Registres'],
     skills: ['Justifier un point de vue', 'Comprendre un sujet contemporain', 'Soutenir une discussion'],
-    culture: 'Regards sur le Madagascar contemporain.', coordinates: [-18.91, 47.53], estimatedHours: 10,
+    culture: 'Indépendance du 26 juin 1960, héritages coloniaux et diversité des ethnies et groupes culturels, dans une rencontre sur la côte orientale.', coordinates: [-15.43527, 49.73794], estimatedHours: 10,
   },
   {
     name: 'Madagascar', subtitle: 'Le grand voyage',
@@ -170,6 +171,7 @@ const planned: Omit<World, 'id' | 'number' | 'prerequisites' | 'implemented'>[] 
 
 export const WORLDS: World[] = planned.map((world, index) => ({
   ...world,
+  ...CULTURE_CURRICULUM[`world-${String(index + 1).padStart(2, '0')}`],
   id: `world-${String(index + 1).padStart(2, '0')}`,
   number: index + 1,
   prerequisites: index === 0 ? [] : [`world-${String(index).padStart(2, '0')}`],

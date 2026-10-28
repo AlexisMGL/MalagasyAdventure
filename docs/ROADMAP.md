@@ -19,9 +19,11 @@ La construction reste statique Vite/TypeScript, compatible Netlify. Ces modifica
 - Le parcours est composé de conversations guidées écrites. Il ne simule ni reconnaissance vocale, ni notation de prononciation, ni tuteur conversationnel génératif.
 - La maîtrise est une heuristique locale ; plusieurs journées de rappel restent nécessaires. Les XP et les médailles du chemin ne certifient pas la rétention.
 - Les licences et restrictions non commerciales d’OmniVoice, ainsi que les accords de son codec, restent à respecter. Les notices sont dans Sources & crédits et avec les fichiers publiables.
-- Le stockage peut disparaître après effacement du navigateur ou changement de domaine/port. L’export/import fournit le transfert ; aucun compte ou synchronisation distante n’est livré.
+- Le mode découverte conserve sa sauvegarde locale et l’export/import. Un compte Supabase facultatif ajoute la sauvegarde privée et la reprise sur un autre appareil. Les formulaires mail/mot de passe et la récupération sont implémentés ; SMTP public et redirections Auth restent à configurer avant ouverture générale. Voir [SUPABASE.md](SUPABASE.md).
 
 ## Prochain travail utile
+
+Le programme culturel renforcé le 28 octobre 2026 prévoit les souverains de l’Imerina et d’autres royaumes, les rapports britanniques au XIXe siècle, l’occupation militaire de 1942, la colonisation française, le nationalisme et la décolonisation, puis les ethnies et groupes culturels dans leur diversité historique. Les fiches des mondes en donnent les thèmes ; les cours restent à rédiger et verrouillés. L’étape 19 est désormais Maroantsetra, sous le même ID `world-19`. Voir [le programme détaillé](CURRICULUM.md).
 
 1. Faire relire les douze unités et les voix par des personnes malgachophones compétentes en enseignement du standard, puis conserver les remarques et leurs empreintes dans l’atelier audio.
 2. Corriger les formulations ou les clips concernés sans recalculer les enregistrements approuvés par défaut. Vérifier à nouveau couverture, lecture, quiz et sauvegardes après toute correction.
