@@ -60,19 +60,32 @@ Chaque monde a un identifiant `world-01` à `world-20`. Les métadonnées exécu
 
 ## Histoire, pouvoirs et groupes culturels — programme renforcé le 28 octobre 2026
 
-Les grandes questions historiques font partie du programme prévu. Leurs thèmes détaillés apparaissent dans les fiches de destination et sont reliés aux sources par `CULTURE_CURRICULUM` dans `src/malagasy/history-curriculum.ts`. Les leçons historiques des mondes 2–20 restent à rédiger, vérifier et accompagner de dialogues ; ces métadonnées ne constituent pas des leçons jouables.
+Les grandes questions historiques forment un fil continu **dès le monde 1**, avec une escale culturelle dans chacun des vingt mondes. Les souverains sont présentés progressivement aux mondes 1–7 ; Ambohimanga sert ensuite à les approfondir. Les relations britanniques, la colonisation et la décolonisation ont également plusieurs points d’entrée avant les derniers mondes. Les thèmes sont liés aux sources par `CULTURE_CURRICULUM` dans `src/malagasy/history-curriculum.ts` et consultables dans les fiches de destination ; un accès aux premiers repères figure sur le parcours d’Antananarivo. Les leçons historiques des mondes 2–20 restent à rédiger, vérifier et accompagner de dialogues ; ces fiches ne débloquent pas de nouvelles leçons ni de maîtrise.
 
 | Mondes | Thèmes de travail prévus |
 | --- | --- |
-| 3, 5, 10, 19 | Groupes culturels et ethnies : noms, histoires, mobilités, identifications et diversité interne. Plusieurs exemples régionaux seront croisés, sans réduire une personne à un groupe ni dessiner des territoires ethniques figés. |
-| 9, 11 | Royaumes sakalava du Menabe et du Boeny, Andriandahifotsy et Andriamandisoarivo ; échanges, pouvoirs et traite dans l’océan Indien. |
-| 12 | Opérations et occupation militaires britanniques en 1942 contre Vichy, passage à la France libre en 1943, conséquences pour les habitants. |
-| 15 | Andrianampoinimerina, Radama Ier, Ranavalona Ire, Radama II, Rasoherina, Ranavalona II et Ranavalona III ; Rainilaiarivony comme Premier ministre ; réformes, conquêtes, religions, résistances et autres royaumes. |
-| 15 | Relations britanniques au XIXe siècle : traité de 1817, appui au royaume, missions et école ; rivalités avec la France. Il ne s’agit pas d’une colonie britannique au XIXe siècle. |
-| 17 | Conquête et annexion françaises, fin de la monarchie, exil, résistances, travail forcé et inégalités coloniales. Les documents coloniaux seront contextualisés et confrontés aux voix malgaches. |
-| 18 | Nationalisme, MDRM, insurrection de 1947, répression de 1947–1948, mémoires et débats sur les bilans. Aucun chiffre controversé ne sera présenté sans attribution. |
-| 19 | Mouvements politiques, négociations, indépendance du 26 juin 1960 et héritages de la décolonisation ; histoire nationale abordée depuis une rencontre à Maroantsetra. |
-| 20 | Frise cumulative et récit argumenté reliant les périodes, les régions et plusieurs perspectives. |
+| 1 · Antananarivo | Premiers repères : Andrianampoinimerina, Radama Ier, royaumes et Merina ; une frise annonce les grandes périodes qui seront reprises dans le voyage. |
+| 2 · Antsirabe | Radama Ier, traité de 1817, influence britannique, missions et école ; distinguer alliance et colonisation. |
+| 3 · Toamasina | Betsimisaraka, échanges de la côte orientale et rivalités françaises et britanniques. |
+| 4 · Andasibe | Ranavalona Ire, pouvoir, religions, école et lecture critique des portraits du règne. |
+| 5 · Fianarantsoa | Radama II, Rasoherina, transformations du gouvernement ; histoires betsileo et merina. |
+| 6 · Ambositra | Ranavalona II et Rainilaiarivony ; rôles respectifs, christianisation et gouvernement. |
+| 7 · Ranomafana | Ranavalona III, conquête, annexion de 1896, fin de la monarchie et exil en 1897 ; découverte des Tanala. |
+| 8 · Manakara | Vie sous la colonisation française, travail forcé, inégalités et résistances ; Antemoro et Antaisaka. |
+| 9 · Morondava | Menabe, Andriandahifotsy et royaumes sakalava ; échanges et traite dans l’océan Indien. |
+| 10 · Toliara | Vezo, Mahafaly, Antandroy, Bara et Antanosy ; catégories coloniales, mobilités et pluralité des expériences. |
+| 11 · Mahajanga | Boeny, Andriamandisoarivo, réseaux de la côte nord-ouest et comparaison des royaumes. |
+| 12 · Antsiranana | Occupation britannique de 1942 contre Vichy, passage à la France libre en 1943 ; rencontre des Antakarana. |
+| 13 · Nosy Be | Nationalisme, MDRM et revendications politiques ; première séquence approfondie de décolonisation. |
+| 14 · Sambava | Insurrection de 1947 et répression de 1947–1948 ; mémoires régionales et rencontre des Tsimihety. |
+| 15 · Ambohimanga | Retour sur les souverains déjà rencontrés, patrimoine et confrontation des mémoires royales et régionales. |
+| 16 · Isalo | Négociations, indépendance du 26 juin 1960, accords et continuités ; compléter la frise. |
+| 17 · Tôlanaro | Reprendre les Antanosy et confronter des perspectives sur royaumes, colonisation et indépendance. |
+| 18 · Sainte-Marie | Témoignages, archives et récits familiaux des événements déjà étudiés : 1942, 1947 et indépendance. |
+| 19 · Maroantsetra | Retrouver les groupes culturels rencontrés auparavant, discuter les catégories et les héritages dans le présent. |
+| 20 · Madagascar | Synthèse cumulative des régions, périodes, souverains et sources. |
+
+Chaque escale compte trois ou quatre pistes ciblées. Les premiers mondes proposent des repères simples, les suivants les reprennent avec davantage de langue et de recul critique. La chronologie nationale est entrecroisée avec les histoires régionales : un thème abordé depuis une destination ne signifie pas que l’événement s’y est déroulé. Les dates du traité de 1817, de l’annexion, de 1942, de 1947 et de 1960 servent de jalons récurrents. Les bilans humains contestés seront toujours attribués et contextualisés.
 
 Le classement usuel en « dix-huit ethnies » sera étudié comme une catégorisation historique et discutée, pas comme une liste naturelle, exhaustive et immuable. La découverte de ces identités n’implique pas l’enseignement de leurs variétés linguistiques à la place du malgache standard.
 

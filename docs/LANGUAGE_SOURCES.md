@@ -74,7 +74,7 @@ Cette référence est dans le registre `MAP_SOURCES`, fusionné aux Sources & Cr
 
 ## Programme historique — recherche du 28 octobre 2026
 
-Les références suivantes alimentent les thèmes des mondes futurs et leurs crédits ; elles ne valident pas des leçons historiques qui seraient déjà écrites. Les liens restent limités à la documentation et à « Sources & crédits » dans l’application.
+Les références suivantes alimentent le fil culturel des vingt mondes, dès les repères d’Antananarivo, et leurs crédits. Elles ne valident pas des leçons historiques des mondes futurs qui seraient déjà écrites. Les souverains et les grandes périodes sont introduits progressivement, puis repris ; la nouvelle répartition du 28 octobre est détaillée dans [CURRICULUM.md](CURRICULUM.md). Les liens restent limités à la documentation et à « Sources & crédits » dans l’application.
 
 | Référence consultée | Portée effective |
 | --- | --- |

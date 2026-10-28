@@ -13,6 +13,21 @@ const PASSWORD = 'MotDePasse!2026';
 const accountKey = (id: string) => `${SAVE_KEY}.account.${id}`;
 test.use({ reducedMotion: 'reduce' });
 
+for (const width of [340, 390, 1440]) test(`login is directly visible in the header at ${width}px while discovery remains available`, async ({ page }) => {
+  await provider(page);
+  await page.setViewportSize({ width, height: 844 });
+  await page.goto('/malagasy-adventure');
+  const access = page.locator('.ma-topbar').getByRole('button', { name: 'Se connecter', exact: true });
+  await expect(access).toBeVisible();
+  const bounds = await access.boundingBox();
+  expect(bounds && bounds.y >= 0 && bounds.y + bounds.height <= 844).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await access.click();
+  await expect(page.locator('#ma-account-form')).toBeVisible();
+  await page.getByRole('button', { name: /Continuer sans compte/ }).click();
+  await expect(page.getByRole('button', { name: /Commencer l’aventure/ })).toBeVisible();
+});
+
 function learned(lessonCount = 1): Progress {
   let value = createProgress(NOW);
   for (const lesson of CONTENT.lessons.slice(0, lessonCount)) {

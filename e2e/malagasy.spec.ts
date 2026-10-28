@@ -254,6 +254,26 @@ test('standalone root and historical entry open the same lightweight app with tw
   expect(errors).toEqual([]);
 });
 
+test('historical landmarks start in Antananarivo and continue through the early locked destinations', async ({ page }) => {
+  await openAdventure(page);
+  await page.getByRole('button', { name: /Les repères de ce monde/ }).click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toContainText('Andrianampoinimerina');
+  await expect(dialog).toContainText('Radama Ier');
+  await expect(dialog).toContainText('12 UNITÉS JOUABLES');
+  await expect(dialog.locator('a[href^="https://"]')).toHaveCount(0);
+  await dialog.getByRole('button', { name: 'Fermer', exact: true }).click();
+  await page.locator('[data-view="worlds"]').click();
+  await page.locator('.ma-destination[data-world="world-02"]').click();
+  await expect(dialog).toContainText('1817');
+  await expect(dialog).toContainText('DESTINATION EN PRÉPARATION');
+  await dialog.getByRole('button', { name: 'Fermer', exact: true }).click();
+  await page.locator('.ma-destination[data-world="world-07"]').click();
+  await expect(dialog).toContainText('Ranavalona III');
+  await expect(dialog).toContainText('1896');
+  await expect(dialog.locator('[data-view="path"]')).toHaveCount(0);
+});
+
 test('all thirty-six lessons are reachable through real exercises and progress survives reload', async ({ page }) => {
   test.setTimeout(600_000);
   const errors: string[] = [], seenTypes = new Set<string>();

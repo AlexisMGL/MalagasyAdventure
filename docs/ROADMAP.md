@@ -23,7 +23,9 @@ La construction reste statique Vite/TypeScript, compatible Netlify. Ces modifica
 
 ## Prochain travail utile
 
-Le programme culturel renforcé le 28 octobre 2026 prévoit les souverains de l’Imerina et d’autres royaumes, les rapports britanniques au XIXe siècle, l’occupation militaire de 1942, la colonisation française, le nationalisme et la décolonisation, puis les ethnies et groupes culturels dans leur diversité historique. Les fiches des mondes en donnent les thèmes ; les cours restent à rédiger et verrouillés. L’étape 19 est désormais Maroantsetra, sous le même ID `world-19`. Voir [le programme détaillé](CURRICULUM.md).
+Le programme culturel corrigé le 28 octobre 2026 est réparti dans **les vingt mondes dès Antananarivo** : souverains aux mondes 1–7, relations britanniques dès le monde 2, conquête et vie coloniale aux mondes 7–8, royaumes régionaux aux mondes 9 et 11, occupation de 1942 au monde 12, nationalisme au monde 13, 1947 au monde 14 et indépendance au monde 16. Les derniers mondes approfondissent ces repères. Les groupes culturels sont découverts dans plusieurs régions, puis comparés, au lieu d’être tous introduits à Maroantsetra. Les fiches détaillent ce fil ; les futurs cours restent à rédiger et verrouillés. L’étape 19 garde Maroantsetra et l’ID `world-19`. Voir [le programme détaillé](CURRICULUM.md).
+
+L’accès au compte comporte un bouton textuel « Se connecter » dans l’en-tête, visible aussi sur mobile, en complément du rappel découverte et du menu. La carte culturelle du parcours ouvre les repères du premier monde. Le mode découverte reste immédiatement accessible.
 
 1. Faire relire les douze unités et les voix par des personnes malgachophones compétentes en enseignement du standard, puis conserver les remarques et leurs empreintes dans l’atelier audio.
 2. Corriger les formulations ou les clips concernés sans recalculer les enregistrements approuvés par défaut. Vérifier à nouveau couverture, lecture, quiz et sauvegardes après toute correction.

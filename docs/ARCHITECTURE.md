@@ -19,7 +19,7 @@ Malagasy Adventure est une application autonome en TypeScript strict, DOM natif 
 | `src/malagasy/account.ts`, `account-view.ts`, `account.css` | Compte mail/mot de passe, inscription, récupération et choix explicite entre deux carnets. |
 | `src/malagasy/cloud-sync.ts` | Synchronisation différée et sérialisée, validation v1, révisions et conflits entre appareils. |
 | `src/malagasy/supabase.ts`, `supabase/migrations/` | Client public, transport et schéma Postgres privé par utilisateur avec RLS. |
-| `src/malagasy/history-curriculum.ts` | Programme culturel détaillé des mondes futurs et sources historiques des crédits. |
+| `src/malagasy/history-curriculum.ts` | Fil culturel des vingt mondes dès Antananarivo, résumés des escales, reprises progressives et sources historiques des crédits. Les mondes futurs restent verrouillés. |
 | `src/malagasy/exercise-view.ts` | Registre des rendus d’exercices, brouillon de réponse et échappement HTML. |
 | `src/malagasy/audio.ts` | Audio linguistique vérifié et effets de réponse synthétisés localement. |
 | `src/malagasy/dialogue-audio.ts` | File de lecture des répliques, relecture, annulation, muet et gestion des politiques audio du navigateur. |

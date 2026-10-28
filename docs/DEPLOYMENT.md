@@ -11,6 +11,8 @@ Le projet est autonome : sa construction ne lit aucun fichier du dépôt Arcade 
 
 Le site indiqué le 28 octobre 2026 est [malagasyadventure.netlify.app](https://malagasyadventure.netlify.app/). Le client comprend la configuration publiable du projet Supabase dédié ; aucun secret serveur n’est nécessaire au build. Les variables `VITE_SUPABASE_URL` et `VITE_SUPABASE_PUBLISHABLE_KEY` permettent de la remplacer pour un autre environnement. Avant l’ouverture publique des comptes, terminer **SMTP et URL Auth** selon [SUPABASE.md](SUPABASE.md). Le mode découverte et l’import/export fonctionnent indépendamment de ces réglages. La migration SQL a déjà été appliquée au projet dédié ; publier le site ne recrée pas la table.
 
+Vérification du plugin Netlify le 28 octobre 2026 : le site indépendant `1f0003be-dcf3-4bb7-9643-fc1ef4d33850` est relié à la branche `main` de `AlexisMGL/MalagasyAdventure`. Le déploiement du commit `db742b9` est bien publié et contient le formulaire du compte, vérifié sur l’URL publique en ordinateur et mobile. Pour livrer une correction, privilégier le push Git sur ce dépôt connecté ; éviter un déploiement manuel qui serait remplacé au prochain push.
+
 Ne publier ni `audio-workbench`, ni `.tools`, ni les environnements Python ou modèles. Les candidats audio restent hors du site à ce stade. Le build copie uniquement les assets actuellement utilisés dans `public/` ; il ne lance aucune génération audio.
 
 Le plan gratuit a des plafonds, détaillés dans [la comparaison et ses sources officielles](MALAGASY_TTS_COMPARISON.md). La préparation ne crée aucun compte, ne change aucun abonnement et ne déclenche aucune facturation.
