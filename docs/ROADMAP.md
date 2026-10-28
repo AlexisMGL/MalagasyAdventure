@@ -19,7 +19,7 @@ La construction reste statique Vite/TypeScript, compatible Netlify. Ces modifica
 - Le parcours est composé de conversations guidées écrites. Il ne simule ni reconnaissance vocale, ni notation de prononciation, ni tuteur conversationnel génératif.
 - La maîtrise est une heuristique locale ; plusieurs journées de rappel restent nécessaires. Les XP et les médailles du chemin ne certifient pas la rétention.
 - Les licences et restrictions non commerciales d’OmniVoice, ainsi que les accords de son codec, restent à respecter. Les notices sont dans Sources & crédits et avec les fichiers publiables.
-- Le mode découverte conserve sa sauvegarde locale et l’export/import. Un compte Supabase facultatif ajoute la sauvegarde privée et la reprise sur un autre appareil. Les formulaires mail/mot de passe et la récupération sont implémentés ; SMTP public et redirections Auth restent à configurer avant ouverture générale. Voir [SUPABASE.md](SUPABASE.md).
+- Le mode découverte conserve sa sauvegarde locale et l’export/import. Un compte Supabase facultatif ajoute la sauvegarde privée et la reprise sur un autre appareil. Les formulaires mail/mot de passe et la récupération sont implémentés ; les redirections Auth vers Netlify sont enregistrées. Le SMTP personnalisé pour l’envoi public reste à configurer. Voir [SUPABASE.md](SUPABASE.md).
 
 ## Prochain travail utile
 

@@ -6,17 +6,17 @@ La migration `supabase/migrations/20261028183929_learning_progress.sql` est appl
 
 La configuration publique du client est dans `src/malagasy/supabase.ts`. Les variables Vite de `.env.example` permettent de cibler explicitement un autre environnement ; les valeurs par défaut correspondent au projet dédié. Ces deux valeurs sont publiques. Ne jamais utiliser une clé secrète ou `service_role` dans une variable `VITE_*`.
 
-## À terminer dans le tableau de bord Supabase
+## URL Auth corrigées dans le tableau de bord Supabase
 
-Le connecteur utilisé ne fournit aucune modification de la configuration Auth. Le recours au navigateur a été interrompu par Computer Use, faute de pouvoir vérifier l’URL actuelle de Chrome. **Les réglages ci-dessous ne sont donc pas encore appliqués.**
+Le connecteur ne fournit pas de modification de la configuration Auth. L’accès à Chrome a ensuite fonctionné le 28 octobre 2026 : **Site URL et les huit redirections ci-dessous sont maintenant enregistrées et vérifiées dans le tableau de bord.** Le lien reçu par l’utilisateur pointait encore vers `http://localhost:3000`, valeur initiale du projet. Le service SMTP personnalisé reste à configurer.
 
-Dans [Authentication → URL Configuration](https://supabase.com/dashboard/project/unpvrisziuttjmzhwyid/auth/url-configuration), mettre Site URL à :
+Dans [Authentication → URL Configuration](https://supabase.com/dashboard/project/unpvrisziuttjmzhwyid/auth/url-configuration), Site URL est désormais :
 
 ```text
 https://malagasyadventure.netlify.app
 ```
 
-Ajouter ces redirections autorisées, correspondant au site et aux ports du dépôt :
+Les redirections autorisées enregistrées correspondent au site et aux ports du dépôt :
 
 ```text
 https://malagasyadventure.netlify.app/
@@ -34,6 +34,8 @@ L’app envoie explicitement `/malagasy-adventure` sur l’origine courante comm
 Dans [Authentication → SMTP](https://supabase.com/dashboard/project/unpvrisziuttjmzhwyid/auth/smtp), configurer un fournisseur mail et une adresse expéditrice autorisée. Aucun fournisseur ou identifiant SMTP n’a été fourni, donc **l’envoi public n’est pas configuré**. Le service intégré est limité aux adresses des membres de l’organisation et à un faible quota ; il ne suffit pas pour ouvrir inscription et récupération au public. Conserver la confirmation d’adresse activée. Adapter la longueur minimale serveur à 8 caractères ou plus ; le formulaire impose déjà 8 caractères et une confirmation pour les nouveaux mots de passe.
 
 Une fois ces réglages effectués, vérifier avec une adresse contrôlée : inscription → mail reçu → confirmation → connexion ; puis mot de passe oublié → mail reçu → nouveau mot de passe → reconnexion. Aucun vrai mail ni compte personnel n’a été créé pendant les tests automatiques.
+
+Le compte créé par l’utilisateur est déjà confirmé dans Auth (un compte confirmé, aucun en attente à la vérification). Un clic sur un lien peut valider l’adresse avant d’échouer sur l’ancienne destination locale : revenir sur le site et essayer la connexion évite de recréer le compte. Le lien personnel et son jeton n’ont pas été ouverts ni enregistrés par l’agent. La correction des URL prend effet côté Supabase sans redéploiement Netlify.
 
 ## Comportement de sauvegarde
 
