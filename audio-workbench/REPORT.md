@@ -1,3 +1,13 @@
+# Monde 1 complet — 28 octobre 2026
+
+Les douze unités sont accompagnées de **470 fichiers OmniVoice** : 235 énoncés pour Mia et 235 pour Lova. Les 102 fichiers initiaux, leurs maîtres WAV, leurs références vocales et les avis existants sont conservés octet pour octet. Les 368 nouveaux enregistrements utilisent les mêmes références, le même modèle épinglé et 32 étapes, avec une génération locale incrémentale `--missing-only`.
+
+L’audit technique a décodé les 470 Ogg et vérifié les maîtres WAV, les empreintes, les paramètres et les liens vers le corpus complet. Taille WAV : 33561640 octets ; Ogg : 4047814 octets ; durée totale : 698.770 secondes. La banque copiée dans le site reste statique et ne dépend pas des outils auteur au build ou à l’écoute.
+
+Les lots conservent leurs graines, leur composition et les éventuelles reprises individuelles dans le manifeste. Un échantillon silencieux est refusé par le garde-fou, puis repris sans recalculer ses voisins validés. Ces contrôles techniques ne constituent pas une revue de prononciation malgachophone ; les sorties restent `synthetic` / `model-generated` et les avis de l’atelier ne sont pas préremplis.
+
+## Historique du premier lot
+
 # Lot audio candidat — 27 octobre 2026
 
 **Correctif de lecture dans l’atelier :** les 102 candidats sont maintenant écoutés via leurs maîtres WAV PCM, pour ne plus dépendre du décodage Opus du navigateur. Les versions compressées restent conservées. Huit tests de l’atelier et douze lectures réelles avec refus d’Opus simulé ont réussi ; aucune évaluation existante ni aucun fichier du site n’a été modifié. Les nouvelles revues conservent les empreintes du candidat et du maître réellement écouté.

@@ -1,6 +1,6 @@
 # Malagasy Adventure — instructions propres à cette application
 
-**Mise à jour de séparation du dépôt :** à la demande explicite de l’utilisateur, cette copie appartient désormais au dépôt autonome `MalagasyAdventure`. La consigne historique de rester intégré à Arcade est remplacée par cette séparation. Ne pas réintroduire le catalogue ou les trois jeux, et ne pas modifier le dépôt Arcade voisin. Les visions initiales ci-dessous sont conservées comme historique ; les règles produit/pédagogie et la limitation aux trois unités continuent de s’appliquer. Lire [les consignes actuelles du dépôt](../../AGENTS.md) et [MIGRATION.md](../../MIGRATION.md).
+**Mise à jour de séparation du dépôt :** à la demande explicite de l’utilisateur, cette copie appartient désormais au dépôt autonome `MalagasyAdventure`. La consigne historique de rester intégré à Arcade est remplacée par cette séparation. Ne pas réintroduire le catalogue ou les trois jeux, et ne pas modifier le dépôt Arcade voisin. Les visions initiales ci-dessous sont conservées comme historique ; les règles produit/pédagogie continuent de s’appliquer. La demande du 27 octobre 2026 étend le périmètre aux douze unités du monde 1. Lire [les consignes actuelles du dépôt](../../AGENTS.md) et [MIGRATION.md](../../MIGRATION.md).
 
 Lire ce fichier avant toute évolution de l’app ou de son intégration au catalogue. Il conserve **la vision du prompt initial et les retours produit ultérieurs**. Les demandes plus récentes prévalent en cas de conflit ; ne pas réintroduire un comportement abandonné en suivant une ancienne spécification.
 
@@ -14,8 +14,8 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 
 ## Périmètre
 
-- Rester sur les **trois premières unités du premier monde**. Améliorer leur qualité avant d’ajouter d’autres unités, sauf nouvelle demande explicite.
-- Cette limitation remplace la demande initiale de livrer tout le monde 1. Il comporte toujours douze unités planifiées ; les neuf suivantes ne sont pas livrées.
+- **Dernière demande du 27 octobre 2026 : terminer les douze unités du monde 1**, avec dialogues, exercices, quiz et chemin visuel de progression dans le monde. Cette demande remplace la limitation aux trois premières unités.
+- Ajouter les nouvelles répliques OmniVoice avec les mêmes références de Mia/Lova, sur autorisation explicite de l’utilisateur. Préserver chaque octet des 102 enregistrements initiaux ; utiliser la génération incrémentale `--missing-only`.
 - Garder les autres destinations comme programme futur clairement verrouillé. Préserver les trois autres jeux, la publication statique et les sauvegardes existantes.
 
 ## Curriculum et objectifs initiaux
@@ -61,7 +61,7 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 
 - Toujours identifier clairement **le monde, l’unité, la partie et la position dans la séance**, notamment entre deux exercices.
 - Chaque unité se termine par un **quiz complet**, qui couvre ses acquis et réutilise les précédents.
-- Les trois quiz actuels comportent douze questions chacun. Ne pas déclarer le monde 1 entier terminé après ses trois unités publiées.
+- Les douze unités comportent chacune un quiz de douze questions. Déclarer le monde 1 terminé seulement après validation des douze unités et de leur dernier quiz.
 - Pendant un quiz final, masquer les traductions qui révéleraient la réponse ; les rendre disponibles après la correction. Garder les traductions à la demande pendant la découverte et l’entraînement.
 - Distinguer la fin d’une partie de la fin d’une unité. Une réussite au quiz déclenche un vrai écran de clôture d’unité, avec score, compétences travaillées et accès à la prochaine unité.
 - Une tentative rejouée doit afficher son résultat actuel ; une ancienne validation peut rester conservée sans transformer un échec récent en réussite visuelle.

@@ -6,7 +6,7 @@ Lire [les consignes produit et pédagogiques](src/malagasy/AGENTS.md), puis [les
 
 Ce dépôt est maintenant la copie de travail indépendante de Malagasy Adventure. Le dépôt voisin `Bomberman2026` / Afterhours Arcade reste intact ; sa version malgache devient une copie historique. **Ne pas modifier le dépôt Arcade depuis ce projet.**
 
-La demande de séparation remplace les anciennes consignes imposant de garder Malagasy Adventure dans le dépôt Arcade. Les autres demandes produit restent applicables : trois premières unités, apprentissage par dialogues, sources seulement dans Sources & crédits, progression compatible, qualité avant quantité, déploiement gratuit.
+La demande de séparation remplace les anciennes consignes imposant de garder Malagasy Adventure dans le dépôt Arcade. Les autres demandes produit restent applicables : monde 1 complet (douze unités, demande du 27 octobre 2026), apprentissage par dialogues, sources seulement dans Sources & crédits, progression compatible, qualité avant quantité, déploiement gratuit.
 
 L’extraction ne change ni le parcours, ni les illustrations, ni les textes, ni les voix actives. Mise à jour du 27 octobre 2026 : la demande dédiée active les 102 candidats OmniVoice existants, copiés à l’identique sans régénération. L’atelier conserve uniquement OmniVoice et les avis existants. Les anciennes contraintes d’intégration au catalogue figurant dans les documents historiques ne doivent pas faire réintroduire les autres jeux.
 

@@ -2,28 +2,28 @@
   "ok": true,
   "complete": true,
   "allowPartial": false,
-  "expectedUtterances": 51,
-  "expectedRecordings": 102,
-  "recordings": 102,
-  "decoded": 102,
+  "expectedUtterances": 235,
+  "expectedRecordings": 470,
+  "recordings": 470,
+  "decoded": 470,
   "byCharacter": {
-    "mia": 51,
-    "lova": 51
+    "mia": 235,
+    "lova": 235
   },
   "steps": [
     32
   ],
   "missingCount": 0,
   "missingReferences": [],
-  "durationSeconds": 147.9,
+  "durationSeconds": 698.77,
   "referenceSeconds": 14.79,
-  "oggBytes": 842984,
-  "masterBytes": 7103688,
+  "oggBytes": 4047814,
+  "masterBytes": 33561640,
   "referenceBytes": 710008,
-  "maximumDecodedPeak": 0.950686,
+  "maximumDecodedPeak": 0.952454,
   "nativeSpeakerReviewed": false,
   "errorCount": 0,
   "errors": [],
-  "manifestSha256": "b643a4841598b82ca1e89d21e91f1fb0fdcc6bc459619b266b7c38c7a54c85e7",
-  "checkedAt": "2026-10-27T12:23:01.210Z"
+  "manifestSha256": "84c1119a7674ae7f94861c83bab5e90a43e3c2b4584dc1abd349d9eb315e9947",
+  "checkedAt": "2026-10-28T08:37:28.056Z"
 }

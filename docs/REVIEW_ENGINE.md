@@ -2,6 +2,8 @@
 
 Les algorithmes sont dans `src/malagasy/engine.ts`. Ils fonctionnent sur les IDs de concepts de tout le contenu ; aucun branchement n’est réservé au premier monde. Les dates peuvent être injectées pour des tests déterministes.
 
+Le monde 1 publié fournit 44 concepts et 288 activités réparties dans 36 leçons. Son extension conserve les neuf leçons initiales et les identifiants déjà présents dans les sauvegardes v1 ; les notions des nouvelles unités ne deviennent révisables qu’après leur découverte. Les unités 11 et 12 consolident des acquis existants, sans introduire de concepts pour la seule quantité.
+
 ## Maîtrise individuelle
 
 Présenter un concept crée un état `introduced: true`, mais **aucune maîtrise n’est accordée à sa seule présentation**. Une réponse met à jour chaque concept associé : nombre d’essais, réussites, erreurs, série de journées de rappel réussi, estimation de maîtrise, dernière pratique et prochaine révision.
@@ -45,6 +47,8 @@ Sans leçon ciblée, le Centre de révision privilégie les échéances et les p
 ## Bilans, déblocage et récompenses
 
 Une leçon ordinaire demande au moins 60 % de bonnes réponses ; un `checkpoint` demande 80 %. Les prérequis doivent être terminés et tous les nouveaux concepts présentés. Le quiz final de chaque unité comprend douze questions et déclenche un écran de clôture distinct du bilan d’une partie. Le résultat d’une nouvelle tentative est affiché tel quel, sans utiliser une ancienne validation pour annoncer une réussite récente. Le quiz peut verrouiller la suite sans empêcher la pratique des acquis.
+
+Les douze unités du monde 1 suivent la même chaîne de prérequis. Après validation du quiz de l’unité 12, `worldCompleted` permet la clôture réelle du monde ; les mondes non publiés restent verrouillés. Le chemin de `world-path.ts` montre les 36 étapes à partir de `completedLessons` et `lessonAvailable`, sans sauvegarde parallèle ni récompense supplémentaire. Une médaille de parcours signifie qu’une étape a été validée, pas que ses notions ont atteint le statut `mastered`.
 
 Une première réponse correcte à un ID d’exercice rapporte 10 XP ; refaire cet exercice ne rapporte plus d’XP. La première validation d’une leçon rapporte 25 XP. Les XP et les IDs déjà récompensés sont sauvegardés. Cette règle empêche la répétition d’un exercice pour des récompenses illimitées ; elle laisse les répétitions modifier la maîtrise, ce qui est leur finalité.
 

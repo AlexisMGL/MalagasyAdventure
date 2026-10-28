@@ -4,7 +4,7 @@
 
 Le contenu vit dans `src/malagasy/content.ts` et les modules de données qu’il importe ; la présentation ne doit pas contenir les corpus. Les interfaces de `types.ts` sont le contrat. Les mondes planifiés se trouvent dans `worlds.ts`.
 
-Lire d’abord [les consignes propres à l’app](../src/malagasy/AGENTS.md). Le périmètre reste les trois premières unités ; ajouter une unité suppose une nouvelle demande d’extension.
+Lire d’abord [les consignes propres à l’app](../src/malagasy/AGENTS.md). Le périmètre livré couvre désormais les douze unités du monde 1 ; les mondes 2–20 restent verrouillés. La demande d’achèvement remplace l’ancienne limite aux unités 1–3. Les données des unités 4–12 sont dans `world-one-units-04-07.ts` et `world-one-units-08-12.ts`, fusionnées au même registre sans renommer les IDs initiaux.
 
 Un contenu est publiable lorsque ses références sont valides, ses concepts ont été présentés avant évaluation et ses réponses sont étayées par des sources réellement consultées. La quantité n’est pas un critère de qualité. Ne pas rendre une destination jouable simplement pour remplir la carte.
 
@@ -38,27 +38,29 @@ Un exercice peut porter plusieurs concepts. Toute la liste doit être déjà int
 
 ## Histoires et dialogues
 
-Toutes les parties ordinaires (`learn` et `story`) commencent par `Lesson.scenes`. `dialogue-content.ts` contient actuellement quatre scènes par partie, soit vingt-quatre au total. Une `DialogueScene` possède un ID, un cadre très court, des `turns` et éventuellement un repère `takeaway`. Chaque tour fournit `speaker` (`lova` ou `mia`), texte malgache, traduction française et éventuel mot surligné.
+Toutes les parties ordinaires (`learn` et `story`) commencent par `Lesson.scenes`. Le monde 1 compte quatre scènes par partie, soit 96 au total, réparties entre `dialogue-content.ts` et les deux modules d’extension. Une `DialogueScene` possède un ID, un cadre très court, des `turns` et éventuellement un repère `takeaway`. Chaque tour fournit `speaker` (`lova` ou `mia`), texte malgache, traduction française et éventuel mot surligné.
 
 La vue révèle les tours progressivement ; la traduction reste dans un dévoilement facultatif. Les nouveaux concepts n’entrent dans la progression qu’au passage à la pratique après ces scènes. Ne pas présenter toute une leçon comme « rencontrée » après son premier tour.
 
-Chaque activité peut utiliser `Exercise.dialogue` pour prolonger l’échange. La question française reste une consigne courte, sans paragraphe technique préalable. Les notes de grammaire sont accessibles via une aide repliée. Les scènes et personnages sont fictifs, pas la transcription d’un locuteur ; un arbre narratif persistant demanderait encore une extension du schéma et des tests.
+Chaque activité du corpus utilise `Exercise.dialogue` pour prolonger l’échange. La question française reste une consigne courte, sans paragraphe technique préalable. Les notes de grammaire sont accessibles via une aide repliée. Les unités de consolidation peuvent réviser des notions existantes sans créer artificiellement de nouveaux concepts. Les scènes, prix et itinéraires sont fictifs ; un arbre narratif persistant demanderait encore une extension du schéma et des tests.
 
 Les `sourceIds` sont obligatoires en interne. Les liens, attributions et limites documentaires sont affichés uniquement dans « Sources & crédits », jamais au fil de la conversation ou dans le feedback.
 
 ## Prononcer les sélections
 
-Déclarer `selectionLanguage: 'mg'` lorsque les choix, les jetons ou la colonne gauche d’association sont tous malgaches. Pour une question mixte, fournir `spokenSelections` avec seulement les libellés malgaches exacts. Ne pas marquer les distracteurs français et ne pas déduire la langue de la bonne réponse. La banque active est OmniVoice : voir [MALAGASY_VOICES.md](MALAGASY_VOICES.md). Ne pas régénérer les candidats existants sans demande dédiée ; `npm run audio:activate-omnivoice` copie uniquement les fichiers déjà présents, après contrôle de leurs empreintes. Chaque sélection lue doit avoir son propre fichier entier ; ne pas assembler des extraits.
+Déclarer `selectionLanguage: 'mg'` lorsque les choix, les jetons ou la colonne gauche d’association sont tous malgaches. Pour une question mixte, fournir `spokenSelections` avec seulement les libellés malgaches exacts. Ne pas marquer les distracteurs français et ne pas déduire la langue de la bonne réponse. La banque active est OmniVoice : voir [MALAGASY_VOICES.md](MALAGASY_VOICES.md). Les nouveaux clips du monde 1 sont autorisés avec les mêmes références vocales, en conservant les 102 fichiers initiaux : après `npm run audio:inventory`, `npm run audio:generate -- --missing-only` ajoute uniquement les IDs manquants. `npm run audio:activate-omnivoice` copie les fichiers présents après contrôle de leurs empreintes. Chaque sélection lue doit avoir son propre fichier entier ; ne pas assembler des extraits.
 
 ## Ajouter un monde
 
 Compléter sa fiche dans `worlds.ts` : objectifs lexicaux, grammaticaux et pratiques, thème culturel, prérequis, durée et coordonnées approximatives pour la carte. Ajouter ensuite unités, leçons, concepts, exercices et sources. Tant que les leçons n’existent pas, conserver `implemented: false`. Un monde disponible et un monde terminé sont deux états distincts.
 
+`world-path.ts` construit le chemin depuis les unités et leçons publiées ; aucun état supplémentaire n’est à enregistrer. Conserver les dépendances de leçons et la couverture des quiz : changer l’ordre visuel ne doit pas permettre de contourner un prérequis. La clôture du monde 1 exige les douze unités et le dernier quiz, sans déverrouiller les dix-neuf mondes non publiés.
+
 ## Audio
 
 Une entrée `AudioAsset` contient un ID stable, une URL locale de préférence, un `sourceId`, une transcription et un statut. Documenter l’auteur/interprète, la variété de langue et la permission de redistribution dans le registre des sources. Une fois la prononciation et le droit d’usage vérifiés, utiliser `status: 'verified'` et relier l’exercice ou le mot à cet ID.
 
-L’absence de fichier ne doit pas être masquée par une voix française ou anglaise de synthèse. Ne pas attribuer de compétence d’écoute à un exercice devenu écrit. La reconnaissance vocale et l’évaluation automatique de prononciation ne sont pas implémentées.
+La génération est une préparation locale hors du build ; le site distribue seulement ses fichiers statiques, sans clé ni backend. L’absence de fichier ne doit pas être masquée par une voix française ou anglaise de synthèse. Ne pas attribuer de compétence d’écoute à un exercice devenu écrit. La reconnaissance vocale et l’évaluation automatique de prononciation ne sont pas implémentées.
 
 ## Validation avant livraison
 
@@ -73,4 +75,4 @@ npm run test -- tests/malagasy-engine.test.ts
 npm run build
 ```
 
-Puis vérifier dans le navigateur le parcours, les feedbacks, la saisie au clavier et sur mobile, le rechargement et l’import/export. Pour une extension du système de progression, lancer aussi les tests des autres expériences. Le validateur contrôle la structure et la cohérence de références ; il ne peut pas vérifier à lui seul la correction linguistique.
+Puis vérifier dans le navigateur le parcours complet, les états du chemin, les quiz, les feedbacks, les raccourcis chiffres/Entrée, le mobile, le rechargement et l’import/export. Importer aussi une sauvegarde v1 des neuf premières leçons pour contrôler la reprise à l’unité 4. Ce dépôt est autonome : aucun test ne doit réintroduire le catalogue Arcade. Le validateur contrôle la structure et les références ; il ne peut pas vérifier à lui seul la correction linguistique.

@@ -50,13 +50,44 @@ def digest(path: Path) -> str:
     return result.hexdigest()
 
 
-def cache_decision(cached, recipe_hash, current_hash, approved_hashes, force=False, replace_approved=False):
+def cache_decision(cached, recipe_hash, current_hash, approved_hashes, force=False, replace_approved=False, missing_only=False):
     """A review approves exact bytes. A force rebuild alone never overrides it."""
+    if missing_only and not cached and current_hash is not None:
+        raise ValueError('Unmanifested audio already exists; refusing to overwrite it in missing-only mode.')
+    if missing_only and cached:
+        if current_hash != cached['sha256']:
+            raise ValueError('Existing audio differs from its manifest; refusing to replace it in missing-only mode.')
+        return 'retained'
     if current_hash in approved_hashes and not replace_approved:
         return 'protected'
     if cached and not force and current_hash == cached['sha256'] and cached.get('recipeSha256') == recipe_hash:
         return 'cached'
     return 'generate'
+
+
+def generation_batches(jobs, batch_size):
+    """Keep the single-item order; batch only items sharing post-processing policy."""
+    if batch_size < 1:
+        raise ValueError('Batch size must be at least one.')
+    groups = [jobs] if batch_size == 1 else [
+        [job for job in jobs if job['requested_duration'] is None],
+        [job for job in jobs if job['requested_duration'] is not None],
+    ]
+    for group in groups:
+        if batch_size > 1:
+            # Similar text lengths reduce padded attention work in the batch.
+            # This ordering is recorded in each batch's provenance and RNG seed.
+            group = sorted(group, key=lambda job: len(job.get('item', {}).get('spokenText', '')))
+        for start in range(0, len(group), batch_size):
+            yield group[start:start + batch_size]
+
+
+def batch_provenance(jobs):
+    """PyTorch owns one RNG per batch, not one independent stream per row."""
+    members = [job['asset_id'] for job in jobs]
+    value = 'omnivoice-batch-v1\0' + '\0'.join(f'{job["asset_id"]}:{job["seed"]}' for job in jobs)
+    return {'size': len(jobs), 'seed': int(hashlib.sha256(value.encode('utf8')).hexdigest()[:8], 16),
+        'recordingIds': members, 'seedPolicy': 'one PyTorch RNG seed for this ordered batch; not independent per-item seeds'}
 
 
 def main() -> None:
@@ -65,15 +96,22 @@ def main() -> None:
     parser.add_argument('--device', default='auto', choices=['auto', 'cpu', 'xpu', 'cuda'])
     parser.add_argument('--steps', type=int, default=32)
     parser.add_argument('--threads', type=int, default=4)
+    parser.add_argument('--batch-size', type=int, default=1, help='Optional batched inference, grouped by short-word processing policy; default preserves single-item inference.')
+    parser.add_argument('--max-new-recordings', type=int, help='Stop scheduling new recordings after this many, for bounded benchmarks or incremental runs.')
     parser.add_argument('--character', choices=['mia', 'lova'])
     parser.add_argument('--id', help='Regenerate only this stable audio ID.')
     parser.add_argument('--force', action='store_true')
+    parser.add_argument('--missing-only', action='store_true', help='Add new IDs only; preserve every existing recording regardless of recipe changes.')
     parser.add_argument('--replace-approved', action='store_true', help='Explicitly allow replacing reviewed good audio.')
     parser.add_argument('--download-model', action='store_true', help='Download the pinned free model locally; never calls a paid API.')
     parser.add_argument('--plan', action='store_true', help='Print selected stable IDs without loading a model.')
     args = parser.parse_args()
     if not 16 <= args.steps <= 64:
         raise ValueError('Use at least 16 generation steps.')
+    if not 1 <= args.batch_size <= 32:
+        raise ValueError('Batch size must be between 1 and 32.')
+    if args.max_new_recordings is not None and args.max_new_recordings < 1:
+        raise ValueError('Maximum new recordings must be at least one.')
     inventory = json.loads((ROOT / '.tools/neural-voice-authoring/inventory.json').read_text(encoding='utf8'))
     if args.pilot:
         wanted = {'salama', 'eny', 'azafady', 'tsia', 'misaotra', 'mia no anarako'}
@@ -164,6 +202,7 @@ def main() -> None:
         temporary.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf8')
         temporary.replace(previous_path)
 
+    scheduled = 0
     for character, settings in CHARACTERS.items():
         if character not in {entry[0] for entry in selected}:
             continue
@@ -193,6 +232,7 @@ def main() -> None:
         # Reuse one fixed voice embedding, including for Eny and Azafady.
         voice = model.create_voice_clone_prompt(ref_audio=str(reference), ref_text=settings['text'], preprocess_prompt=True)
         utterances = inventory['utterances']
+        jobs = []
         for item in utterances:
             identifier = item['id']
             asset_id = f'audio-neural-{character}-{identifier}'
@@ -214,7 +254,18 @@ def main() -> None:
             recipe_hash = hashlib.sha256(json.dumps(recipe, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
             cached = recordings.get(asset_id)
             current_hash = digest(file) if file.exists() else None
-            decision = cache_decision(cached, recipe_hash, current_hash, approved_hashes, args.force, args.replace_approved)
+            if args.missing_only and not cached and master.exists():
+                raise ValueError(f'Unmanifested master already exists: {asset_id}; refusing to replace it.')
+            if args.missing_only and cached and (not master.exists() or digest(master) != cached.get('masterSha256')):
+                raise ValueError(f'Existing master differs from its manifest: {asset_id}; refusing to replace it.')
+            # A valid prior batch remains cached when its base content/settings match.
+            # Its full recipe still records the original batch RNG and membership.
+            cache_entry = {**cached, 'recipeSha256': cached.get('baseRecipeSha256', cached.get('recipeSha256'))} if cached else None
+            decision = cache_decision(cache_entry, recipe_hash, current_hash, approved_hashes, args.force, args.replace_approved, args.missing_only)
+            if decision == 'retained':
+                cached['bindings'] = item.get('bindings', [])
+                print(f'Retained unchanged audio: {asset_id}', flush=True)
+                continue
             if decision == 'protected':
                 if cached:
                     cached['bindings'] = item.get('bindings', [])
@@ -224,51 +275,95 @@ def main() -> None:
                 cached['bindings'] = item.get('bindings', [])
                 print(f'Cached: {asset_id}', flush=True)
                 continue
+            if args.max_new_recordings is not None and scheduled >= args.max_new_recordings:
+                continue
+            jobs.append({'item': item, 'asset_id': asset_id, 'file': file, 'master': master, 'seed': seed,
+                'requested_duration': requested_duration, 'recipe': recipe, 'recipe_hash': recipe_hash})
+            scheduled += 1
+
+        for batch in generation_batches(jobs, args.batch_size):
             started = time.monotonic()
-            temporary_master = master.with_suffix('.tmp.wav')
-            temporary_audio = file.with_suffix('.tmp.ogg')
-            for attempt in range(2):
-                torch.manual_seed(seed + attempt)
-                duration = requested_duration * (1 + .25 * attempt) if requested_duration else None
-                with torch.inference_mode():
-                    audio = model.generate(text=item['spokenText'], language='plt', voice_clone_prompt=voice,
-                        generation_config=replace(config, postprocess_output=False) if requested_duration else config,
-                        duration=duration, speed=.95)[0]
-                try:
-                    signal = save_signal(temporary_master, audio)
-                    break
-                except ValueError as error:
-                    print(str(error), flush=True)
-                    if attempt == 1:
-                        raise
-            ffmpeg = ROOT / '.tools/voice-processing/node_modules/ffmpeg-static/ffmpeg.exe'
-            executable = str(ffmpeg) if ffmpeg.exists() else shutil.which('ffmpeg')
-            if not executable:
-                raise ValueError('Install the free offline encoder ffmpeg before generation.')
-            subprocess.run([executable, '-v', 'error', '-y', '-i', str(temporary_master), '-c:a', 'libopus',
-                '-b:a', '48k', '-vbr', 'on', '-map_metadata', '-1', str(temporary_audio)], check=True)
-            decoded = subprocess.run([executable, '-v', 'error', '-i', str(temporary_audio), '-f', 'f32le',
-                '-ar', '24000', '-ac', '1', 'pipe:1'], check=True, capture_output=True).stdout
-            decoded_samples = np.frombuffer(decoded, dtype='<f4')
-            decoded_peak = float(np.max(np.abs(decoded_samples)))
-            decoded_rms = float(np.sqrt(np.mean(decoded_samples ** 2)))
-            if not np.isfinite(decoded_samples).all() or decoded_peak > .995 or decoded_rms < .001 or abs(len(decoded_samples) / 24000 - signal['duration']) > .05:
-                raise ValueError(f'Encoded audio failed signal checks: {asset_id}')
-            temporary_master.replace(master)
-            temporary_audio.replace(file)
-            recordings[asset_id] = {'id': asset_id, 'transcript': item['transcript'], 'spokenText': item['spokenText'],
-                'file': f'audio/{asset_id}.ogg', 'masterFile': f'masters/{asset_id}.wav', 'sourceId': 'omnivoice-malagasy',
-                'character': character, 'status': 'synthetic', 'verification': 'model-generated',
-                'model': 'k2-fsa/OmniVoice', 'language': 'plt', 'referenceSha256': digest(reference),
-                'steps': args.steps, 'seed': seed, 'speed': .95, 'torch': torch.__version__, 'device': args.device,
-                'requestedDuration': duration, 'actualSeed': seed + attempt,
-                **signal, 'masterSha256': signal['sha256'], 'masterBytes': signal['bytes'],
-                'sha256': digest(file), 'bytes': file.stat().st_size, 'format': 'ogg-opus', 'sourceSampleRate': signal['sampleRate'],
-                'sampleRate': 48000, 'decodedPeak': decoded_peak, 'decodedRms': decoded_rms,
-                'recipeSha256': recipe_hash, 'bindings': item.get('bindings', [])}
-            print(f'{character}: {item["transcript"]} ({signal["duration"]:.2f}s, generation {time.monotonic() - started:.1f}s)', flush=True)
-            # Save progress for resumable authoring, never publish a partial registry.
-            persist()
+            context = batch_provenance(batch) if len(batch) > 1 else None
+            accelerator = getattr(torch, args.device, None) if args.device in {'xpu', 'cuda'} else None
+            if accelerator:
+                accelerator.synchronize()
+                accelerator.reset_peak_memory_stats()
+            torch.manual_seed(context['seed'] if context else batch[0]['seed'])
+            short_words = batch[0]['requested_duration'] is not None
+            batch_config = replace(config, postprocess_output=False) if short_words else config
+            with torch.inference_mode():
+                audios = model.generate(
+                    text=[job['item']['spokenText'] for job in batch] if context else batch[0]['item']['spokenText'],
+                    language='plt', voice_clone_prompt=[voice] * len(batch) if context else voice,
+                    generation_config=batch_config,
+                    duration=[job['requested_duration'] for job in batch] if context else batch[0]['requested_duration'], speed=.95)
+            if accelerator:
+                accelerator.synchronize()
+            if len(audios) != len(batch):
+                raise ValueError('Model returned a different number of waveforms than requested.')
+            inference_seconds = time.monotonic() - started
+            print(json.dumps({'batchInference': {'files': len(batch), 'seconds': round(inference_seconds, 3),
+                'secondsPerFile': round(inference_seconds / len(batch), 3), 'steps': args.steps,
+                'shortWords': short_words, 'peakAllocatedBytes': accelerator.max_memory_allocated() if accelerator else None,
+                'recordingIds': [job['asset_id'] for job in batch]}}), flush=True)
+            for position, (job, audio) in enumerate(zip(batch, audios)):
+                item, asset_id, file, master, seed = (job[key] for key in ['item', 'asset_id', 'file', 'master', 'seed'])
+                requested_duration = job['requested_duration']
+                duration = requested_duration
+                actual_seed = context['seed'] if context else seed
+                recipe_hash = job['recipe_hash']
+                extra_metadata = {}
+                if context:
+                    full_recipe = {**job['recipe'], 'batch': context, 'batchPosition': position}
+                    recipe_hash = hashlib.sha256(json.dumps(full_recipe, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+                    extra_metadata = {'baseRecipeSha256': job['recipe_hash'], 'batch': {**context, 'position': position}}
+                temporary_master = master.with_suffix('.tmp.wav')
+                temporary_audio = file.with_suffix('.tmp.ogg')
+                for attempt in range(2):
+                    try:
+                        signal = save_signal(temporary_master, audio)
+                        break
+                    except ValueError as error:
+                        print(str(error), flush=True)
+                        if attempt == 1:
+                            raise
+                        # Only retry the invalid row; never recalculate validated batch siblings.
+                        actual_seed = seed + 1
+                        duration = requested_duration * 1.25 if requested_duration else None
+                        torch.manual_seed(actual_seed)
+                        with torch.inference_mode():
+                            audio = model.generate(text=item['spokenText'], language='plt', voice_clone_prompt=voice,
+                                generation_config=batch_config, duration=duration, speed=.95)[0]
+                        if context:
+                            extra_metadata['batch']['retry'] = {'mode': 'single-item', 'seed': actual_seed}
+                ffmpeg = ROOT / '.tools/voice-processing/node_modules/ffmpeg-static/ffmpeg.exe'
+                executable = str(ffmpeg) if ffmpeg.exists() else shutil.which('ffmpeg')
+                if not executable:
+                    raise ValueError('Install the free offline encoder ffmpeg before generation.')
+                subprocess.run([executable, '-v', 'error', '-y', '-i', str(temporary_master), '-c:a', 'libopus',
+                    '-b:a', '48k', '-vbr', 'on', '-map_metadata', '-1', str(temporary_audio)], check=True)
+                decoded = subprocess.run([executable, '-v', 'error', '-i', str(temporary_audio), '-f', 'f32le',
+                    '-ar', '24000', '-ac', '1', 'pipe:1'], check=True, capture_output=True).stdout
+                decoded_samples = np.frombuffer(decoded, dtype='<f4')
+                decoded_peak = float(np.max(np.abs(decoded_samples)))
+                decoded_rms = float(np.sqrt(np.mean(decoded_samples ** 2)))
+                if not np.isfinite(decoded_samples).all() or decoded_peak > .995 or decoded_rms < .001 or abs(len(decoded_samples) / 24000 - signal['duration']) > .05:
+                    raise ValueError(f'Encoded audio failed signal checks: {asset_id}')
+                temporary_master.replace(master)
+                temporary_audio.replace(file)
+                recordings[asset_id] = {'id': asset_id, 'transcript': item['transcript'], 'spokenText': item['spokenText'],
+                    'file': f'audio/{asset_id}.ogg', 'masterFile': f'masters/{asset_id}.wav', 'sourceId': 'omnivoice-malagasy',
+                    'character': character, 'status': 'synthetic', 'verification': 'model-generated',
+                    'model': 'k2-fsa/OmniVoice', 'language': 'plt', 'referenceSha256': digest(reference),
+                    'steps': args.steps, 'seed': seed, 'speed': .95, 'torch': torch.__version__, 'device': args.device,
+                    'requestedDuration': duration, 'actualSeed': actual_seed,
+                    **signal, 'masterSha256': signal['sha256'], 'masterBytes': signal['bytes'],
+                    'sha256': digest(file), 'bytes': file.stat().st_size, 'format': 'ogg-opus', 'sourceSampleRate': signal['sampleRate'],
+                    'sampleRate': 48000, 'decodedPeak': decoded_peak, 'decodedRms': decoded_rms,
+                    'recipeSha256': recipe_hash, **extra_metadata, 'bindings': item.get('bindings', [])}
+                print(f'{character}: {item["transcript"]} ({signal["duration"]:.2f}s, inference batch {inference_seconds:.1f}s/{len(batch)} files)', flush=True)
+                # Save each validated file, so an interrupted batch remains resumable.
+                persist()
     persist()
     sources = [{'id': 'omnivoice-malagasy', 'title': 'Voix numériques malgaches : OmniVoice',
             'author': 'Han Zhu et collaborateurs — k2-fsa/OmniVoice ; personnages synthétiques Afterhours',

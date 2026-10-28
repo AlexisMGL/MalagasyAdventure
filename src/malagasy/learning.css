@@ -35,3 +35,8 @@
 @media(prefers-reduced-motion:reduce){.ma-finale-confetti,.ma-finale-medal,.ma-scene-takeaway{animation:none!important;transition:none!important}.ma-live-session .ma-choice,.ma-live-session .ma-primary,.ma-conversation-intro .ma-primary{transition:none!important;transform:none!important}}
 
 .ma-keyboard-hint { color: var(--ma-text-muted, #52695f); font-size: .78rem; margin: 12px 0 0; }
+
+.ma-world-passport { margin: 28px auto; padding: 24px; max-width: 590px; border: 2px solid #71ad83; border-radius: 22px; background: #eef6e7; text-align: center; }
+.ma-world-passport > span { display: flex; align-items: center; justify-content: center; gap: 10px; color: #28624a; font-weight: 800; }
+.ma-world-passport h2 { font-size: 1.4rem; }
+.ma-world-passport p { line-height: 1.6; }

@@ -1,8 +1,8 @@
 # Malagasy Adventure
 
-Dépôt autonome de l’application de malgache pour francophones, extrait d’Afterhours Arcade sans modification du parcours, des textes, du rendu ou des voix actives. Trois unités sont jouables ; les vingt mondes restent un programme à développer.
+Dépôt autonome de l’application de malgache pour francophones. Le **monde 1, Antananarivo, est jouable en entier** : 12 unités, 36 leçons, 96 scènes, 288 activités, 44 concepts et 92 fiches de vocabulaire. Chaque unité se termine par un quiz de douze questions ; le dernier conclut le monde. Les dix-neuf autres mondes restent verrouillés et planifiés.
 
-Le dépôt Arcade voisin reste intact. Cette copie devient la base des prochains travaux sur Malagasy Adventure. Voir [MIGRATION.md](MIGRATION.md) pour le périmètre et la provenance.
+Le dépôt Arcade voisin reste intact. Le chemin du monde 1 montre les 36 étapes, la prochaine leçon, les étapes validées et les quiz encore verrouillés. Son état est calculé depuis la progression existante, sans nouvelle sauvegarde distincte.
 
 ## Lancer
 
@@ -29,7 +29,9 @@ L’aperçu de production est sur **http://127.0.0.1:4174**. Playwright utilise 
 
 ## Atelier audio
 
-À la demande utilisateur du 27 octobre 2026, les **102 enregistrements OmniVoice existants** (51 énoncés × Mia/Lova) sont actifs. Les maîtres WAV écoutés dans l’atelier sont copiés octet pour octet, sans génération, réencodage ni traitement de hauteur. `npm run audio:activate-omnivoice` vérifie les SHA-256 et copie uniquement les entrées du manifeste vers `public/malagasy/voices/omnivoice/`, avec provenance, références et licences ; il prépare `src/malagasy/omnivoice-voices.ts`. Cette commande n’est jamais lancée au build. La banque conserve le statut `synthetic` / `model-generated` ; une revue malgachophone reste à effectuer. Les anciennes banques MMS/profils et références humaines sont conservées pour la traçabilité, mais ne sont plus sélectionnées par défaut. `review-audio.cmd` propose uniquement OmniVoice et conserve les avis et leur historique.
+Les voix actives sont celles d’OmniVoice pour Mia et Lova. Les **102 fichiers d’origine et leurs deux références vocales restent inchangés**. L’utilisateur a autorisé de nouveaux clips pour les unités 4–12, avec les mêmes voix ; leur préparation incrémentale emploie `--missing-only`, qui ajoute les IDs manquants et refuse d’écraser les fichiers existants. La banque complète comprend **470 fichiers**, soit 235 énoncés pour chacun des deux personnages, avec une couverture vérifiée par le manifeste et l’audit audio.
+
+`npm run audio:activate-omnivoice` vérifie les SHA-256 et copie les entrées du manifeste vers `public/malagasy/voices/omnivoice/`, avec provenance et licences. Le site lit ensuite ces fichiers statiques. Aucune génération n’a lieu au build, à la visite du site ou sur un backend. Les sorties restent `synthetic` / `model-generated`, sans validation malgachophone revendiquée. `review-audio.cmd` propose uniquement OmniVoice et conserve les avis et leur historique.
 
 Double-cliquer **`review-audio.cmd`**, ou lancer `npm run audio:review`, puis ouvrir **http://127.0.0.1:5191**. L’atelier d’Arcade sur 5190 peut rester ouvert : ce sont deux copies indépendantes.
 
@@ -38,6 +40,8 @@ npm run audio:inventory
 npm run audio:plan
 npm run audio:check
 ```
+
+Pour étendre la banque hors ligne après l’inventaire, sans recalculer les fichiers présents : `npm run audio:generate -- --missing-only`. Cette commande auteur peut prendre du temps ; elle n’est nécessaire ni au build ni au fonctionnement du site publié.
 
 Les outils et modèles locaux utiles sont copiés dans `.tools/` sur cette machine et ignorés par Git. Ils ne sont nécessaires ni au build ni au déploiement. Pour les réinstaller sur une autre machine, voir [la préparation audio](docs/MALAGASY_NEURAL_SETUP.md) et [le guide de revue](docs/MALAGASY_AUDIO_REVIEW.md).
 
@@ -60,4 +64,4 @@ Un domaine ou port différent possède son propre stockage navigateur. Pour retr
 - [Programme pédagogique](docs/CURRICULUM.md), [sources linguistiques](docs/LANGUAGE_SOURCES.md), [architecture](docs/ARCHITECTURE.md).
 - [Comparaison des solutions TTS gratuites et licences](docs/MALAGASY_TTS_COMPARISON.md).
 
-Les liens et notices de sources restent dans la rubrique existante Sources & crédits de l’app. Les références et licences des candidats non intégrés accompagnent l’atelier.
+Les liens et notices de sources restent dans « Sources & crédits ». Le corpus est documenté mais n’est pas présenté comme une formation certifiée ou relue intégralement par un enseignant malgachophone.

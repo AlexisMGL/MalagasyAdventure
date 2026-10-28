@@ -8,7 +8,7 @@ Mise à jour du 27 octobre 2026 : les candidats OmniVoice existants sont désorm
 | --- | --- |
 | `src/malagasy/content.ts`, `dialogue-content.ts` | Trois unités, neuf parties dont trois quiz, 72 activités, dialogues et lexique. Sources du texte, sans modification pour cette étape. |
 | `scripts/generate-malagasy-mms.mjs` | Génération locale antérieure avec la conversion ONNX du modèle Meta MMS malgache, 16 kHz, un locuteur. |
-| `public/malagasy/voices/mms/`, `profiles/` | 52 WAV de base et 51 variantes de Mia à hauteur relevée. Ces anciennes sorties restent les fichiers du site. |
+| `public/malagasy/voices/mms/`, `profiles/` | 52 WAV de base et 51 variantes de Mia à hauteur relevée. Ces anciennes sorties sont archivées ; OmniVoice est la banque active. |
 | `voice-bank.ts`, `voice-recordings.ts` | Correspondance d’une réplique entière ; huit références humaines locales, dont le remplacement isolé d’Azafady. L’utilisateur juge ce remplacement mieux prononcé mais discontinu avec le timbre de Mia. |
 | `dialogue-audio.ts`, `main.ts` | Lecture automatique des tours nouveaux, haut-parleur, lecture lente, sélections malgaches, annulation et muet. Pas de TTS française/anglaise du navigateur. |
 | `audio.ts` | Service des exercices d’écoute vérifiés et sons de réponse. L’accompagnement synthétique ne devient pas une évaluation orale. |
@@ -35,7 +35,7 @@ Depuis la racine, le Node local du dépôt est disponible :
 .tools/node-v22.23.3-win-x64/node.exe scripts/malagasy-neural.mjs --help
 ```
 
-L’inventaire préparé contient **51 textes distincts**, soit **102 fichiers pour deux personnages**. Il couvre les répliques complètes, les 21 entrées lexicales, les choix malgaches corrects et incorrects, les mots à placer, les associations et les réponses construites. Chaque entrée conserve ses liens vers scènes, exercices, notes ou mots du lexique. La déduplication porte sur une clé NFC/casse/espaces/ponctuation ; le texte prononcé n’est pas réécrit. Les guillemets de présentation et les séparateurs des exemples ne sont pas des mots à lire.
+L’inventaire préparé couvre désormais toutes les répliques du monde 1 complet pour les deux personnages. Le premier lot historique contenait 51 textes distincts et 102 fichiers, conservés à l’identique. Il couvre les répliques complètes, les entrées lexicales, les choix malgaches corrects et incorrects, les mots à placer, les associations et les réponses construites. Chaque entrée conserve ses liens vers scènes, exercices, notes ou mots du lexique. La déduplication porte sur une clé NFC/casse/espaces/ponctuation ; le texte prononcé n’est pas réécrit. Les guillemets de présentation et les séparateurs des exemples ne sont pas des mots à lire.
 
 Les textes à trous restent exclus. Les réponses françaises et les réponses dont la langue n’est pas explicitement établie restent dans la liste `excluded`. Le générateur ne devine pas leur langue à partir de leur orthographe. La variante `Aza fady`, déjà acceptée par l’exercice existant, reste un texte distinct d’`Azafady`.
 
@@ -102,7 +102,7 @@ Double-cliquer **`review-audio.cmd`**, ou lancer :
 .tools/node-v22.23.3-win-x64/node.exe scripts/malagasy-audio-review.mjs
 ```
 
-Ouvrir **http://127.0.0.1:5191**. L’atelier compare anciens fichiers, référence humaine et nouveaux candidats ; lecture normale, 0,8× et relecture interrompent proprement la voix précédente. Il propose Good / Acceptable / Incorrect et des notes liées à l’empreinte exacte. Aucune revue native n’est préremplie. Voir [le guide de revue](MALAGASY_AUDIO_REVIEW.md).
+Ouvrir **http://127.0.0.1:5191**. L’atelier présente uniquement les candidats OmniVoice pour Mia et Lova ; lecture normale, 0,8× et relecture interrompent proprement la voix précédente. Il propose Good / Acceptable / Incorrect et des notes liées à l’empreinte exacte. Aucune revue native n’est préremplie. Voir [le guide de revue](MALAGASY_AUDIO_REVIEW.md).
 
 Commencer par **Azafady, Eny, Tsia**, puis alterner une phrase longue et un mot court du même personnage. Vérifier articulation, absence de mots ajoutés, accentuation et continuité de timbre. Une écoute malgachophone reste nécessaire avant de sélectionner des fichiers pour le site.
 

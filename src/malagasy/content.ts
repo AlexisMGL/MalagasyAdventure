@@ -1,5 +1,16 @@
 import type { AudioAsset, Concept, Content, Exercise, ExerciseType, Lesson, Source, Unit, Vocabulary } from './types';
 import { WORLDS } from './worlds';
+import { GROUP_04_07 } from './world-one-units-04-07';
+import { GROUP_08_12 } from './world-one-units-08-12';
+
+const WORLD_ONE_ADDITIONS = {
+  sources: [...GROUP_04_07.sources, ...GROUP_08_12.sources],
+  concepts: [...GROUP_04_07.concepts, ...GROUP_08_12.concepts],
+  vocabulary: [...GROUP_04_07.vocabulary, ...GROUP_08_12.vocabulary],
+  exercises: [...GROUP_04_07.exercises, ...GROUP_08_12.exercises],
+  lessons: [...GROUP_04_07.lessons, ...GROUP_08_12.lessons],
+  units: [...GROUP_04_07.units, ...GROUP_08_12.units],
+};
 import { EXERCISE_DIALOGUES, LESSON_SCENES, SHORT_QUESTIONS } from './dialogue-content';
 import { MAP_SOURCES } from './map-sources';
 import { DIALOGUE_RECORDINGS, VOICE_SOURCES } from './voice-recordings';
@@ -48,7 +59,7 @@ export const SOURCES: Source[] = [
     license: 'Conditions UNESCO ; description paraphrasée, aucune photographie ou carte reprise.' },
   ...MAP_SOURCES,
   ...VOICE_SOURCES,
-  ...SYNTHETIC_VOICE_SOURCES, ...PROFILE_VOICE_SOURCES, ...OMNIVOICE_SOURCES,
+  ...SYNTHETIC_VOICE_SOURCES, ...PROFILE_VOICE_SOURCES, ...OMNIVOICE_SOURCES, ...WORLD_ONE_ADDITIONS.sources,
 ];
 
 const L = {
@@ -85,6 +96,7 @@ export const CONCEPTS: Concept[] = [
   concept(C.article, 'L’article ny', 'grammar', L.predicate, 'Repérer l’article devant un nom sans lui attribuer genre ou nombre.', [ARTICLE, 'dict-ny'], [C.predicate], 'ny', 'le / la / les selon le contexte'),
   concept(C.negation, 'La négation tsy', 'grammar', L.questions, 'Placer tsy devant le prédicat et le distinguer de tsia.', [PC, 'dict-tsy'], [C.predicate, C.no], 'tsy', 'ne… pas'),
   concept(C.question, 'La question avec ve', 'grammar', L.questions, 'Former une question oui/non avec ve avant le sujet.', [PC, 'dict-ve'], [C.predicate, C.yes, C.no], 've', 'marqueur de question oui/non'),
+  ...WORLD_ONE_ADDITIONS.concepts,
 ];
 function vocab(id: string, malagasy: string, french: string, note: string, conceptId: string, unitId: string, sourceIds: string[]): Vocabulary {
   return { id, malagasy, french, note, conceptId, unitId, sourceIds };
@@ -111,6 +123,7 @@ export const VOCABULARY: Vocabulary[] = [
   vocab('word.ny', 'ny', 'le / la / les selon le contexte', 'Article invariable ; pas toujours traduit par un article français.', C.article, 'unit-03', [ARTICLE, 'dict-ny']),
   vocab('word.tsy', 'tsy', 'ne… pas', 'Devant le prédicat dans les modèles étudiés.', C.negation, 'unit-03', [PC, 'dict-tsy']),
   vocab('word.ve', 've', 'marqueur de question oui/non', 'Mpiofana ve ianao? : es-tu stagiaire ?', C.question, 'unit-03', [PC, 'dict-ve']),
+  ...WORLD_ONE_ADDITIONS.vocabulary,
 ];
 const instructions: Record<ExerciseType, string> = {
   choice: 'À toi !', match: 'Les mots se rencontrent', order: 'Construis la réponse',
@@ -203,6 +216,7 @@ export const EXERCISES: Exercise[] = [
   exercise('exercise-03-03-j', 'dialogue', 'Tu viens de France : réponds à Lova.', ['Avy any Frantsa aho.'], [C.origin, C.france, C.pronouns], 'La réponse donne une provenance : avy any + lieu + aho.', { selectionLanguage: 'mg', choices: ['Mia no anarako.', 'Avy any Frantsa aho.', 'Mpiofana aho.'], dialogue: [{ speaker: 'lova', text: 'Avy aiza ianao?', translation: 'D’où viens-tu ?' }], sourceIds: [PC, 'dict-frantsa'] }),
   exercise('exercise-03-03-k', 'reading', 'Quel est le statut de Mia dans cette scène ?', ['Elle n’est pas stagiaire'], [C.name, C.origin, C.question, C.negation, C.no, C.trainee], 'Mia donne son nom et son origine, puis dit qu’elle n’est pas stagiaire avec tsia et tsy.', { choices: ['Elle est stagiaire', 'Elle n’est pas stagiaire', 'Elle donne seulement son prénom'], dialogue: [{ speaker: 'mia', text: 'Mia no anarako. Avy any Frantsa aho.', translation: 'Je m’appelle Mia. Je viens de France.' }, { speaker: 'lova', text: 'Mpiofana ve ianao?', translation: 'Es-tu stagiaire ?' }, { speaker: 'mia', text: 'Tsia, tsy mpiofana aho.', translation: 'Non, je ne suis pas stagiaire.' }], sourceIds: [PC, 'dict-frantsa', 'dict-tsy'] }),
   exercise('exercise-03-03-l', 'translate', 'Tu es Mia : écris ton prénom dans une phrase.', ['Mia no anarako'], [C.name], 'La rencontre peut commencer par Mia no anarako : je m’appelle Mia.', { dialogue: [{ speaker: 'lova', text: 'Salama! Iza no anaranao?', translation: 'Bonjour ! Comment t’appelles-tu ?' }], sourceIds: [PC, 'dict-anarana'] }),
+  ...WORLD_ONE_ADDITIONS.exercises,
 ];
 
 
@@ -263,8 +277,9 @@ export const LESSONS: Lesson[] = [
     ], [PC, 'dict-tsy']),
   lesson(L.sentenceReview, 'unit-03', 'Quiz final · Une vraie rencontre', 'Douze défis pour terminer l’unité 3 et relier tous tes acquis.', 'checkpoint', [],
     [C.name, C.origin, C.france, C.pronouns, C.hello, C.predicate, C.trainee, C.article, C.negation, C.question, C.no], [L.questions], [
-      { title: 'Trois unités, un premier socle', body: 'Tu peux te présenter, comprendre une origine, construire un énoncé nominal simple, poser une question oui/non et nier un statut. Seuil : 80 %. Les unités 4 à 12 restent à écrire et à faire relire.' },
+      { title: 'Trois unités, un premier socle', body: 'Tu peux te présenter, comprendre une origine, construire un énoncé nominal simple, poser une question oui/non et nier un statut. Seuil : 80 %. La suite du chemin réutilise ces phrases pour parler des proches, du quotidien et des rencontres.' },
     ], [PC, KEENAN, ARTICLE, 'dict-ny', 'dict-tsy', 'dict-frantsa']),
+  ...WORLD_ONE_ADDITIONS.lessons,
 ];
 export const UNITS: Unit[] = [
   { id: 'unit-01', worldId: 'world-01', number: 1, title: 'Bienvenue à Madagascar', malagasyTitle: 'Tonga soa!', description: 'Saluer, remercier et franchir les premières portes.', lessonIds: [L.greetings, L.welcome, L.greetingReview], implemented: true, objectives: ['Saluer et prendre congé', 'Choisir une formule de politesse', 'Découvrir des repères de lecture'] },
@@ -280,8 +295,12 @@ export const UNITS: Unit[] = [
     ['unit-10', 10, 'Les besoins du voyage', 'Se faire comprendre', ['Exprimer un besoin', 'Demander de répéter']],
     ['unit-11', 11, 'Les premières conversations', 'Relier les acquis', ['Combiner les situations connues', 'Comprendre de courts échanges']],
     ['unit-12', 12, 'L’aventure d’Antananarivo', 'Le défi du monde', ['Réviser cumulativement', 'Accomplir une aventure guidée']],
-  ] as [string, number, string, string, string[]][]).map(([id, number, title, description, objectives]) => ({ id, worldId: 'world-01', number, title, malagasyTitle: 'À venir', description, lessonIds: [], implemented: false, objectives })),
+  ] as [string, number, string, string, string[]][]).map(([id, number, title, description, objectives]) => ({ id, worldId: 'world-01', number, title, malagasyTitle: 'À venir', description, lessonIds: [], implemented: false, objectives })).filter(unit => !WORLD_ONE_ADDITIONS.units.some(added => added.id === unit.id)),
+  ...WORLD_ONE_ADDITIONS.units,
 ];
 /** Explicitly synthetic dialogue voices plus published human references; no listening XP. */
 export const AUDIO: AudioAsset[] = [...OMNIVOICE_RECORDINGS, ...SYNTHETIC_RECORDINGS, ...PROFILE_RECORDINGS, ...DIALOGUE_RECORDINGS];
+UNITS.sort((a, b) => a.number - b.number);
+LESSONS.sort((a, b) => a.id.localeCompare(b.id));
+
 export const CONTENT: Content = { worlds: WORLDS, units: UNITS, lessons: LESSONS, exercises: EXERCISES, concepts: CONCEPTS, vocabulary: VOCABULARY, sources: SOURCES, audio: AUDIO };

@@ -28,8 +28,11 @@ export function normalizeDialogueTranscript(text: string): string {
 
 export function matchesDialogueTranscript(asset: AudioAsset, text: string): boolean {
   const key = normalizeDialogueTranscript(text);
+  // OmniVoice's manifest declares the exact spoken words separately from quoted
+  // learning labels. A whole quoted label and those same words share one file.
+  const spokenLabel = text.trim().replace(/^«\s*(.*?)\s*»[.!?…]*$/u, '$1');
   return normalizeDialogueTranscript(asset.transcript) === key
-    || asset.spokenText !== undefined && normalizeDialogueTranscript(asset.spokenText) === key;
+    || asset.spokenText !== undefined && normalizeDialogueTranscript(asset.spokenText) === normalizeDialogueTranscript(spokenLabel);
 }
 
 /** Synthetic speech is an explicit, technically generated asset, never a native review. */

@@ -1,6 +1,6 @@
 # Notices de l’atelier audio
 
-Les 102 candidats du manifeste OmniVoice sont activés sur le site à la demande utilisateur du 27 octobre 2026, avec les mêmes maîtres WAV et sans régénération. Ils restent des sorties synthétiques, sans revue malgachophone complète.
+Le monde 1 utilise 470 fichiers audio synthétiques (235 pour Mia, 235 pour Lova), produits avec les références OmniVoice fixes ci-dessous. Les 102 enregistrements initiaux restent inchangés ; les nouvelles répliques des douze unités sont ajoutées par génération locale incrémentale à la demande utilisateur, confirmée le 28 octobre 2026. Ces sorties restent sans revue malgachophone complète.
 
 ## Synthèse
 

@@ -3,13 +3,13 @@ import { CONTENT } from '../src/malagasy/content';
 import { validateContent } from '../src/malagasy/engine';
 
 describe('Dialogue-first Malagasy curriculum', () => {
-  it('keeps existing save identifiers while limiting playable content to the first three units', () => {
-    expect(CONTENT.units.filter(unit => unit.implemented).map(unit => unit.id)).toEqual(['unit-01', 'unit-02', 'unit-03']);
-    expect(CONTENT.lessons).toHaveLength(9);
-    for (let unit = 1; unit <= 3; unit++) {
+  it('keeps existing save identifiers while completing all twelve units of world one', () => {
+    expect(CONTENT.units.filter(unit => unit.implemented).map(unit => unit.id)).toEqual(Array.from({ length: 12 }, (_, i) => `unit-${String(i + 1).padStart(2, '0')}`));
+    expect(CONTENT.lessons).toHaveLength(36);
+    for (let unit = 1; unit <= 12; unit++) {
       for (let part = 1; part <= 3; part++) {
         for (const suffix of ['a', 'b', 'c', 'd', 'e', 'f']) {
-          expect(CONTENT.exercises.some(exercise => exercise.id === `exercise-0${unit}-0${part}-${suffix}`)).toBe(true);
+          expect(CONTENT.exercises.some(exercise => exercise.id === `exercise-${String(unit).padStart(2, '0')}-0${part}-${suffix}`)).toBe(true);
         }
       }
     }
@@ -18,8 +18,8 @@ describe('Dialogue-first Malagasy curriculum', () => {
 
   it('introduces every learning part through short character scenes before its practice', () => {
     const learning = CONTENT.lessons.filter(lesson => lesson.kind !== 'checkpoint');
-    expect(learning).toHaveLength(6);
-    expect(learning.flatMap(lesson => lesson.scenes ?? [])).toHaveLength(24);
+    expect(learning).toHaveLength(24);
+    expect(learning.flatMap(lesson => lesson.scenes ?? [])).toHaveLength(96);
     for (const lesson of learning) {
       expect(lesson.scenes).toHaveLength(4);
       for (const scene of lesson.scenes!) {
@@ -39,7 +39,7 @@ describe('Dialogue-first Malagasy curriculum', () => {
   });
 
   it('places each activity in a dialogue without long French context or exposed citations', () => {
-    expect(CONTENT.exercises).toHaveLength(72);
+    expect(CONTENT.exercises).toHaveLength(288);
     expect(new Set(CONTENT.exercises.map(exercise => exercise.type))).toEqual(new Set(['choice', 'dialogue', 'reading', 'match', 'translate', 'cloze', 'order']));
     for (const exercise of CONTENT.exercises) {
       expect(exercise.dialogue?.length, exercise.id).toBeGreaterThan(0);
@@ -84,7 +84,7 @@ describe('Dialogue-first Malagasy curriculum', () => {
       }
       for (const exerciseId of lesson.exerciseIds) {
         const exercise = CONTENT.exercises.find(candidate => candidate.id === exerciseId)!;
-        const testedWords = [...(exercise.dialogue ?? []).flatMap(turn => words(turn.text)), ...(exercise.tokens ?? []).flatMap(words)];
+        const testedWords = [...(exercise.dialogue ?? []).flatMap(turn => words(turn.text)), ...(exercise.tokens ?? []).flatMap(words), ...(exercise.selectionLanguage === 'mg' ? exercise.choices ?? exercise.pairs?.map(pair => pair.left) ?? [] : exercise.spokenSelections ?? []).flatMap(words)];
         for (const word of testedWords) expect(encountered.has(word), `${exercise.id}: ${word} absent des rencontres précédentes`).toBe(true);
       }
     }

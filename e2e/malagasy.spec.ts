@@ -233,7 +233,7 @@ test('standalone root and historical entry open the same lightweight app with tw
   expect(requests.some(url => /phaser|ArenaRenderer|ShooterRenderer/.test(url))).toBe(false);
   await expect(page.locator('[data-lesson]').first()).toBeEnabled();
   await expect(page.locator('[data-lesson]').nth(1)).toBeDisabled();
-  await expect(page.locator('[data-lesson]')).toHaveCount(9);
+  await expect(page.locator('[data-lesson]')).toHaveCount(CONTENT.lessons.length);
   await page.locator('[data-view="worlds"]').click();
   await expect(page.locator('.ma-destination[data-world]')).toHaveCount(20);
   await expect(page.locator('.ma-journey-map [data-world]')).toHaveCount(20);
@@ -247,15 +247,15 @@ test('standalone root and historical entry open the same lightweight app with tw
   const firstMapStop = page.locator('.ma-journey-map [data-world="world-01"]');
   await firstMapStop.focus();
   await firstMapStop.press('Enter');
-  await expect(dialog).toContainText('3 UNITÉS JOUABLES');
+  await expect(dialog).toContainText('12 UNITÉS JOUABLES');
   await dialog.getByRole('button', { name: 'Retrouver mon parcours' }).click();
   await page.reload();
   await expect(page.locator('h1')).toContainText('Un nouveau monde');
   expect(errors).toEqual([]);
 });
 
-test('all nine lessons are reachable through real exercises and progress survives reload', async ({ page }) => {
-  test.setTimeout(180_000);
+test('all thirty-six lessons are reachable through real exercises and progress survives reload', async ({ page }) => {
+  test.setTimeout(600_000);
   const errors: string[] = [], seenTypes = new Set<string>();
   page.on('pageerror', error => errors.push(error.message));
   await openAdventure(page);
@@ -270,10 +270,10 @@ test('all nine lessons are reachable through real exercises and progress survive
     answered += await finishSession(page, seenTypes);
     if (lesson.kind === 'checkpoint') {
       const unit = CONTENT.units.find(unit => unit.id === lesson.unitId)!;
-      await expect(page.locator('.ma-unit-finale h1')).toHaveText(`Unité ${unit.number} terminée !`);
+      await expect(page.locator('.ma-unit-finale h1')).toHaveText(unit.number === 12 ? 'Monde 1 terminé !' : `Unité ${unit.number} terminée !`);
       await expect(page.locator('.ma-unit-passport')).toContainText('Vous savez maintenant');
       for (const objective of unit.objectives) await expect(page.locator('.ma-unit-passport')).toContainText(objective);
-      if (unit.number < 3) await expect(page.getByRole('button', { name: `Cap sur l’unité ${unit.number + 1}` })).toBeVisible();
+      if (unit.number < 12) await expect(page.getByRole('button', { name: `Cap sur l’unité ${unit.number + 1}` })).toBeVisible();
     } else {
       await expect(page.locator('.ma-unit-finale')).toHaveCount(0);
       await expect(page.locator('.ma-completion h1')).toContainText('Partie');
@@ -291,12 +291,12 @@ test('all nine lessons are reachable through real exercises and progress survive
   expect(finished.xp).toBe(25 * CONTENT.lessons.length + 10 * finished.rewardedExercises.length);
   expect(seenTypes).toEqual(new Set(CONTENT.exercises.map(exercise => exercise.type)));
   await page.locator('[data-view="stats"]').click();
-  await expect(page.locator('.ma-main')).toContainText('3 / 3 unités validées');
+  await expect(page.locator('.ma-main')).toContainText('12 / 12 unités validées');
   await page.locator('[data-view="reviews"]').click();
   await page.getByRole('button', { name: 'Lancer une révision' }).click();
   await finishSession(page);
   const reviewed = await savedProgress(page);
-  expect(reviewed.completedLessons).toHaveLength(9);
+  expect(reviewed.completedLessons).toHaveLength(CONTENT.lessons.length);
   expect(reviewed.history.length).toBeGreaterThan(finished.history.length);
   expect(errors).toEqual([]);
 });

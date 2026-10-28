@@ -1,0 +1,730 @@
+{
+  "recordings": [
+    {
+      "id": "audio-neural-mia-ae5077d95443b1de",
+      "file": "audio/audio-neural-mia-ae5077d95443b1de.ogg",
+      "sha256": "66759837cf36ca4265b66cacc1c94356dc4713849639662ad906165742c87dde",
+      "masterFile": "masters/audio-neural-mia-ae5077d95443b1de.wav",
+      "masterSha256": "e451b3bd799a1e3d077d769641583849c8d8d0892c921de379ced95abd8eb0dc"
+    },
+    {
+      "id": "audio-neural-mia-0764e2be58c5040b",
+      "file": "audio/audio-neural-mia-0764e2be58c5040b.ogg",
+      "sha256": "c85da50ea931396c2b721a6b439915a0f98c099b27f333ce26c4ca21b6411f15",
+      "masterFile": "masters/audio-neural-mia-0764e2be58c5040b.wav",
+      "masterSha256": "9a695fe65a825251b1a859a94e30ae212de09166d89d690ea6d1c6c9db2af552"
+    },
+    {
+      "id": "audio-neural-mia-57d9d9154bb3c126",
+      "file": "audio/audio-neural-mia-57d9d9154bb3c126.ogg",
+      "sha256": "053c9883683783c9504cf7000a9a04f2824e624d2e2fb7f09c7561c4c5b441e7",
+      "masterFile": "masters/audio-neural-mia-57d9d9154bb3c126.wav",
+      "masterSha256": "778e1c162f9fd5a0777502351ddf44ff3d1cd8a8c896ef9619daa8560355d916"
+    },
+    {
+      "id": "audio-neural-mia-df12033f2c27fd89",
+      "file": "audio/audio-neural-mia-df12033f2c27fd89.ogg",
+      "sha256": "1ad60e92eb051c7dbaad7374a85ca7e3b42e76f60db8974466adcac338c3b685",
+      "masterFile": "masters/audio-neural-mia-df12033f2c27fd89.wav",
+      "masterSha256": "c2c5bd4021c8557d7e7c43cd239ba48812bcb88aac5f466eb0871116933c7e97"
+    },
+    {
+      "id": "audio-neural-mia-40e1e6eced6f811c",
+      "file": "audio/audio-neural-mia-40e1e6eced6f811c.ogg",
+      "sha256": "544feaddac959fba404a20cd74def87f5fbc5c0842026d460abd88ed8d5262c1",
+      "masterFile": "masters/audio-neural-mia-40e1e6eced6f811c.wav",
+      "masterSha256": "6dfdec46a4b749cc5d0b26730ee45aee30b5690609e01989353afe5c6a3590d1"
+    },
+    {
+      "id": "audio-neural-mia-d28dc90a1060d4e4",
+      "file": "audio/audio-neural-mia-d28dc90a1060d4e4.ogg",
+      "sha256": "6a3960b68705e90cf74dc3c44382512d86288f2f466457fd32f88aadacf75904",
+      "masterFile": "masters/audio-neural-mia-d28dc90a1060d4e4.wav",
+      "masterSha256": "f74f55228c956b31a011011bfc840ecc8c64bd7d2347d7535be3ae43982f00a7"
+    },
+    {
+      "id": "audio-neural-lova-ae5077d95443b1de",
+      "file": "audio/audio-neural-lova-ae5077d95443b1de.ogg",
+      "sha256": "885277f91c3c75cf9595c0cb794e836f365c59ab45d58a4bc598db9ab80158d3",
+      "masterFile": "masters/audio-neural-lova-ae5077d95443b1de.wav",
+      "masterSha256": "c1ac6b56dd1c41b13148550bd74d79f844bf29351e89be45960aad67d7eba019"
+    },
+    {
+      "id": "audio-neural-lova-0764e2be58c5040b",
+      "file": "audio/audio-neural-lova-0764e2be58c5040b.ogg",
+      "sha256": "12c9b6bba200189ddc64980d75b20e983900074e2abb7fef0083fc3589c84a53",
+      "masterFile": "masters/audio-neural-lova-0764e2be58c5040b.wav",
+      "masterSha256": "b30b5179fe9eb939c5bc6af49fe03111b60342b6875649769822b3e27e0f69ce"
+    },
+    {
+      "id": "audio-neural-lova-57d9d9154bb3c126",
+      "file": "audio/audio-neural-lova-57d9d9154bb3c126.ogg",
+      "sha256": "88523b4f6746368ed56fb61317a2730ba7d021feb6e2a1244b4d2c22afad9ecd",
+      "masterFile": "masters/audio-neural-lova-57d9d9154bb3c126.wav",
+      "masterSha256": "46b90324930b29b605ba2343478d04ddc9fbdeec5e108fb508fc9b5ac5e9c66d"
+    },
+    {
+      "id": "audio-neural-lova-df12033f2c27fd89",
+      "file": "audio/audio-neural-lova-df12033f2c27fd89.ogg",
+      "sha256": "5c3ebbe464306b1787d334366c5d7015eff41da02df6bb9da0bf149d5df4e1c5",
+      "masterFile": "masters/audio-neural-lova-df12033f2c27fd89.wav",
+      "masterSha256": "f010028e70e84cf6c2fca456a3407afcbfa77a4793a7887ceb75f4201978a3b3"
+    },
+    {
+      "id": "audio-neural-lova-40e1e6eced6f811c",
+      "file": "audio/audio-neural-lova-40e1e6eced6f811c.ogg",
+      "sha256": "6ca93b5804c5281ecab959ee6b63069d22f248cc947c1b42dc95e28f14f0bdc3",
+      "masterFile": "masters/audio-neural-lova-40e1e6eced6f811c.wav",
+      "masterSha256": "3be4fdbed47c1e936eba55eaf19b400f505e1bc3550c4800c12b0153e07d759c"
+    },
+    {
+      "id": "audio-neural-lova-d28dc90a1060d4e4",
+      "file": "audio/audio-neural-lova-d28dc90a1060d4e4.ogg",
+      "sha256": "cf9de1c8df1bfe9e680e18a0b9ef715cc6cad811d80b0f837bc04de7733a2ffd",
+      "masterFile": "masters/audio-neural-lova-d28dc90a1060d4e4.wav",
+      "masterSha256": "0525acd0ec96f9efbd2f17bf7fc773bab432a97f389244011faed0db959dae26"
+    },
+    {
+      "id": "audio-neural-mia-2cf824cf5cda9d64",
+      "file": "audio/audio-neural-mia-2cf824cf5cda9d64.ogg",
+      "sha256": "9e0804f6e1a3dbf41300b2b612515d93eb05ec840f62ca62e553c7a8a101b0eb",
+      "masterFile": "masters/audio-neural-mia-2cf824cf5cda9d64.wav",
+      "masterSha256": "1e69159c1ca58242f1e34f438030c3ee2f1da445ff14774cb7e9fa24758fc3ec"
+    },
+    {
+      "id": "audio-neural-mia-221af5634ef0bf9e",
+      "file": "audio/audio-neural-mia-221af5634ef0bf9e.ogg",
+      "sha256": "a9b56dac584464d7c5fdf2ab7ab9fbeb7b401370ff870f7bb3b4964d8f67b9a3",
+      "masterFile": "masters/audio-neural-mia-221af5634ef0bf9e.wav",
+      "masterSha256": "01962256e0a191bf212b76a2688cf86bf9457692498f10a2ff95d1dda24509be"
+    },
+    {
+      "id": "audio-neural-mia-8fc438f406e5f9e6",
+      "file": "audio/audio-neural-mia-8fc438f406e5f9e6.ogg",
+      "sha256": "0322bf8cef5264d71934d9d1714071e847794349b76d52c53f3b80d14095f4f7",
+      "masterFile": "masters/audio-neural-mia-8fc438f406e5f9e6.wav",
+      "masterSha256": "d9581d12d2fd382b3d3902b500920b4d5e25aeb37b0afb14308b466b432eb107"
+    },
+    {
+      "id": "audio-neural-mia-96b8cfbc25047ba7",
+      "file": "audio/audio-neural-mia-96b8cfbc25047ba7.ogg",
+      "sha256": "59a92b7ace2c4ccfa9b67514440c7b9448538e0c812530f303bb03f7a06f5508",
+      "masterFile": "masters/audio-neural-mia-96b8cfbc25047ba7.wav",
+      "masterSha256": "2fb8800cad18eef7510875d72ae72e651868729a51b5c857fcf52431374b9de3"
+    },
+    {
+      "id": "audio-neural-mia-0e6750d69414860e",
+      "file": "audio/audio-neural-mia-0e6750d69414860e.ogg",
+      "sha256": "449f92c8431020b9f82e058e74f16ef29f5e8b36c7509a57c927c6c6929dbac2",
+      "masterFile": "masters/audio-neural-mia-0e6750d69414860e.wav",
+      "masterSha256": "dcccd4b051cdcf9cab26f67056f6b96d1c89b3743d560ea97f36513d2404f1a5"
+    },
+    {
+      "id": "audio-neural-mia-66ea6e304c76c376",
+      "file": "audio/audio-neural-mia-66ea6e304c76c376.ogg",
+      "sha256": "7423e80e10fd4a5501f03827296732f49966dfa1cdc80b75aeb59f75c3503a52",
+      "masterFile": "masters/audio-neural-mia-66ea6e304c76c376.wav",
+      "masterSha256": "fb467c682780499ac61810841f05f116501adfb9dc01de886f477bc2de195328"
+    },
+    {
+      "id": "audio-neural-mia-1f9a0fb93755bc01",
+      "file": "audio/audio-neural-mia-1f9a0fb93755bc01.ogg",
+      "sha256": "5c27b68bcbb53eb5f50d1726a50b41f8504a5e7941538cf6eb0ae51ce5a9927e",
+      "masterFile": "masters/audio-neural-mia-1f9a0fb93755bc01.wav",
+      "masterSha256": "69c64f122ba85c74866b8809a7735ab23df0aa76565706740aaff07df033efce"
+    },
+    {
+      "id": "audio-neural-mia-e566ba7c73f3e426",
+      "file": "audio/audio-neural-mia-e566ba7c73f3e426.ogg",
+      "sha256": "ef75f756b626be8ed091563a83edfe9a5287d8cebcc06a6e63a7f405c1d10774",
+      "masterFile": "masters/audio-neural-mia-e566ba7c73f3e426.wav",
+      "masterSha256": "b713119659c45121a1fa12776fe2f9028e9968aa9539e73ccf827fcfc3b08ce7"
+    },
+    {
+      "id": "audio-neural-mia-f4f84956523a1529",
+      "file": "audio/audio-neural-mia-f4f84956523a1529.ogg",
+      "sha256": "ea10edd9e167569b27b036e0fcbeaca7c972cc0642f864da027f3e7d8b8722d2",
+      "masterFile": "masters/audio-neural-mia-f4f84956523a1529.wav",
+      "masterSha256": "74d3e1ab8242be43abd991c4eee9a8036f9e16f9120a633162c71597d9a3cad6"
+    },
+    {
+      "id": "audio-neural-mia-2fe3269fa210706d",
+      "file": "audio/audio-neural-mia-2fe3269fa210706d.ogg",
+      "sha256": "575dacf102030483f8a243aff14d62ce251ffb2efa63763aaebb21153f7d242b",
+      "masterFile": "masters/audio-neural-mia-2fe3269fa210706d.wav",
+      "masterSha256": "16613e5cd43ceaabaeabe9f7bde2e37dbea7a84b179944b144e789c842561057"
+    },
+    {
+      "id": "audio-neural-mia-14c51fd8a11a7512",
+      "file": "audio/audio-neural-mia-14c51fd8a11a7512.ogg",
+      "sha256": "a336b6176eeb36a186e987c0bf07bc26cd74bc45a562715f64220b58515d683c",
+      "masterFile": "masters/audio-neural-mia-14c51fd8a11a7512.wav",
+      "masterSha256": "b153e904ec84bb7b17fc8edec9024ae2a4b0b2eda42dcb00a546a7daaaec7f10"
+    },
+    {
+      "id": "audio-neural-mia-05920ab4d50e402c",
+      "file": "audio/audio-neural-mia-05920ab4d50e402c.ogg",
+      "sha256": "94a02710fb44873dfe0debb4367ebde10dc7fa312f34d1658ada6e4577677ece",
+      "masterFile": "masters/audio-neural-mia-05920ab4d50e402c.wav",
+      "masterSha256": "aeaf7d5f853bbd0ecee6ef7f6a2f90d409f4229d9bedf86c3eb01d09c7eb1fec"
+    },
+    {
+      "id": "audio-neural-mia-b9856b4b0b64e8ae",
+      "file": "audio/audio-neural-mia-b9856b4b0b64e8ae.ogg",
+      "sha256": "1715b3a7cac662cc434807a4056fd86054d40abc9cc4bae9bf05a7aa7165503c",
+      "masterFile": "masters/audio-neural-mia-b9856b4b0b64e8ae.wav",
+      "masterSha256": "e817c2b4180abd2a7669074deb8ebadf63a26f53841845c84ea217f6d14c7cb2"
+    },
+    {
+      "id": "audio-neural-mia-4518c2d011e3f4bf",
+      "file": "audio/audio-neural-mia-4518c2d011e3f4bf.ogg",
+      "sha256": "438924743ad51f1fb49451dfa1baf0fdf86273239ff6ed9068d5ac09e75485db",
+      "masterFile": "masters/audio-neural-mia-4518c2d011e3f4bf.wav",
+      "masterSha256": "f4d265f7f0b5b775362ad466e924f24d1f961bafb9747f6e32267c97f5a8be32"
+    },
+    {
+      "id": "audio-neural-mia-49664d45805e0961",
+      "file": "audio/audio-neural-mia-49664d45805e0961.ogg",
+      "sha256": "dbdce5291c5c27171e5466aff69ce94cfd61999d3e796922ebd51e3b8b66cf5b",
+      "masterFile": "masters/audio-neural-mia-49664d45805e0961.wav",
+      "masterSha256": "76261cf35e65a7569cc59a672f225c8fa62d672a197f97f5b5c363620e9faeb6"
+    },
+    {
+      "id": "audio-neural-mia-6bd1a18ed2d19733",
+      "file": "audio/audio-neural-mia-6bd1a18ed2d19733.ogg",
+      "sha256": "327411e7f953e475e85b649e5f413b31ca36ae155e49c29b30d66f5da26e5eb2",
+      "masterFile": "masters/audio-neural-mia-6bd1a18ed2d19733.wav",
+      "masterSha256": "662caeba940d890a36bf669e347d1b77a869c21b2173942a134cbbbc33b2518d"
+    },
+    {
+      "id": "audio-neural-mia-57d4677b513386a9",
+      "file": "audio/audio-neural-mia-57d4677b513386a9.ogg",
+      "sha256": "7a322df129c381adca58e452b27e84bcd21490c64fd44b1441f03e1373c07862",
+      "masterFile": "masters/audio-neural-mia-57d4677b513386a9.wav",
+      "masterSha256": "a6d76b6e7938951afbe8c321eb1369aa57b82cd9b975bc0ad5bb7673e22a8e3e"
+    },
+    {
+      "id": "audio-neural-mia-103024800caefeb7",
+      "file": "audio/audio-neural-mia-103024800caefeb7.ogg",
+      "sha256": "be02f3ce5cdfd27a43e55721a56ba237d8b9346cfce94407a269e26b90cdd576",
+      "masterFile": "masters/audio-neural-mia-103024800caefeb7.wav",
+      "masterSha256": "f9f77c78f86ca82911d12ee8e804ee744561106abdd5892bc14ae9b6842482e2"
+    },
+    {
+      "id": "audio-neural-mia-0bba72729ea07b20",
+      "file": "audio/audio-neural-mia-0bba72729ea07b20.ogg",
+      "sha256": "9cf7015b54c7ace44d8ed5ad1a25b80d35be92157115105c2e4638fa2bdc3434",
+      "masterFile": "masters/audio-neural-mia-0bba72729ea07b20.wav",
+      "masterSha256": "43fe921780944940f3ce79043979cea44028447c5f94269ba82f1ce5811760da"
+    },
+    {
+      "id": "audio-neural-mia-ad3c870f0edf1e1b",
+      "file": "audio/audio-neural-mia-ad3c870f0edf1e1b.ogg",
+      "sha256": "93707902b873ea584cf0d6bb0be04f06928109b8e6781860dc646fe567b3f6e3",
+      "masterFile": "masters/audio-neural-mia-ad3c870f0edf1e1b.wav",
+      "masterSha256": "0e305c6896f14220042e2083ab61a41054677d29d202ab48cae45b2c1aaf44df"
+    },
+    {
+      "id": "audio-neural-mia-0ae80e9e89e4732c",
+      "file": "audio/audio-neural-mia-0ae80e9e89e4732c.ogg",
+      "sha256": "3b559dfe2a77f47a4df946c12f6fb762f255b6368d0d634582971ba2b5cf22a7",
+      "masterFile": "masters/audio-neural-mia-0ae80e9e89e4732c.wav",
+      "masterSha256": "6097b0bc50d3c8f897ef98e7e7475f1ea0eecd43a19578c2c67acc35d4d574cd"
+    },
+    {
+      "id": "audio-neural-mia-45bd554e7b9657c8",
+      "file": "audio/audio-neural-mia-45bd554e7b9657c8.ogg",
+      "sha256": "a2e4db6dab7aa55fc01be19c90dbf655256d38cc7a4db52ca355da14527173e6",
+      "masterFile": "masters/audio-neural-mia-45bd554e7b9657c8.wav",
+      "masterSha256": "45a64a93eecd856e945df948a497ea6271ffd81ec610ad67b65082d3772750f1"
+    },
+    {
+      "id": "audio-neural-mia-9a11c13dd91d50d1",
+      "file": "audio/audio-neural-mia-9a11c13dd91d50d1.ogg",
+      "sha256": "5dfa0c8152908a17c0308c66ed8629893174e1476817b5c79442dbe903b414df",
+      "masterFile": "masters/audio-neural-mia-9a11c13dd91d50d1.wav",
+      "masterSha256": "5d92d00165ad337d7d4e9d97565ae26c94c1372bf26681d3865619e483d2b964"
+    },
+    {
+      "id": "audio-neural-mia-bd27e09add2412ef",
+      "file": "audio/audio-neural-mia-bd27e09add2412ef.ogg",
+      "sha256": "f0afbd04c930673fcbe5d3179961ca968ce6497c6725d2ffa4939de552eb6e25",
+      "masterFile": "masters/audio-neural-mia-bd27e09add2412ef.wav",
+      "masterSha256": "023b3d134d8977462bb8026adea84739fb3fbf082a547fb0f6af154f6077aad5"
+    },
+    {
+      "id": "audio-neural-mia-6f47b13a6e54769d",
+      "file": "audio/audio-neural-mia-6f47b13a6e54769d.ogg",
+      "sha256": "c34991ff22682d0db9d9df3773991c3cf97f5a56eb1ae7ba01581ca73c68049a",
+      "masterFile": "masters/audio-neural-mia-6f47b13a6e54769d.wav",
+      "masterSha256": "f39c8e07154d2648c240652f8b833efe577d14a52ca1e3f6feb7593f2e0eb41d"
+    },
+    {
+      "id": "audio-neural-mia-96ee1c51404b0b4d",
+      "file": "audio/audio-neural-mia-96ee1c51404b0b4d.ogg",
+      "sha256": "92f121c0e2aff0f7e12518ad91d64d4baf9d5a56ebda6737b789417d7055addd",
+      "masterFile": "masters/audio-neural-mia-96ee1c51404b0b4d.wav",
+      "masterSha256": "d0ed6a016bba05048bdda8215f8389a29c220534f033aca550b7a9933478ed69"
+    },
+    {
+      "id": "audio-neural-mia-df2459685e0465a1",
+      "file": "audio/audio-neural-mia-df2459685e0465a1.ogg",
+      "sha256": "ff63883163b2b41cc2aa4fe7dd3528198834512111507a2c0e356042d46bdf40",
+      "masterFile": "masters/audio-neural-mia-df2459685e0465a1.wav",
+      "masterSha256": "82ebb542a267e659a8fe18b1d9c7672d169caf986a00c6414a7e1381b861e801"
+    },
+    {
+      "id": "audio-neural-mia-de77479652f7df3c",
+      "file": "audio/audio-neural-mia-de77479652f7df3c.ogg",
+      "sha256": "7aa02cb18ef51710b44ccae87e36c91dceb96bb36fc28499d67047649f72a2a8",
+      "masterFile": "masters/audio-neural-mia-de77479652f7df3c.wav",
+      "masterSha256": "69ce336741bdf0fb0ac2d5ffa22267949bcc8743fe238f8da20df5149f4a514c"
+    },
+    {
+      "id": "audio-neural-mia-1b06e2003f8420d6",
+      "file": "audio/audio-neural-mia-1b06e2003f8420d6.ogg",
+      "sha256": "7dabf302557021901ac03e5680f634ab039cd0d4f994b4f283ce36260c12031c",
+      "masterFile": "masters/audio-neural-mia-1b06e2003f8420d6.wav",
+      "masterSha256": "9a234312a12b138c52179ea29b569d281ee5a531f030400b2912941c03aa9475"
+    },
+    {
+      "id": "audio-neural-mia-b65c597286364ff2",
+      "file": "audio/audio-neural-mia-b65c597286364ff2.ogg",
+      "sha256": "2400f56a2573bfa9bdbe50b5d74489c2585ce31aa59bc043103a0fe852ebba6e",
+      "masterFile": "masters/audio-neural-mia-b65c597286364ff2.wav",
+      "masterSha256": "504a719a07c7164d18268eed558e2f17ea981216a6fdc7914261166ae8d94bca"
+    },
+    {
+      "id": "audio-neural-mia-4bd2c412ba70847f",
+      "file": "audio/audio-neural-mia-4bd2c412ba70847f.ogg",
+      "sha256": "33b877ddcd3a6e7114be17621e12514f70cdf710b46d5702192c864fa185cbc3",
+      "masterFile": "masters/audio-neural-mia-4bd2c412ba70847f.wav",
+      "masterSha256": "960d5790ff38447c9b931ca50b36363c236e48fda3d65afb1d00e2889d0ebe7d"
+    },
+    {
+      "id": "audio-neural-mia-b80dd87acd2d224f",
+      "file": "audio/audio-neural-mia-b80dd87acd2d224f.ogg",
+      "sha256": "fa3ead9a8f2f9d356edcd6b59f45f6476c50bc2a300cf60ab1e726cc1a6e2d09",
+      "masterFile": "masters/audio-neural-mia-b80dd87acd2d224f.wav",
+      "masterSha256": "d9aed5612cd374cda390b4cc5e54bbc5fcedc74fc59d62588d618396185f5553"
+    },
+    {
+      "id": "audio-neural-mia-6d7e04068fa604f0",
+      "file": "audio/audio-neural-mia-6d7e04068fa604f0.ogg",
+      "sha256": "1fcd153f50774c01b5cfe8ded6a94e6bb0e2b7fc88d6e32b508a6c9cef66d51e",
+      "masterFile": "masters/audio-neural-mia-6d7e04068fa604f0.wav",
+      "masterSha256": "687c82496dea381eb111ffdaaf772563bc5304b9751cb883c60c9e22a3c6a8d9"
+    },
+    {
+      "id": "audio-neural-mia-32ad1aca2ef116a4",
+      "file": "audio/audio-neural-mia-32ad1aca2ef116a4.ogg",
+      "sha256": "856f6eba473c82222e48d47295bee3cce06555f82f115e1be0b35b7edd3b8034",
+      "masterFile": "masters/audio-neural-mia-32ad1aca2ef116a4.wav",
+      "masterSha256": "a568ab7239e5f574a8f6f2b5e45d995ed90feb220afbf5caf9ccbc1f4b1434f2"
+    },
+    {
+      "id": "audio-neural-mia-7f488a3c244e6fda",
+      "file": "audio/audio-neural-mia-7f488a3c244e6fda.ogg",
+      "sha256": "888a78306ec119113160ab6d4e7c5315c497c7456d35175d6e537cc28ec89898",
+      "masterFile": "masters/audio-neural-mia-7f488a3c244e6fda.wav",
+      "masterSha256": "7d3c70cd4bb4784f69c8149e5cad0b6ed66c4984746f39680d2df9e0651b7604"
+    },
+    {
+      "id": "audio-neural-mia-9390298f3fb0c5b1",
+      "file": "audio/audio-neural-mia-9390298f3fb0c5b1.ogg",
+      "sha256": "f81bd914ab8d360fad6926e26c858be4a97a1400dc45d91530a2cce79ebcac8b",
+      "masterFile": "masters/audio-neural-mia-9390298f3fb0c5b1.wav",
+      "masterSha256": "c42e15a535b173806c494609ce043bb6cce5c8ad89c9ca469bc98ca0f3752147"
+    },
+    {
+      "id": "audio-neural-mia-c4ba3ab1e3dfa846",
+      "file": "audio/audio-neural-mia-c4ba3ab1e3dfa846.ogg",
+      "sha256": "f2eea307f7cee92d8e2ceb5fda7d7704be0018b81182e6420f36dc9244d532b7",
+      "masterFile": "masters/audio-neural-mia-c4ba3ab1e3dfa846.wav",
+      "masterSha256": "eba0ad4ec941131c283ce1b0ff5c6c11fbfe826cc7b19c73d14ef9aa94a0c8d4"
+    },
+    {
+      "id": "audio-neural-mia-d354d655e087f97e",
+      "file": "audio/audio-neural-mia-d354d655e087f97e.ogg",
+      "sha256": "3985e8c70b3837748e2596f764492588ce842e2ceca7c6d43da9e96fd56c407f",
+      "masterFile": "masters/audio-neural-mia-d354d655e087f97e.wav",
+      "masterSha256": "80c7cb6dc0a700aff628f36f3b4b508cc3c8f5db8011a3e0b94d3828e3bd7928"
+    },
+    {
+      "id": "audio-neural-mia-0bd0bc77b21c0aa0",
+      "file": "audio/audio-neural-mia-0bd0bc77b21c0aa0.ogg",
+      "sha256": "d80140efda3328769235b06d150ea052d7a20901f3464b468d38d27c127a7893",
+      "masterFile": "masters/audio-neural-mia-0bd0bc77b21c0aa0.wav",
+      "masterSha256": "2a2daea4eddff17f7dfa42f1fb3861a4f4cd98923eab5a439b8b64d410f4e93e"
+    },
+    {
+      "id": "audio-neural-mia-d6a7cd2a7371b1a1",
+      "file": "audio/audio-neural-mia-d6a7cd2a7371b1a1.ogg",
+      "sha256": "269276d5ce8c471b2eea54e3958e0fc39d00b302a9b8ded36c24286ddc70e808",
+      "masterFile": "masters/audio-neural-mia-d6a7cd2a7371b1a1.wav",
+      "masterSha256": "27d45744e15d8c22c78f2699137fcdeb597f1197f497c13cb1e71a2ee0f4f391"
+    },
+    {
+      "id": "audio-neural-mia-3186da3e7e347683",
+      "file": "audio/audio-neural-mia-3186da3e7e347683.ogg",
+      "sha256": "e712e53b904cfe78bbf1596c6996153a8d64280c2e03057ec34e4f303e65f25f",
+      "masterFile": "masters/audio-neural-mia-3186da3e7e347683.wav",
+      "masterSha256": "25b6f0e0c507baf6e57718c621e29952e7060744be13c4930a55ba644ec2003d"
+    },
+    {
+      "id": "audio-neural-mia-5180c82d44fd979e",
+      "file": "audio/audio-neural-mia-5180c82d44fd979e.ogg",
+      "sha256": "71a0858fbb17aa730de50799f73e53d5cc6ceaf1d7663b27b59962003ed75445",
+      "masterFile": "masters/audio-neural-mia-5180c82d44fd979e.wav",
+      "masterSha256": "3961702fe090b267e2631ca969b0e3aae57cf338fdd30898b4a3f5a7e406f982"
+    },
+    {
+      "id": "audio-neural-mia-441b7de4295635c2",
+      "file": "audio/audio-neural-mia-441b7de4295635c2.ogg",
+      "sha256": "d21c78059068fbd7b486c4da4eb92a29d221c3facf33568f0035fc26d58f88d7",
+      "masterFile": "masters/audio-neural-mia-441b7de4295635c2.wav",
+      "masterSha256": "1589178063893b251d923b7431414d88181ef1780c3618be18e8c826e9fded93"
+    },
+    {
+      "id": "audio-neural-mia-86dfb085eb61ec09",
+      "file": "audio/audio-neural-mia-86dfb085eb61ec09.ogg",
+      "sha256": "c2ba889ae433130edeec8617c13852cb42476004d992340c47522f9f6e1d1aa9",
+      "masterFile": "masters/audio-neural-mia-86dfb085eb61ec09.wav",
+      "masterSha256": "3864c24d63a2de631794ed758d81dd94b0c1b595b7c7100353164400f4bced77"
+    },
+    {
+      "id": "audio-neural-mia-dafd5e7931a3d29d",
+      "file": "audio/audio-neural-mia-dafd5e7931a3d29d.ogg",
+      "sha256": "e99264c92b0371faeac5b0b02ad62390884950b1f9d90cd76450b92c4d3e6fe4",
+      "masterFile": "masters/audio-neural-mia-dafd5e7931a3d29d.wav",
+      "masterSha256": "cd140142ac8f366313c411508a7332c21ec96e7be3c8fbe26052d1fcd8876be7"
+    },
+    {
+      "id": "audio-neural-lova-2cf824cf5cda9d64",
+      "file": "audio/audio-neural-lova-2cf824cf5cda9d64.ogg",
+      "sha256": "e481ae08ea0172e8b8c79fc0e40094a53852eb9b0929a29ed6ff36f43a2d0e46",
+      "masterFile": "masters/audio-neural-lova-2cf824cf5cda9d64.wav",
+      "masterSha256": "4d1c0c3a22dcba81c82955ba15c90ecab7df102db2265bbea5eb6f15874d8775"
+    },
+    {
+      "id": "audio-neural-lova-221af5634ef0bf9e",
+      "file": "audio/audio-neural-lova-221af5634ef0bf9e.ogg",
+      "sha256": "48488f3b7e66dca9ba2fa0748858910a58a6230f2e8ed26d824c98a5984b353b",
+      "masterFile": "masters/audio-neural-lova-221af5634ef0bf9e.wav",
+      "masterSha256": "f6df3beec9594b4381c39e3785b593e86173ab45a7738ab49af6d64a73b909aa"
+    },
+    {
+      "id": "audio-neural-lova-8fc438f406e5f9e6",
+      "file": "audio/audio-neural-lova-8fc438f406e5f9e6.ogg",
+      "sha256": "ea56bffa86e574d87dc3d188c79cebee7bfe30b0bbb87d8c6c1abdb87188b3df",
+      "masterFile": "masters/audio-neural-lova-8fc438f406e5f9e6.wav",
+      "masterSha256": "82c89989b189b33a3640cdccac980aee5072afa538abcad3096ace367d420a43"
+    },
+    {
+      "id": "audio-neural-lova-96b8cfbc25047ba7",
+      "file": "audio/audio-neural-lova-96b8cfbc25047ba7.ogg",
+      "sha256": "5dc7973928af05119f6bf64141092f2ef5e33b00076161386ceb0a7dc207b66f",
+      "masterFile": "masters/audio-neural-lova-96b8cfbc25047ba7.wav",
+      "masterSha256": "82229a358d5800efd59eb8e9d6ec75bc0b37f274590c787a7da548b51be887eb"
+    },
+    {
+      "id": "audio-neural-lova-0e6750d69414860e",
+      "file": "audio/audio-neural-lova-0e6750d69414860e.ogg",
+      "sha256": "a09ec190264742f6be5e0f2366955b8e5cb8fc457e74ad602be315a923c0f5a4",
+      "masterFile": "masters/audio-neural-lova-0e6750d69414860e.wav",
+      "masterSha256": "2a7925d5b268d6dcb90b7e0ef7e9ce3f7e908d38dbfcc0b9f3685866f477643c"
+    },
+    {
+      "id": "audio-neural-lova-66ea6e304c76c376",
+      "file": "audio/audio-neural-lova-66ea6e304c76c376.ogg",
+      "sha256": "b09027a1a9a4811da3bb3bcc1acc3d1d93d2ca7a19baf058decf9acdbccc37ea",
+      "masterFile": "masters/audio-neural-lova-66ea6e304c76c376.wav",
+      "masterSha256": "b71be0089823e71a2919e133cb8fdd77c27cfa7c7b033b4d526fb7a90db971f3"
+    },
+    {
+      "id": "audio-neural-lova-1f9a0fb93755bc01",
+      "file": "audio/audio-neural-lova-1f9a0fb93755bc01.ogg",
+      "sha256": "25c49cfd700be00268f39d9dde5198c4b07573d1fd1d8047a26f15c9bab34d91",
+      "masterFile": "masters/audio-neural-lova-1f9a0fb93755bc01.wav",
+      "masterSha256": "243e1fdf9cae17f68ae45837e10c0896a792b599f6c9f14928f51637ff3cc55c"
+    },
+    {
+      "id": "audio-neural-lova-e566ba7c73f3e426",
+      "file": "audio/audio-neural-lova-e566ba7c73f3e426.ogg",
+      "sha256": "525c75583b278b8f270fd270204270801f6070af7d0d9d22451530a36ab81771",
+      "masterFile": "masters/audio-neural-lova-e566ba7c73f3e426.wav",
+      "masterSha256": "0a928a1318daf43448bb89159af93446726f4dca2b1c4c342c9d7c40dde2350d"
+    },
+    {
+      "id": "audio-neural-lova-f4f84956523a1529",
+      "file": "audio/audio-neural-lova-f4f84956523a1529.ogg",
+      "sha256": "d0c0d4ff1bdb2011f642a22e84eb98c9c2fb51b1ac278f5636b81c675c5fd782",
+      "masterFile": "masters/audio-neural-lova-f4f84956523a1529.wav",
+      "masterSha256": "28358a63997042b439dea41f5c0737e4cc133eae69db8b4a286f1d3311412016"
+    },
+    {
+      "id": "audio-neural-lova-2fe3269fa210706d",
+      "file": "audio/audio-neural-lova-2fe3269fa210706d.ogg",
+      "sha256": "919488c20cc76350b7855a0e5b4e5d59c4e23b92edffa4b3fc9ad187dca6d2a7",
+      "masterFile": "masters/audio-neural-lova-2fe3269fa210706d.wav",
+      "masterSha256": "e0c13e24693040dc4130e59de190d29b76f3759d2bdf047e7661e0a629b06b4e"
+    },
+    {
+      "id": "audio-neural-lova-14c51fd8a11a7512",
+      "file": "audio/audio-neural-lova-14c51fd8a11a7512.ogg",
+      "sha256": "a4c82da226154e4a2d4e90117fcde880a794f1dbd2259a86c27acfd9321d1e40",
+      "masterFile": "masters/audio-neural-lova-14c51fd8a11a7512.wav",
+      "masterSha256": "487d61ad75a6fb6702114d1baddfac3b696d398c1aaf5eb74426c081f0ef3bbe"
+    },
+    {
+      "id": "audio-neural-lova-05920ab4d50e402c",
+      "file": "audio/audio-neural-lova-05920ab4d50e402c.ogg",
+      "sha256": "f2b1c967f3e53da77fde70a415be4be48d01a37502af378ceeecd509fe49243e",
+      "masterFile": "masters/audio-neural-lova-05920ab4d50e402c.wav",
+      "masterSha256": "0f777ba27031e33181f660fe8265f75dd0fcfc3ede7074033316abe556d1d3c7"
+    },
+    {
+      "id": "audio-neural-lova-b9856b4b0b64e8ae",
+      "file": "audio/audio-neural-lova-b9856b4b0b64e8ae.ogg",
+      "sha256": "260a616d79a8da18f4fe37831efb04f0f87ee0d7f8741171ae24d8d7e689ea25",
+      "masterFile": "masters/audio-neural-lova-b9856b4b0b64e8ae.wav",
+      "masterSha256": "b839cc77aa085c6b3848efce420ca30cbaf068fb38ad983f29d02e709bd59e6a"
+    },
+    {
+      "id": "audio-neural-lova-4518c2d011e3f4bf",
+      "file": "audio/audio-neural-lova-4518c2d011e3f4bf.ogg",
+      "sha256": "26144c443d2c8209ae83352e1b873b2de8228301de3b5ef8719c80801fadd7a0",
+      "masterFile": "masters/audio-neural-lova-4518c2d011e3f4bf.wav",
+      "masterSha256": "223424d4651555474ca879588b47f5ec371a3b589d80387459b5ef4688bc43c4"
+    },
+    {
+      "id": "audio-neural-lova-49664d45805e0961",
+      "file": "audio/audio-neural-lova-49664d45805e0961.ogg",
+      "sha256": "b9c7fb4054901fb5a0245119a85220d1ac7ccfc88b750907588775be438857bb",
+      "masterFile": "masters/audio-neural-lova-49664d45805e0961.wav",
+      "masterSha256": "499a4f4a6c9debd952a4113126737971f7decb16283debc4464abfb2dd7ef355"
+    },
+    {
+      "id": "audio-neural-lova-6bd1a18ed2d19733",
+      "file": "audio/audio-neural-lova-6bd1a18ed2d19733.ogg",
+      "sha256": "f99b7f16116aed651c4d66ac01c2cdba167805940efa0c0af33e2d1d3cd32b5a",
+      "masterFile": "masters/audio-neural-lova-6bd1a18ed2d19733.wav",
+      "masterSha256": "3ea05316d6b3a62b697411cc36d606f394f01bfff6f4fcd2fda7b859039e5868"
+    },
+    {
+      "id": "audio-neural-lova-57d4677b513386a9",
+      "file": "audio/audio-neural-lova-57d4677b513386a9.ogg",
+      "sha256": "7e768619482529d40ea479069eec48bda8037551624a08f9a50b78c0abff1324",
+      "masterFile": "masters/audio-neural-lova-57d4677b513386a9.wav",
+      "masterSha256": "f1352dd63b2bfe77fec3beff0961e2495eae23e8b98e071861268a0e40ddcb22"
+    },
+    {
+      "id": "audio-neural-lova-103024800caefeb7",
+      "file": "audio/audio-neural-lova-103024800caefeb7.ogg",
+      "sha256": "93a675442dd6cade63e2b7e9cd6eacd988d59a18b2860c737cfee5d409d0648e",
+      "masterFile": "masters/audio-neural-lova-103024800caefeb7.wav",
+      "masterSha256": "cd6834c756d6f367937c4d0e1910c5fb917a847b51748d69596bf6f599f6e738"
+    },
+    {
+      "id": "audio-neural-lova-0bba72729ea07b20",
+      "file": "audio/audio-neural-lova-0bba72729ea07b20.ogg",
+      "sha256": "915b14bc7667f30e766d95f77e12224c0aad4fd4e101a5b5a7d2a25723ddc64e",
+      "masterFile": "masters/audio-neural-lova-0bba72729ea07b20.wav",
+      "masterSha256": "2152fd057424b4129d7f8d591728c336c6fb4a0867fd4913c607e0933429e14f"
+    },
+    {
+      "id": "audio-neural-lova-ad3c870f0edf1e1b",
+      "file": "audio/audio-neural-lova-ad3c870f0edf1e1b.ogg",
+      "sha256": "d9b446183c3e61f91e8c46c020e759da5591f1eda4dfd18460307a1664df1b2e",
+      "masterFile": "masters/audio-neural-lova-ad3c870f0edf1e1b.wav",
+      "masterSha256": "3cd479bec9366ed633756b3052dde0c80fbb6fc12a2129d6e69fffd49112e430"
+    },
+    {
+      "id": "audio-neural-lova-0ae80e9e89e4732c",
+      "file": "audio/audio-neural-lova-0ae80e9e89e4732c.ogg",
+      "sha256": "0047800d3e9d028baa36adf634fd1a2833505e4e2348007217f31653289c49de",
+      "masterFile": "masters/audio-neural-lova-0ae80e9e89e4732c.wav",
+      "masterSha256": "93a7ad1235e38219ed3b3672312fee82b5e72a8ebc6997ad24c04028fb41cb1e"
+    },
+    {
+      "id": "audio-neural-lova-45bd554e7b9657c8",
+      "file": "audio/audio-neural-lova-45bd554e7b9657c8.ogg",
+      "sha256": "1f66ce5c2896db03391de21496f1a337a19d03d4e098ac19cb8c84fdea759df7",
+      "masterFile": "masters/audio-neural-lova-45bd554e7b9657c8.wav",
+      "masterSha256": "4ae95b3754e389ef895c5857cbcdba68328f98000402139bf16f5e097a992d78"
+    },
+    {
+      "id": "audio-neural-lova-9a11c13dd91d50d1",
+      "file": "audio/audio-neural-lova-9a11c13dd91d50d1.ogg",
+      "sha256": "4a1bcac8e4c1111fa9145a834260ed2d30a3b6ee7ea064d162559981e290137b",
+      "masterFile": "masters/audio-neural-lova-9a11c13dd91d50d1.wav",
+      "masterSha256": "462fa87619163c88e1eb3c18242de0febf5fa02a22e000fbe82cbe48945e4b0b"
+    },
+    {
+      "id": "audio-neural-lova-bd27e09add2412ef",
+      "file": "audio/audio-neural-lova-bd27e09add2412ef.ogg",
+      "sha256": "809d5ef5f812905ee5fb5e66de9885c358f8f7cb2d2ad73396033da1309ff33d",
+      "masterFile": "masters/audio-neural-lova-bd27e09add2412ef.wav",
+      "masterSha256": "f82163ee369c9db460dbf3be320f81ee3387abbb6e365846b8bf5d12669a29f2"
+    },
+    {
+      "id": "audio-neural-lova-6f47b13a6e54769d",
+      "file": "audio/audio-neural-lova-6f47b13a6e54769d.ogg",
+      "sha256": "3d62f179f99568ca10065570f9aff42a6a6c6ed98be7bbd8729512b409a4be64",
+      "masterFile": "masters/audio-neural-lova-6f47b13a6e54769d.wav",
+      "masterSha256": "3a574643930137ec27d7cb25781af957dcaf0d9be0ac5731e3631f0b02b2cff6"
+    },
+    {
+      "id": "audio-neural-lova-96ee1c51404b0b4d",
+      "file": "audio/audio-neural-lova-96ee1c51404b0b4d.ogg",
+      "sha256": "d4c443fd4a43c87c96b812db3ae177361670548f37b71253badceca382311dc6",
+      "masterFile": "masters/audio-neural-lova-96ee1c51404b0b4d.wav",
+      "masterSha256": "b0a8194278959f84efc6ed3c747af3de0283b67d7af1ca9f81caa23e8003aa85"
+    },
+    {
+      "id": "audio-neural-lova-df2459685e0465a1",
+      "file": "audio/audio-neural-lova-df2459685e0465a1.ogg",
+      "sha256": "80a1ed8d5a8fbff7760d38172ab9adbfe991a3bcf1b9210b5d5e286f29c2399d",
+      "masterFile": "masters/audio-neural-lova-df2459685e0465a1.wav",
+      "masterSha256": "f0781de427a100b2ab12f27f8789f36e9aa3c03bc526b222e31e328e6c74ed4e"
+    },
+    {
+      "id": "audio-neural-lova-de77479652f7df3c",
+      "file": "audio/audio-neural-lova-de77479652f7df3c.ogg",
+      "sha256": "ddb3d6827cb9131cff3e5acb085f04ba21ab2b3d34762faa1aec38b361a8714c",
+      "masterFile": "masters/audio-neural-lova-de77479652f7df3c.wav",
+      "masterSha256": "0e3962d557798eca7300315ab7e8001e776f3c1c9ab5f060f9f0b6f27e3984b4"
+    },
+    {
+      "id": "audio-neural-lova-1b06e2003f8420d6",
+      "file": "audio/audio-neural-lova-1b06e2003f8420d6.ogg",
+      "sha256": "33363e52ebf9bd5925e57df08af5fd2e3ae31bf01907b7a04e6574a6b78337e2",
+      "masterFile": "masters/audio-neural-lova-1b06e2003f8420d6.wav",
+      "masterSha256": "07cec16a6d0d88af03d48df14526bf45b08986aedcf50cba02c58aebb1f65ff1"
+    },
+    {
+      "id": "audio-neural-lova-b65c597286364ff2",
+      "file": "audio/audio-neural-lova-b65c597286364ff2.ogg",
+      "sha256": "82540290db49d04dbcae4fb94e006f6924218d09f682e0539cf9a18ba8b95993",
+      "masterFile": "masters/audio-neural-lova-b65c597286364ff2.wav",
+      "masterSha256": "abb644dba75ca015311b4586221d8fb357d5f923cae59de133f8393ba4aa35f3"
+    },
+    {
+      "id": "audio-neural-lova-4bd2c412ba70847f",
+      "file": "audio/audio-neural-lova-4bd2c412ba70847f.ogg",
+      "sha256": "fbd814d2b238393218c41de80971812a4fb5bb258fb005d0a9fff7237c0de84d",
+      "masterFile": "masters/audio-neural-lova-4bd2c412ba70847f.wav",
+      "masterSha256": "5ae85615d6c8c315df90d789d84797ccf2e02c5068840a047800cc16f6e128d7"
+    },
+    {
+      "id": "audio-neural-lova-b80dd87acd2d224f",
+      "file": "audio/audio-neural-lova-b80dd87acd2d224f.ogg",
+      "sha256": "a3259136b085ecdd37ad60f4d66a3256264d135ee9a9e440d1e07e68768ae8cc",
+      "masterFile": "masters/audio-neural-lova-b80dd87acd2d224f.wav",
+      "masterSha256": "ec4726f315a5c5ccb49330064f9ebd313f938f225ccf2613f938a17358d6e127"
+    },
+    {
+      "id": "audio-neural-lova-6d7e04068fa604f0",
+      "file": "audio/audio-neural-lova-6d7e04068fa604f0.ogg",
+      "sha256": "4f1d42b949ba974cfee8d4383402b4b87bb24f98704b1393d88056508f4cd943",
+      "masterFile": "masters/audio-neural-lova-6d7e04068fa604f0.wav",
+      "masterSha256": "03bdb3e4051af60088107f359752039eb744af928c53d8f65ec1929842d36c05"
+    },
+    {
+      "id": "audio-neural-lova-32ad1aca2ef116a4",
+      "file": "audio/audio-neural-lova-32ad1aca2ef116a4.ogg",
+      "sha256": "8b09483013731f117baed88c4cfbf01b7c29253c16cb22fdc0561f79ce06b031",
+      "masterFile": "masters/audio-neural-lova-32ad1aca2ef116a4.wav",
+      "masterSha256": "1e164fedf7eb5eaee80a0bb8e00f454dd4eb37dac8a1d26dde4b97ffaa010cc7"
+    },
+    {
+      "id": "audio-neural-lova-7f488a3c244e6fda",
+      "file": "audio/audio-neural-lova-7f488a3c244e6fda.ogg",
+      "sha256": "352bbf50e28d62136538163e799de7ed021be2193239a9eea8b39cb542a5cba8",
+      "masterFile": "masters/audio-neural-lova-7f488a3c244e6fda.wav",
+      "masterSha256": "aa87e43d9a8abc75c285c5531d3bc72b1315a06708ed53672a712385d6cf1846"
+    },
+    {
+      "id": "audio-neural-lova-9390298f3fb0c5b1",
+      "file": "audio/audio-neural-lova-9390298f3fb0c5b1.ogg",
+      "sha256": "2050fe4754d544612f12291ec265b89fb75c65ffa33721934e4980a60247417b",
+      "masterFile": "masters/audio-neural-lova-9390298f3fb0c5b1.wav",
+      "masterSha256": "d7939377721823c3920941fa20ca7bb5439b516664f02bdafca813d5a1e77528"
+    },
+    {
+      "id": "audio-neural-lova-c4ba3ab1e3dfa846",
+      "file": "audio/audio-neural-lova-c4ba3ab1e3dfa846.ogg",
+      "sha256": "5521f135bd8a92e9320e5ff86397f12e16573615fc161eee9f83df75076452ef",
+      "masterFile": "masters/audio-neural-lova-c4ba3ab1e3dfa846.wav",
+      "masterSha256": "a50c48a54a622b59202152af7cfa3af513ea85b3f3d434d600a51e69ba28e518"
+    },
+    {
+      "id": "audio-neural-lova-d354d655e087f97e",
+      "file": "audio/audio-neural-lova-d354d655e087f97e.ogg",
+      "sha256": "ba91bd00b09b2052b6e0a6fc5cb033f285577cf4ae5eb9d2f65fcf818dd30dd9",
+      "masterFile": "masters/audio-neural-lova-d354d655e087f97e.wav",
+      "masterSha256": "12d55d3b73e088f669982a3d737a74676289b7f332e146eb31a2b7885193b8c4"
+    },
+    {
+      "id": "audio-neural-lova-0bd0bc77b21c0aa0",
+      "file": "audio/audio-neural-lova-0bd0bc77b21c0aa0.ogg",
+      "sha256": "086d45a6a61198f3d2f0aa8e65a5ff8841d30b341714bc87b95f9ed3f924a42d",
+      "masterFile": "masters/audio-neural-lova-0bd0bc77b21c0aa0.wav",
+      "masterSha256": "5c121ca6b30375d5f0b3db9ad4c223a91b4a08b1eb51d3eda029c1bda893cc23"
+    },
+    {
+      "id": "audio-neural-lova-d6a7cd2a7371b1a1",
+      "file": "audio/audio-neural-lova-d6a7cd2a7371b1a1.ogg",
+      "sha256": "c7ffb0984012fb2fbf9d07f78541fbc69357ae4eca06d8cf6f501fcc6cb22ff9",
+      "masterFile": "masters/audio-neural-lova-d6a7cd2a7371b1a1.wav",
+      "masterSha256": "5ba7a213c0872cda576a3c0590109849a3e2e4185168d9c644137479b4a4c829"
+    },
+    {
+      "id": "audio-neural-lova-3186da3e7e347683",
+      "file": "audio/audio-neural-lova-3186da3e7e347683.ogg",
+      "sha256": "6314e81c246136e8ceb3e23f3a4af05dd75f9f917a04cbf80805697be72dc352",
+      "masterFile": "masters/audio-neural-lova-3186da3e7e347683.wav",
+      "masterSha256": "f23382545073c296f88cc124bd38a54cc060c01d15e746ca5c41480b73180cfa"
+    },
+    {
+      "id": "audio-neural-lova-5180c82d44fd979e",
+      "file": "audio/audio-neural-lova-5180c82d44fd979e.ogg",
+      "sha256": "3e24fcd9d407dc816e9a5a508bd52ece971cd9ea7681fe89644db25678ed3d35",
+      "masterFile": "masters/audio-neural-lova-5180c82d44fd979e.wav",
+      "masterSha256": "18b23747aee04c5183a39aea09e5b127af7f92131379d597e4cc76a51fdb586e"
+    },
+    {
+      "id": "audio-neural-lova-441b7de4295635c2",
+      "file": "audio/audio-neural-lova-441b7de4295635c2.ogg",
+      "sha256": "b5db2d4a94441905f985f482fd8ec6d2085622abeaa4eebfe861d2d45f05a971",
+      "masterFile": "masters/audio-neural-lova-441b7de4295635c2.wav",
+      "masterSha256": "97bddf89979e4d7a8c1095308a2d8f09597525f2bde55570be6a5f5b6f196b10"
+    },
+    {
+      "id": "audio-neural-lova-86dfb085eb61ec09",
+      "file": "audio/audio-neural-lova-86dfb085eb61ec09.ogg",
+      "sha256": "d5a6d6cdf33d714069f7806709dee80ce39a7f7f2808d26786f7bb1a0e89b5a3",
+      "masterFile": "masters/audio-neural-lova-86dfb085eb61ec09.wav",
+      "masterSha256": "f4adcd177e8b2315e04e75aeb3805fe489eefc4b8af2a56c852f05ee7bb8c21c"
+    },
+    {
+      "id": "audio-neural-lova-dafd5e7931a3d29d",
+      "file": "audio/audio-neural-lova-dafd5e7931a3d29d.ogg",
+      "sha256": "624a0d31569723552eb99dc86ae4a2b28c25f53592f11af40a62c9466d03c960",
+      "masterFile": "masters/audio-neural-lova-dafd5e7931a3d29d.wav",
+      "masterSha256": "6199b9624e24ddb5e6790adc0fa23ae6fea50ff7ea90cb9d5ba11ece1634e487"
+    }
+  ],
+  "references": [
+    {
+      "character": "mia",
+      "file": "references/mia.wav",
+      "sha256": "5fd6867f45f2f7d956f05dc5942cd16f6a47e5a2d1a5299cc713ae0e08e2ee36"
+    },
+    {
+      "character": "lova",
+      "file": "references/lova.wav",
+      "sha256": "accbe57fef428b0f88fa25288ffea4f890e3120cec0e7df9df7a66a116f45dcd"
+    }
+  ]
+}

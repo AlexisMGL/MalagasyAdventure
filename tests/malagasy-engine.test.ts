@@ -193,8 +193,8 @@ describe('Malagasy persistence and content integrity', () => {
     expect(CONTENT.worlds).toHaveLength(20);
     expect(CONTENT.worlds[0].implemented).toBe(true);
     expect(CONTENT.worlds.slice(1).every(world => !world.implemented)).toBe(true);
-    expect(CONTENT.units.filter(unit => unit.implemented)).toHaveLength(3);
-    expect(CONTENT.lessons).toHaveLength(9);
+    expect(CONTENT.units.filter(unit => unit.implemented)).toHaveLength(12);
+    expect(CONTENT.lessons).toHaveLength(36);
     expect(validateContent(CONTENT)).toEqual([]);
     let progress = createProgress(NOW);
     for (let index = 0; index < CONTENT.lessons.length; index++) {

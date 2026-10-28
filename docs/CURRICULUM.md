@@ -1,14 +1,35 @@
 # Malagasy Adventure — progression pédagogique
 
-## Périmètre de la première livraison
+## Parcours livré : le monde 1 complet
 
-Le monde 1 contient douze unités prévues, dont les **trois premières sont jouables** : saluer et être poli ; se présenter ; construire de premières phrases. Les unités 4–12 et les mondes 2–20 sont des destinations futures, pas des cours disponibles. Leur présence sur la carte décrit une intention pédagogique.
+Le monde 1, Antananarivo, contient **douze unités jouables**. La demande d’achèvement du monde remplace l’ancienne limitation aux trois premières unités. Les mondes 2–20 restent des destinations futures verrouillées ; leur présence sur la carte décrit un programme, pas des cours disponibles.
 
-Le corpus affiné contient neuf leçons, **24 scènes de découverte, 72 activités écrites originales, 18 concepts et 21 fiches de vocabulaire**. Les six parties ordinaires introduisent les expressions dans les dialogues de Lova et Mia. Chaque unité finit par un quiz de douze questions couvrant ses notions et des rappels antérieurs. Sept formats sont utilisés : choix, associations, remise en ordre, texte à trous, traduction, compréhension écrite et dialogue guidé. Aucun exercice d’écoute ou quiz culturel n’est présenté comme livré.
+Le corpus contient **36 leçons, 96 scènes de découverte, 288 activités écrites originales, 44 concepts et 92 fiches de vocabulaire**. Deux parties de six activités précèdent le quiz de douze questions de chaque unité. Les unités 11 et 12 réinvestissent les notions déjà présentées dans des conversations suivies et une aventure cumulative. Sept formats sont utilisés : choix, associations, remise en ordre, texte à trous, traduction, compréhension écrite et dialogue guidé. La lecture des voix accompagne ces exercices ; elle ne constitue pas une évaluation d’écoute ou de prononciation.
 
 La découverte précède le rappel noté. Les traductions françaises sont accessibles dans les bulles à la demande ; les notes grammaticales servent d’aide facultative. La partie ordinaire conserve ses activités dans l’ordre, puis ajoute jusqu’à deux rappels de parties déjà validées. Les sources restent dans l’écran « Sources & crédits » ; leurs IDs restent reliés aux contenus en interne.
 
 Le contenu enseigne d’abord le malgache standard. Les noms de destinations sont des thèmes de voyage ; ils ne constituent ni une carte des divisions administratives ni une succession de dialectes enseignés.
+
+## Les douze unités d’Antananarivo
+
+| Unité | Situation | Acquis travaillés |
+| --- | --- | --- |
+| 1 | Bienvenue à Madagascar | Salutations, politesse, bienvenue, oui/non et repères de lecture. |
+| 2 | Faire connaissance | Prénom, origine et pronoms singuliers. |
+| 3 | Mes premières phrases | Prédicats simples, article ny, négation tsy et question ve. |
+| 4 | La famille et les proches | Famille, formes possédées reniko/reninao et manana. |
+| 5 | Une maison à découvrir | Maison, objets, possession et groupes de lieu. |
+| 6 | À table | Aliments, faim/soif, besoin avec mila et goût avec tia. |
+| 7 | Compter et acheter | Nombres de 0 à 20, quantités et question sur le prix. |
+| 8 | Poser les bonnes questions | Iza, inona, aiza et firy ; distinguer identité, information, lieu, quantité et prix. |
+| 9 | Trouver son chemin | Marché, gauche/droite, aller tout droit et tourner. |
+| 10 | Les besoins du voyage | Fatigue, souhait de boire/dormir, toilettes, compréhension et demande de répétition lente. |
+| 11 | Les premières conversations | Enchaîner prénom, origine, famille, besoin et prix. |
+| 12 | L’aventure d’Antananarivo | Visite familiale, plan fictif et dernier échange ; quiz cumulatif du monde. |
+
+Le chemin du monde affiche les 36 parties et quiz, leur état et la prochaine étape accessible. La réussite du dernier quiz, après les prérequis, clôt le monde 1. Les anciennes sauvegardes v1 conservent leurs neuf premières leçons et peuvent continuer à l’unité 4 ; aucune validation des nouvelles unités n’est accordée automatiquement.
+
+Les prix et les trajets de ces scènes sont fictifs. Ils servent à pratiquer la langue et ne donnent ni tarifs actuels ni itinéraires réels à Antananarivo.
 
 ## Les 20 mondes
 
@@ -45,7 +66,7 @@ Le chapitre d’Edward L. Keenan, [The Syntax of Subject-Final Languages](https:
 
 Le monde 6 **approfondit** les prédicats adjectivaux déjà rencontrés auparavant. De même, le monde 17 approfondit les voix : leur existence et les rôles des participants doivent être explicités dès que les exemples précédents l’exigent, sans attendre le monde 17. Les futurs verbes, relatives et constructions temporelles devront être validés individuellement, et non produits par substitution de catégories françaises.
 
-Les objectifs des mondes futurs restent une hypothèse de séquençage à réviser après rédaction et validation des leçons correspondantes. Les exemples français et malgaches des trois unités disponibles ont un registre de sources dans l’application ; les exercices sont originaux. La relecture par un locuteur compétent et la validation phonétique restent des étapes distinctes de cette recherche documentaire.
+Les objectifs des mondes futurs restent une hypothèse de séquençage à réviser après rédaction et validation des leçons correspondantes. Les douze unités livrées possèdent un registre de sources ; leurs exercices sont originaux. Les formes impératives actives et les formules de clarification à perspective passive sont expliquées dès les unités 9–10. La relecture par un locuteur compétent et la validation phonétique restent distinctes de la recherche documentaire.
 
 ## Jalons futurs
 
@@ -66,4 +87,4 @@ Ces bilans ne sont pas encore implémentés. Aucun niveau CECRL ni délai de flu
 | Semaines 19–24 | Mondes 16–20 | Récits, perspectives et consolidation |
 | Semaines 25–26 | Bilans et révisions ciblées | Reprendre les points faibles, échanges avec un locuteur |
 
-Ce scénario suppose le développement des mondes futurs. Prévoir environ 45–60 minutes de travail régulier, des séances plus longues selon les besoins et des échanges réels avec des locuteurs. Le calendrier doit s’adapter à la rétention constatée. Le prototype actuel permet seulement de commencer les trois premières unités.
+Ce scénario suppose le développement des mondes futurs. Prévoir environ 45–60 minutes de travail régulier, des séances plus longues selon les besoins et des échanges réels avec des locuteurs. Le calendrier doit s’adapter à la rétention constatée. Le parcours actuel permet de terminer le monde 1, pas les vingt mondes ni le programme de six mois.

@@ -1,28 +1,30 @@
 # Malagasy Adventure — architecture
 
-Malagasy Adventure est la quatrième expérience du dépôt Afterhours. Elle utilise le TypeScript strict, le DOM natif et Vite déjà présents. Elle ne dépend ni de Phaser, ni d’un service externe, ni d’un compte. Les trois jeux existants conservent leurs routes et leurs modules.
+Malagasy Adventure est une application autonome en TypeScript strict, DOM natif et Vite. Le dépôt ne contient pas le catalogue Arcade ni ses autres jeux. `/` et `/malagasy-adventure` ouvrent la même application statique, sans compte, framework supplémentaire ou backend permanent.
 
 ## Modules et responsabilités
 
 | Fichier | Responsabilité |
 | --- | --- |
-| `src/main.ts` | Sélection de route et import dynamique de l’expérience. |
-| `src/arcade.ts`, `src/arcade.css` | Catalogue partagé et carte de lancement. |
+| `src/main.ts` | Point d’entrée de l’application autonome. |
 | `src/malagasy/main.ts`, `style.css` | Navigation interne, vues, session d’apprentissage et événements DOM. |
 | `src/malagasy/types.ts` | Contrats des mondes, unités, leçons, exercices, concepts, sources, audio et sauvegardes. |
 | `src/malagasy/worlds.ts` | Métadonnées des 20 destinations et progression envisagée. |
 | `src/malagasy/content.ts` | Registre de contenu consultable par les moteurs et les vues. |
 | `src/malagasy/dialogue-content.ts` | Scènes d’introduction et échanges associés aux activités. |
+| `src/malagasy/world-one-units-04-07.ts`, `world-one-units-08-12.ts` | Données des unités 4–12 : dialogues, exercices, concepts, lexique et sources, fusionnés dans `CONTENT`. |
+| `src/malagasy/world-path.ts`, `world-path.css` | Chemin des 36 étapes du monde 1 ; états courant, disponible, validé et verrouillé dérivés du moteur de progression. |
 | `src/malagasy/engine.ts` | Réponses acceptées, déblocage, mélange, maîtrise, révisions, XP et validation du contenu. |
 | `src/malagasy/storage.ts` | Chargement, sérialisation et validation du schéma de sauvegarde. |
 | `src/malagasy/exercise-view.ts` | Registre des rendus d’exercices, brouillon de réponse et échappement HTML. |
 | `src/malagasy/audio.ts` | Audio linguistique vérifié et effets de réponse synthétisés localement. |
 | `src/malagasy/dialogue-audio.ts` | File de lecture des répliques, relecture, annulation, muet et gestion des politiques audio du navigateur. |
 | `src/malagasy/voice-bank.ts`, `voice-recordings.ts` | Correspondance exacte des répliques et références humaines ; la banque numérique reste distincte de leur validation linguistique. |
-| `src/malagasy/synthetic-voices.ts`, `public/malagasy/voices/mms/` | Registre des 52 énoncés numériques (dialogues et sélections malgaches) et WAV locaux avec manifeste de provenance. |
-| `src/malagasy/voice-profiles.ts`, `scripts/generate-malagasy-profiles.mjs` | Timbre Mia relevé hors ligne, tempo inchangé, manifeste des dérivés. |
+| `src/malagasy/omnivoice-voices.ts`, `public/malagasy/voices/omnivoice/` | Banque active de phrases entières, copies des WAV auteur et provenance publique. |
+| `src/malagasy/synthetic-voices.ts`, `voice-profiles.ts` | Anciennes banques MMS et timbre relevé de Mia, conservés pour la provenance ; ils ne sont plus sélectionnés par défaut. |
 | `src/malagasy/spoken-selections.ts` | Sélections explicitement malgaches ; les choix français ne sont pas lus. |
-| `scripts/generate-malagasy-mms.mjs` | Génération auteur locale depuis les dialogues, sans clé ni moteur TTS dans le navigateur. |
+| `scripts/prepare-malagasy-neural.mjs`, `malagasy-neural.mjs`, `generate-malagasy-neural.py` | Inventaire et préparation locale OmniVoice ; `--missing-only` ajoute les nouveaux IDs sans remplacer les clips existants. |
+| `scripts/activate-malagasy-omnivoice.mjs`, `check-malagasy-neural.mjs` | Copie contrôlée par empreintes et audit technique de la banque ; aucune génération au build. |
 | `src/malagasy/recording-references.json`, `public/malagasy/voices/` | Métadonnées de provenance, licences et fichiers originaux distribués localement. |
 | `src/malagasy/voice-plan.json`, `scripts/malagasy-voices.mjs` | Inventaire des phrases à enregistrer et outil hors ligne facultatif ; les brouillons restent `pending`. |
 | `src/malagasy/art.ts` | Illustrations SVG locales. |
@@ -44,7 +46,9 @@ Le contenu peut être subdivisé en fichiers de données sans modifier le contra
 6. `completeLesson` valide la partie ou le quiz lorsque le seuil est atteint. La fin d’une partie et la clôture d’une unité ont des écrans distincts ; le résultat d’une nouvelle tentative reste indépendant d’une validation historique conservée.
 7. La couche de stockage enregistre automatiquement l’état. L’export JSON fournit une sauvegarde portable.
 
-`worldAvailable` vérifie la publication du monde et la fin de ses mondes prérequis. `worldCompleted` exige toutes les unités du monde, disponibles et terminées. Les neuf unités encore prévues empêchent donc de déclarer le monde 1 entièrement terminé après les trois unités de cette édition.
+`worldAvailable` vérifie la publication du monde et la fin de ses mondes prérequis. `worldCompleted` exige toutes les unités du monde, disponibles et terminées. Le monde 1 contient maintenant ses douze unités : valider le quiz de l’unité 12 après les prérequis déclenche une vraie clôture du monde. Les mondes 2–20 restent non publiés, même après cette réussite.
+
+Le chemin visuel affiche les 36 étapes et les 12 quiz sans stocker un deuxième compteur. Son tracé, ses médaillons, son repère « Vous êtes ici » et ses compteurs utilisent les IDs de leçons validées et `lessonAvailable`. Une étape terminée peut être rejouée ; une étape verrouillée reste un vrai bouton désactivé. Cette avancée mesure le parcours, pas la maîtrise durable.
 
 Les fonctions des moteurs ne dépendent pas du DOM, de `localStorage` ou de l’heure globale lorsque le paramètre de date est fourni. Cela permet des tests reproductibles. La session en cours et le brouillon d’un exercice sont de l’état d’interface ; ils ne sont pas des identifiants persistants.
 
@@ -52,9 +56,9 @@ Les fonctions des moteurs ne dépendent pas du DOM, de `localStorage` ou de l’
 
 `recordingForTurn` relie un tour à un fichier `AudioAsset` uniquement lorsque la transcription correspond à l’énoncé complet. Les huit expressions humaines restent des références et un repli documenté, sans découpage ni collage de mots pour fabriquer d’autres phrases. Le personnage `any` permet de partager une référence pour Lova et Mia sans prétendre fournir deux genres de voix.
 
-À la demande utilisateur du 27 octobre 2026, les **102 enregistrements OmniVoice existants** (51 énoncés × Mia/Lova) sont actifs. Les maîtres WAV écoutés dans l’atelier sont copiés octet pour octet, sans génération, réencodage ni traitement de hauteur. `npm run audio:activate-omnivoice` vérifie les SHA-256 et copie uniquement les entrées du manifeste vers `public/malagasy/voices/omnivoice/`, avec provenance, références et licences ; il prépare `src/malagasy/omnivoice-voices.ts`. Cette commande n’est jamais lancée au build. La banque conserve le statut `synthetic` / `model-generated` ; une revue malgachophone reste à effectuer. Les anciennes banques MMS/profils et références humaines sont conservées pour la traçabilité, mais ne sont plus sélectionnées par défaut. `review-audio.cmd` propose uniquement OmniVoice et conserve les avis et leur historique.
+Les voix actives sont OmniVoice, avec une référence synthétique fixe pour Mia et une pour Lova. Les 102 enregistrements initiaux et leurs références restent inchangés. L’ajout des unités 4–12 autorise de nouveaux clips avec les mêmes références ; `--missing-only` conserve chaque ID existant et refuse un fichier dont l’empreinte ne correspond plus au manifeste. Le total courant se contrôle dans ce manifeste et avec `npm run audio:check`, sans le déduire du nombre de leçons.
 
-`scripts/generate-malagasy-mms.mjs` charge un runtime auteur isolé dans `.tools/mms-runtime`, garde les poids FP32 dans `.tools/mms-cache`, extrait les phrases complètes et écrit le manifeste public ainsi que le registre TypeScript. Les fichiers existants sont conservés si leurs transcriptions et empreintes correspondent ; un changement de texte doit être suivi d’une régénération et des tests de couverture. Les ellipses de réponse ne sont pas prononcées comme une phrase remplie.
+Les modèles et outils auteur restent dans `.tools/`, ignoré par Git. L’inventaire rassemble les répliques, le lexique et les sélections explicitement malgaches ; les textes incomplets restent exclus. Après préparation locale, `npm run audio:activate-omnivoice` contrôle les empreintes puis copie les clips, références et licences vers les fichiers statiques publics et prépare le registre TypeScript. Aucun modèle n’est exécuté au build ou dans le navigateur. La génération MMS est un historique, pas le pipeline actif.
 
 `DialogueAudioPlayer` garde une seule lecture active. Sa synchronisation mémorise les tours déjà visibles pour éviter les reprises dues aux rerendus ; une relecture manuelle annule la file précédente. Un changement de contexte, le muet ou la sortie d’une leçon arrête les fichiers. Le blocage de lecture automatique par le navigateur est distinct d’un fichier illisible et permet une reprise manuelle.
 
@@ -66,7 +70,7 @@ La lecture utilise les fichiers locaux sans secret ni appel TTS à l’exécutio
 
 ## Sauvegarde et sécurité d’import
 
-Le format courant est `schemaVersion: 1`. Il contient les paramètres, XP, leçons terminées, récompenses déjà accordées, concepts, dates d’activité, succès et historique borné. La clé locale est `afterhours.malagasy.progress.v1` ; aucun autre jeu ne partage cet état.
+Le format courant reste `schemaVersion: 1`. Il contient les paramètres, XP, leçons terminées, récompenses déjà accordées, concepts, dates d’activité, succès et historique borné. La clé locale est `afterhours.malagasy.progress.v1` ; aucun autre jeu ne partage cet état. L’extension conserve les neuf IDs de leçons initiaux, leurs exercices et concepts. Une ancienne sauvegarde peut donc reprendre au début de l’unité 4 sans perdre ses acquis ; les nouveaux concepts restent inconnus jusqu’à leur découverte.
 
 `parseSave` refuse les versions inconnues, les objets mal formés, les clés de prototype, les dates invalides, les valeurs numériques incohérentes et les références absentes du contenu courant. L’objet final est reconstruit. Le stockage est derrière l’interface `SaveStorage` (`getItem`/`setItem`) pour permettre plus tard un autre adaptateur.
 
