@@ -1,55 +1,44 @@
-# Compte et progression — configuration du 28 octobre 2026
+# Compte et progression — 29 octobre 2026
 
-Le projet indépendant **Malagasy Adventure**, référence `unpvrisziuttjmzhwyid`, a été créé dans **AlexisMGL's Org**, région Paris (`eu-west-3`). Aucun projet existant n’a été modifié.
+Le projet indépendant **Malagasy Adventure**, référence `unpvrisziuttjmzhwyid`, appartient à **AlexisMGL's Org**, région Paris (`eu-west-3`). Les autres projets et le dépôt Arcade restent indépendants.
 
-La migration `supabase/migrations/20261028183929_learning_progress.sql` est appliquée au serveur. Son numéro suit l’historique renvoyé par le serveur après application via le connecteur ; le fichier a d’abord été créé par `supabase migration new learning_progress`. Elle crée `learning_progress`, ses trois politiques RLS et la fonction atomique `save_learning_progress`. Les mots de passe restent gérés par Supabase Auth ; ils ne sont jamais enregistrés dans le carnet, les exports ou une table applicative.
+## Identifiant et mot de passe, sans courrier
 
-La configuration publique du client est dans `src/malagasy/supabase.ts`. Les variables Vite de `.env.example` permettent de cibler explicitement un autre environnement ; les valeurs par défaut correspondent au projet dédié. Ces deux valeurs sont publiques. Ne jamais utiliser une clé secrète ou `service_role` dans une variable `VITE_*`.
+La demande du 29 octobre remplace l’inscription par mail et la configuration Brevo : les nouveaux comptes utilisent seulement un identifiant et un mot de passe. Les anciens comptes gardent leur mail comme identifiant, leur mot de passe, leur UUID et leur carnet. Les sessions déjà ouvertes restent valides.
 
-## URL Auth corrigées dans le tableau de bord Supabase
+L’identifiant comporte 3 à 24 lettres ASCII, chiffres, points, tirets ou underscores, sans différence de casse. `supabase/functions/_shared/username.ts`, partagé entre client et serveur, l’encode dans un alias injectif `u-<hex>@users.malagasyadventure.invalid`. Le domaine réservé `.invalid` ne représente jamais une boîte mail. L’alias n’est ni affiché ni utilisé pour du courrier. Aucun compte n’utilisait cet espace réservé avant activation.
 
-Le connecteur ne fournit pas de modification de la configuration Auth. L’accès à Chrome a ensuite fonctionné le 28 octobre 2026 : **Site URL et les huit redirections ci-dessous sont maintenant enregistrées et vérifiées dans le tableau de bord.** Le lien reçu par l’utilisateur pointait encore vers `http://localhost:3000`, valeur initiale du projet. Le service SMTP personnalisé reste à configurer.
+Le navigateur appelle **`username-signup`**, fonction Edge déployée. Elle vérifie l’origine navigateur, la clé publiable, la taille et le format de la requête, puis prend un quota atomique côté Postgres. Elle crée uniquement un alias interne avec `auth.admin.createUser` et `email_confirm: true`, sans prétendre confirmer un vrai mail. La clé privilégiée reste dans l’environnement Supabase, jamais dans le site, le dépôt ou une réponse. Le résultat est seulement `{ok:true}` ou un code d’erreur stable. Le navigateur se connecte ensuite par `signInWithPassword` avec la gestion normale des sessions Auth.
 
-Dans [Authentication → URL Configuration](https://supabase.com/dashboard/project/unpvrisziuttjmzhwyid/auth/url-configuration), Site URL est désormais :
+La fonction est accessible avant connexion (`verify_jwt = false`), condition nécessaire à l’inscription avec une clé publiable moderne. Son corps vérifie la clé publique, valide strictement les entrées et ne permet aucune lecture, modification, suppression ou récupération de compte. Le mot de passe, de 8 à 128 caractères pour les nouveaux comptes, est transmis uniquement à Auth, sans stockage dans les tables applicatives ni les journaux du code.
 
-```text
-https://malagasyadventure.netlify.app
-```
+La migration `20261029065147_username_signup_limits.sql` crée `malagasy_private.username_signup_limits` et `consume_username_signup_limit`. La table est hors des schémas exposés, avec RLS et sans accès client. La fonction est `SECURITY INVOKER`, exécutable uniquement par `service_role`. Un verrou transactionnel rend atomiques les plafonds : cinq tentatives par fenêtre de quinze minutes et empreinte d’IP ; cent par jour UTC pour le projet. Les fenêtres anciennes sont purgées après deux jours lors des appels. L’IP brute n’est pas stockée : l’empreinte est un HMAC-SHA256 avec une clé serveur. Le contrôle par IP dépend de l’en-tête transmis par la gateway ; le plafond global en est indépendant. Le fichier a d’abord été créé par `supabase migration new`, puis aligné sur le numéro d’historique MCP serveur.
 
-Les redirections autorisées enregistrées correspondent au site et aux ports du dépôt :
+**Aucun SMTP n’est nécessaire au parcours actuel.** Les confirmations globales des vrais mails n’ont pas été désactivées. Sans mail, les nouveaux comptes n’ont pas de récupération automatique du mot de passe ; l’interface le précise et rappelle l’export. Les anciens retours `PASSWORD_RECOVERY` sont toujours traités pour les liens encore valides, sans proposer de nouvel envoi.
 
-```text
-https://malagasyadventure.netlify.app/
-https://malagasyadventure.netlify.app/malagasy-adventure
-http://127.0.0.1:5174/
-http://127.0.0.1:5174/malagasy-adventure
-http://127.0.0.1:4174/
-http://127.0.0.1:4174/malagasy-adventure
-http://127.0.0.1:4184/
-http://127.0.0.1:4184/malagasy-adventure
-```
+## Sauvegarde privée et compatibilité
 
-L’app envoie explicitement `/malagasy-adventure` sur l’origine courante comme destination après confirmation ou récupération. Elle traite les retours Supabase `PASSWORD_RECOVERY`, affiche le formulaire du nouveau mot de passe et signale les liens invalides/expirés. Le flux navigateur est implicite avec détection de session par le SDK ; aucune route serveur n’est nécessaire.
+La migration `20261028183929_learning_progress.sql` reste inchangée : table `learning_progress`, politiques RLS et fonction atomique `save_learning_progress`. Les mots de passe ne font jamais partie du JSON v1.
 
-Dans [Authentication → SMTP](https://supabase.com/dashboard/project/unpvrisziuttjmzhwyid/auth/smtp), configurer un fournisseur mail et une adresse expéditrice autorisée. Aucun fournisseur ou identifiant SMTP n’a été fourni, donc **l’envoi public n’est pas configuré**. Le service intégré est limité aux adresses des membres de l’organisation et à un faible quota ; il ne suffit pas pour ouvrir inscription et récupération au public. Conserver la confirmation d’adresse activée. Adapter la longueur minimale serveur à 8 caractères ou plus ; le formulaire impose déjà 8 caractères et une confirmation pour les nouveaux mots de passe.
+- Sans compte : clé locale existante, rappel non bloquant, export/import.
+- Avec compte : cache local par UUID, puis sauvegarde différée et sérialisée.
+- Deux carnets différents : comparaison, export préalable possible et choix explicite.
+- Deux appareils : contrôle atomique de révision ; une écriture périmée est refusée.
+- Perte réseau : cache conservé et reprise au retour en ligne ou par synchronisation manuelle.
+- Déconnexion : retour au carnet découverte, sans transférer les acquis au compte suivant.
 
-Une fois ces réglages effectués, vérifier avec une adresse contrôlée : inscription → mail reçu → confirmation → connexion ; puis mot de passe oublié → mail reçu → nouveau mot de passe → reconnexion. Aucun vrai mail ni compte personnel n’a été créé pendant les tests automatiques.
+Le client ne contient que l’URL et la clé publiable. Pour un autre projet, les variables Vite ne suffisent pas : appliquer les migrations et déployer aussi la fonction en adaptant sa clé publique et ses origines. Ne jamais placer un secret dans `VITE_*`.
 
-Le compte créé par l’utilisateur est déjà confirmé dans Auth (un compte confirmé, aucun en attente à la vérification). Un clic sur un lien peut valider l’adresse avant d’échouer sur l’ancienne destination locale : revenir sur le site et essayer la connexion évite de recréer le compte. Le lien personnel et son jeton n’ont pas été ouverts ni enregistrés par l’agent. La correction des URL prend effet côté Supabase sans redéploiement Netlify.
+## Redirections existantes
 
-## Comportement de sauvegarde
+Site URL : `https://malagasyadventure.netlify.app`. Les destinations `/` et `/malagasy-adventure` sont autorisées sur cette origine ainsi que sur `http://127.0.0.1` aux ports 5174, 4174 et 4184. Leur vérification du 28 octobre a confirmé qu’un ancien `localhost:3000` non autorisé retombe sur la bonne origine. L’inscription actuelle n’utilise aucun lien de confirmation.
 
-- Sans compte : progression dans la clé locale v1 existante ; rappel non bloquant et export/import disponibles.
-- Avec compte : cache local séparé par UUID, puis sauvegarde Supabase différée et sérialisée ; état visible dans Mon compte.
-- Deux carnets différents : comparaison des leçons, XP et dates, export préalable possible, choix explicite du carnet appareil ou compte.
-- Deux appareils écrivant en même temps : révision serveur contrôlée atomiquement ; un conflit suspend la sauvegarde plutôt que de remplacer silencieusement le carnet distant.
-- Perte réseau : cache local conservé, reprise au retour en ligne/à l’onglet ou par « Synchroniser maintenant ».
-- Déconnexion : retour au carnet de découverte ; le carnet du compte reste dans son cache séparé. Le compte suivant ne reçoit pas les acquis du compte précédent.
+## Vérifications effectuées
 
-## Vérification serveur réalisée
+Le 29 octobre, un compte jetable créé via la vraie fonction a été connecté puis reconnecté avec le même UUID. La création du même identifiant renvoie 409. La sauvegarde et la lecture de son carnet fonctionnent ; une révision périmée est refusée ; les accès anonymes au carnet et l’accès au limiteur depuis un utilisateur sont refusés. Les sessions ont été déconnectées et le compte test supprimé : le compte d’origine demeure seul.
 
-Tests transactionnels annulés à la fin : création et modification par le propriétaire, incrément de révision, refus d’une révision périmée, absence de lecture et modification par un second utilisateur, refus d’écriture sous un autre UUID, refus des accès anonyme table/RPC. Toutes les assertions passent et la table reste vide après rollback. Les conseillers Supabase sécurité et performance n’ont renvoyé aucune alerte après la migration.
+Des assertions SQL annulées après test vérifient le sixième essai refusé et le plafond journalier. Aucune alerte de performance. Le conseiller sécurité signale l’absence volontaire de politique RLS sur la table privée, inaccessible aux clients, et la protection contre les mots de passe compromis non activée dans la configuration Auth existante. Les autorisations de progression n’ont pas été élargies.
 
-Les parcours navigateur utilisent une interception réseau Supabase pour tester les états d’interface et les liens de récupération sans envoyer de courrier. Ils ne prouvent pas la délivrabilité des mails du fournisseur réel. La publication du nouveau code sur Netlify reste une étape distincte.
+Les tests navigateur couvrent les formulaires, le mode découverte, les anciens comptes, les conflits, les sessions et les anciens retours de récupération avec des réponses contrôlées. Le test réel distinct valide la fonction déployée et le stockage privé sans envoyer de courrier.
 
-Documentation vérifiée : [authentification par mot de passe](https://supabase.com/docs/guides/auth/passwords), [redirections](https://supabase.com/docs/guides/auth/redirect-urls), [limites des tests hébergés et du service mail intégré](https://supabase.com/docs/guides/auth/testing-auth-flows), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).
+Documentation vérifiée : [Auth par mot de passe](https://supabase.com/docs/guides/auth/passwords), [création côté serveur](https://supabase.com/docs/reference/javascript/auth-admin-createuser), [secrets des fonctions](https://supabase.com/docs/guides/functions/secrets), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).

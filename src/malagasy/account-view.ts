@@ -2,9 +2,10 @@ import { icon } from './art';
 import { escapeHtml as e } from './exercise-view';
 import type { Progress } from './types';
 
-export type AccountMode = 'login' | 'signup' | 'forgot' | 'reset';
+export type AccountMode = 'login' | 'signup' | 'reset';
 export interface AccountViewState {
   configured: boolean;
+  /** Display identifier; the legacy property name also supports existing UI integrations. */
   email: string | null;
   status: string;
   busy: boolean;
@@ -16,16 +17,15 @@ export interface AccountViewState {
 
 const titles: Record<AccountMode, string> = {
   login: 'Retrouvez votre voyage.', signup: 'Un compte pour votre carnet.',
-  forgot: 'Retrouver votre accès.', reset: 'Un nouveau mot de passe.',
+  reset: 'Un nouveau mot de passe.',
 };
 const descriptions: Record<AccountMode, string> = {
   login: 'Connectez-vous pour sauvegarder votre progression et la retrouver sur un autre appareil.',
-  signup: 'Créez votre compte avec votre adresse e-mail. Votre aventure reste à votre rythme.',
-  forgot: 'Recevez un lien par e-mail pour choisir un nouveau mot de passe.',
+  signup: 'Un identifiant, un mot de passe, et votre progression vous suit.',
   reset: 'Choisissez un nouveau mot de passe pour votre compte.',
 };
 const submits: Record<AccountMode, string> = {
-  login: 'Se connecter', signup: 'Créer mon compte', forgot: 'Recevoir le lien', reset: 'Enregistrer le mot de passe',
+  login: 'Se connecter', signup: 'Créer mon compte', reset: 'Enregistrer le mot de passe',
 };
 
 function notice(state: AccountViewState): string {
@@ -48,7 +48,10 @@ function accountForm(state: AccountViewState): string {
   const mode = state.mode;
   const newPassword = mode === 'signup' || mode === 'reset';
   const disabled = state.busy || !state.configured;
-  return `<form id="ma-account-form" class="ma-account-form" aria-busy="${state.busy}" ${state.message ? 'aria-describedby="ma-account-message"' : ''}><fieldset ${disabled ? 'disabled' : ''}><legend class="ma-account-sr-only">${e(titles[mode])}</legend>${mode !== 'reset' ? `<label for="ma-account-email">Adresse e-mail<input id="ma-account-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" maxlength="254" placeholder="vous@exemple.fr" required></label>` : ''}${mode !== 'forgot' ? `<label for="ma-account-password">${newPassword ? 'Nouveau mot de passe' : 'Mot de passe'}<input id="ma-account-password" name="password" type="password" autocomplete="${newPassword ? 'new-password' : 'current-password'}" ${newPassword ? 'minlength="8" aria-describedby="ma-account-password-help"' : ''} required></label>${newPassword ? '<p id="ma-account-password-help" class="ma-account-field-help">Au moins 8 caractères.</p><label for="ma-account-password-confirm">Confirmer le mot de passe<input id="ma-account-password-confirm" name="passwordConfirm" type="password" autocomplete="new-password" minlength="8" required></label>' : ''}` : ''}<button class="ma-primary" type="submit">${state.busy ? 'Un instant…' : submits[mode]} ${icon('arrow', 17)}</button></fieldset></form>${mode === 'login' ? `<div class="ma-account-form-links"><button type="button" class="ma-text-link" data-action="account-mode" data-mode="forgot" ${state.busy ? 'disabled' : ''}>Mot de passe oublié ?</button><button type="button" class="ma-text-link" data-action="account-mode" data-mode="signup" ${state.busy ? 'disabled' : ''}>Créer un compte</button></div>` : mode !== 'reset' ? `<button type="button" class="ma-text-link" data-action="account-mode" data-mode="login" ${state.busy ? 'disabled' : ''}>J’ai déjà un compte : me connecter</button>` : ''}`;
+  const identifier = mode === 'reset' ? '' : `<label for="ma-account-identifier">Identifiant<input id="ma-account-identifier" name="identifier" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" ${mode === 'signup' ? 'minlength="3" maxlength="24" pattern="[a-zA-Z0-9._\\-]{3,24}"' : 'maxlength="254"'} aria-describedby="ma-account-identifier-help" placeholder="${mode === 'signup' ? 'Votre identifiant' : 'Votre identifiant ou votre ancien mail'}" required></label><p id="ma-account-identifier-help" class="ma-account-field-help">${mode === 'signup' ? '3 à 24 caractères : lettres sans accent, chiffres, point, tiret ou _ . Majuscules et minuscules sont équivalentes.' : 'Compte créé avec une adresse mail ? Utilisez-la comme identifiant.'}</p>`;
+  const password = `<label for="ma-account-password">${mode === 'reset' ? 'Nouveau mot de passe' : 'Mot de passe'}<input id="ma-account-password" name="password" type="password" autocomplete="${newPassword ? 'new-password' : 'current-password'}" ${newPassword ? 'minlength="8" maxlength="128" aria-describedby="ma-account-password-help"' : ''} required></label>${newPassword ? '<p id="ma-account-password-help" class="ma-account-field-help">8 à 128 caractères.</p>' : ''}`;
+  const confirmation = mode === 'reset' ? '<label for="ma-account-password-confirm">Confirmer le mot de passe<input id="ma-account-password-confirm" name="passwordConfirm" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></label>' : '';
+  return `<form id="ma-account-form" class="ma-account-form" aria-busy="${state.busy}" ${state.message ? 'aria-describedby="ma-account-message"' : ''}><fieldset ${disabled ? 'disabled' : ''}><legend class="ma-account-sr-only">${e(titles[mode])}</legend>${identifier}${password}${confirmation}${mode === 'signup' ? '<p class="ma-account-field-help ma-account-access-note">Gardez votre identifiant et votre mot de passe : sans adresse mail, ils ne peuvent pas être récupérés. Vous pouvez toujours exporter votre progression.</p>' : ''}<button class="ma-primary" type="submit">${state.busy ? 'Un instant…' : submits[mode]} ${icon('arrow', 17)}</button></fieldset></form>${mode === 'login' ? `<div class="ma-account-form-links"><button type="button" class="ma-text-link" data-action="account-mode" data-mode="signup" ${state.busy ? 'disabled' : ''}>Créer un compte</button></div>` : mode !== 'reset' ? `<button type="button" class="ma-text-link" data-action="account-mode" data-mode="login" ${state.busy ? 'disabled' : ''}>J’ai déjà un compte : me connecter</button>` : ''}`;
 }
 
 export function renderAccountPage(state: AccountViewState): string {

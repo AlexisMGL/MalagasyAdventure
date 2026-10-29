@@ -58,7 +58,9 @@ Le nouveau dépôt peut être importé comme **nouveau projet Netlify Free** apr
 
 Un domaine ou port différent possède son propre stockage navigateur. Pour retrouver une progression existante, utiliser **Ma sauvegarde → Exporter** dans l’ancienne copie puis **Importer** dans la nouvelle. Les IDs, clés et le format v1 restent inchangés.
 
-Le **mode découverte** permet de commencer immédiatement sans compte. **Mon compte** propose inscription, connexion mail/mot de passe et récupération du mot de passe. Un compte sauvegarde le carnet sur Supabase ; l’import/export reste disponible. Le projet Supabase indépendant est créé avec ses politiques d’accès privées. Les mails publics et leurs redirections demandent encore la configuration décrite dans [SUPABASE.md](docs/SUPABASE.md).
+Le **mode découverte** permet de commencer immédiatement sans compte. **Mon compte** propose un identifiant et un mot de passe, sans mail ni confirmation. Les anciens comptes utilisent leur mail comme identifiant. Le carnet privé est sauvegardé sur Supabase ; l’import/export reste disponible. Sans adresse mail, les nouveaux comptes n’ont pas de récupération automatique du mot de passe. L’inscription est opérationnelle sans SMTP ni configuration Brevo ; voir [SUPABASE.md](docs/SUPABASE.md).
+
+Les 24 parties d’apprentissage commencent par de petites fiches : une notion, une règle courte et des exemples à écouter. Ces 59 pense-bêtes restent consultables pendant les dialogues ; les quiz se déroulent sans aide.
 
 ## Documentation et consignes
 

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { readMiniLesson } from './lesson-flow';
 import { CONTENT } from '../src/malagasy/content';
 import { completeLesson, createProgress, introduceLesson, lessonAvailable, recordAnswer } from '../src/malagasy/engine';
 import { parseSave, serializeSave } from '../src/malagasy/storage';
@@ -104,6 +105,7 @@ async function importAndOpenLesson(page: Page, lesson: Lesson): Promise<number> 
   await page.locator('[data-action="find-current-step"]').click();
   const before = (await audit(page)).records.length;
   await lessonButton.click();
+  await readMiniLesson(page);
   await expect(page.locator('.ma-dialogue-discovery')).toBeVisible();
   return before;
 }

@@ -4,6 +4,8 @@ Les algorithmes sont dans `src/malagasy/engine.ts`. Ils fonctionnent sur les IDs
 
 Le monde 1 publié fournit 44 concepts et 288 activités réparties dans 36 leçons. Son extension conserve les neuf leçons initiales et les identifiants déjà présents dans les sauvegardes v1 ; les notions des nouvelles unités ne deviennent révisables qu’après leur découverte. Les unités 11 et 12 consolident des acquis existants, sans introduire de concepts pour la seule quantité.
 
+La mini-leçon ajoutée le 29 octobre est un état transitoire de présentation, sans changement du schéma v1. Lire une fiche, écouter un exemple ou quitter le dialogue ne marque aucun nouveau concept comme introduit. L’ouverture à l’entraînement se fait toujours au passage aux exercices, après les scènes ; les quiz et révisions restent sans pense-bête.
+
 ## Maîtrise individuelle
 
 Présenter un concept crée un état `introduced: true`, mais **aucune maîtrise n’est accordée à sa seule présentation**. Une réponse met à jour chaque concept associé : nombre d’essais, réussites, erreurs, série de journées de rappel réussi, estimation de maîtrise, dernière pratique et prochaine révision.

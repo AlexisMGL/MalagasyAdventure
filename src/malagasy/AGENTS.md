@@ -31,10 +31,10 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 
 ## Apprentissage par la conversation
 
-- **Faire apparaître les mots dans des dialogues en premier.** Introduire vocabulaire et constructions à travers une rencontre illustrée avant de demander leur rappel.
+- **Demande du 29 octobre 2026 : présenter les nouvelles notions avant leurs dialogues.** Une mini-leçon sans dialogue, au format pense-bête, explique une notion à la fois avec une règle courte, des exemples traduits et leurs prononciations. Garder ces fiches consultables à côté du dialogue introductif (au-dessus sur mobile). Cette demande remplace la priorité historique au dialogue en premier ; les dialogues restent le lieu de mise en pratique.
 - Centrer les exercices sur les échanges de personnages : comprendre, choisir sa réplique, compléter une réponse et reconstruire une phrase dite dans la scène.
 - Limiter le français à une consigne courte, une traduction accessible à la demande et une aide utile après une erreur. Éviter les longs textes pédagogiques qui encadrent chaque question.
-- Conserver les explications grammaticales en aide facultative ; ne pas les afficher comme un préalable massif à chaque leçon.
+- Les fiches préalables restent simples et mémorisables ; les explications longues restent dans l’aide facultative. Couvrir aussi les mots-outils, possessifs, sujets et constructions apparaissant dans les phrases, même lorsqu’ils sont regroupés dans un concept plus large.
 - Réutiliser les mots déjà rencontrés dans de nouvelles conversations cohérentes. Aucun concept inconnu dans une révision ordinaire.
 - Ne pas rendre une notion éligible au Centre de révision au premier écran si son dialogue d’introduction n’a pas été parcouru. Une scène interrompue ne vaut pas introduction de toute la leçon.
 - Maintenir les personnages récurrents et les petites histoires contextualisées. Les scènes fictives peuvent combiner des expressions vérifiées sans prétendre transcrire un échange natif.
@@ -112,11 +112,11 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 - Les schémas typés et **IDs stables**, jamais les positions de tableaux, relient mondes, unités, leçons, exercices, concepts, dialogues, sources et assets.
 - Ajouter un monde principalement par ses données ; enregistrer un nouveau format via rendu, validateur et contrôles dédiés. Pas de conditions propres au monde 1 dans les moteurs génériques.
 - Éviter les gros fichiers qui mêlent corpus et logique, les dépendances inutiles et les infrastructures spéculatives.
-- Demande du 28 octobre 2026 : proposer un compte Supabase par mail/mot de passe, récupération par mail et sauvegarde privée de progression. Garder le mode découverte sans compte, la sauvegarde locale et l’export/import v1. Cette demande remplace les anciennes exclusions des comptes et du cloud.
+- Demande du 29 octobre 2026 : simplifier le compte à un identifiant et un mot de passe, sans adresse mail demandée ni confirmation. Les anciens comptes utilisent leur mail comme identifiant et gardent leur UUID/progression. Cette demande remplace l’inscription et la récupération par mail demandées le 28 octobre. Garder le mode découverte, la sauvegarde locale et l’export/import v1. Ne jamais stocker un mot de passe dans le carnet ; créer les alias internes uniquement côté Supabase avec protection contre les créations abusives. Sans mail, les nouveaux comptes n’ont pas de récupération automatique du mot de passe.
 - L’export JSON comprend progression, paramètres, XP/niveaux dérivés, réussites, séries, maîtrise, échéances, historique et dates. Valider et prévisualiser l’import, puis demander confirmation avant remplacement ; refuser les données corrompues ou malveillantes.
 - Conserver un numéro de schéma et des migrations explicites lors d’une évolution incompatible. Ne pas renommer les IDs livrés sans migration ; préserver les anciennes sauvegardes.
 - Prévenir de la portée locale des données et permettre une sauvegarde portable. Conserver une copie de récupération des données locales illisibles lorsque c’est possible.
-- Multijoueur, classements, tuteur IA, abonnements, mobile natif et scoring vocal avancé restent des pistes futures. Aucun faux service annoncé comme actif. La disponibilité publique des mails dépend du SMTP et des URL Auth du projet dédié ; ne pas prétendre qu’ils sont configurés sans vérification.
+- Multijoueur, classements, tuteur IA, abonnements, mobile natif et scoring vocal avancé restent des pistes futures. Aucun faux service annoncé comme actif. L’inscription actuelle ne dépend pas d’un SMTP ; ne pas réintroduire une demande de configuration Brevo pour utiliser le compte.
 
 ## Vérification
 

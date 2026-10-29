@@ -5,6 +5,7 @@ import { CloudProgressSync, type CloudSyncState } from './cloud-sync';
 import { loadProgress, loadAccountProgress, saveAccountProgress } from './storage';
 import { supabase, cloudTransport, authErrorMessage } from './supabase';
 import type { AccountMode, AccountViewState } from './account-view';
+import { accountIdentifier, loginEmail, normalizeUsername, usernameEmail } from './account-identity';
 
 interface AccountOptions {
   getProgress(): Progress;
@@ -36,8 +37,8 @@ export class MalagasyAccount {
     const parameters = new URLSearchParams(location.hash.slice(1));
     const callbackError = parameters.has('error') || parameters.has('error_code');
     if (callbackError) {
-      this.state.mode = 'forgot'; this.state.error = true;
-      this.state.message = 'Ce lien est invalide ou a expiré. Demandez un nouveau lien par mail.';
+      this.state.mode = 'login'; this.state.error = true;
+      this.state.message = 'Ce lien est invalide ou a expiré. Connectez-vous avec votre identifiant et votre mot de passe.';
       history.replaceState(null, '', `${location.pathname}#account`);
       this.options.onOpen();
     }
@@ -68,7 +69,7 @@ export class MalagasyAccount {
     if (!this.userId) this.guestProgress = this.options.getProgress();
     if (this.userId) saveAccountProgress(this.options.getProgress(), this.userId);
     this.sync?.stop(); this.sync = null;
-    this.userId = id; this.state.email = session?.user.email ?? null;
+    this.userId = id; this.state.email = session ? accountIdentifier(session.user.email) : null;
     this.state.conflict = undefined;
     if (!id || !supabase) {
       this.state.mode = 'login'; this.state.status = 'Mode découverte · sauvegarde locale';
@@ -102,28 +103,44 @@ export class MalagasyAccount {
   async submit(form: HTMLFormElement): Promise<void> {
     if (!supabase || this.state.busy) return;
     const values = new FormData(form), mode = this.state.mode;
-    const email = String(values.get('email') ?? '').trim();
+    const identifier = String(values.get('identifier') ?? '');
     const password = String(values.get('password') ?? '');
-    if ((mode === 'signup' || mode === 'reset') && (password.length < 8 || password !== values.get('passwordConfirm'))) {
-      this.state.message = password.length < 8 ? 'Choisissez un mot de passe d’au moins 8 caractères.' : 'Les deux mots de passe doivent être identiques.';
+    if ((mode === 'signup' || mode === 'reset') && (password.length < 8 || password.length > 128)) {
+      this.state.message = 'Choisissez un mot de passe de 8 à 128 caractères.';
+      this.state.error = true; this.options.onChange(); return;
+    }
+    if (mode === 'reset' && password !== values.get('passwordConfirm')) {
+      this.state.message = 'Les deux mots de passe doivent être identiques.';
+      this.state.error = true; this.options.onChange(); return;
+    }
+    let email = '', username = '';
+    try {
+      if (mode === 'signup') { username = normalizeUsername(identifier); email = usernameEmail(username); }
+      else if (mode === 'login') email = loginEmail(identifier);
+    } catch (error) {
+      this.state.message = (error as Error).message;
       this.state.error = true; this.options.onChange(); return;
     }
     this.state.busy = true; this.state.message = ''; this.state.error = false; this.options.onChange();
-    const redirectTo = new URL('/malagasy-adventure', location.origin).href;
     try {
       if (mode === 'login') {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         this.changeSession(data.session); this.state.message = 'Vous êtes connecté.';
       } else if (mode === 'signup') {
-        const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: redirectTo } });
+        const { data: result, error: creationError } = await supabase.functions.invoke('username-signup', { body: { username, password } });
+        if (creationError) {
+          let code: unknown;
+          try { code = (await (creationError.context as Response).json()).code; } catch { /* No readable server response. */ }
+          if (typeof code === 'string') throw { code };
+          throw creationError;
+        }
+        if (result?.ok !== true) throw { code: 'signup_unavailable' };
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         this.changeSession(data.session);
-        this.state.message = data.session ? 'Votre compte est prêt.' : 'Si cette adresse peut être inscrite, un mail de confirmation vous a été envoyé. Consultez aussi vos indésirables.';
-      } else if (mode === 'forgot') {
-        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
-        if (error) throw error;
-        this.state.message = 'Si un compte correspond à cette adresse, un lien de réinitialisation vous a été envoyé.';
+        this.state.message = data.session ? 'Votre compte est prêt.' : 'Votre compte a été créé. Connectez-vous avec votre identifiant et votre mot de passe.';
+        this.state.error = !data.session;
       } else {
         const { error } = await supabase.auth.updateUser({ password });
         if (error) throw error;

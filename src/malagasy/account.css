@@ -19,6 +19,7 @@
 .ma-account-form .ma-primary{justify-content:space-between;margin-top:7px;min-height:48px}
 .ma-account-form fieldset:disabled{opacity:.65}
 .ma-account-panel .ma-account-field-help{font-size:11px;line-height:1.6;margin:-11px 0 0;color:#6c7f5c}
+.ma-account-panel .ma-account-access-note{margin:0;padding:12px 14px;border-radius:5px;background:#f4f6ec;line-height:1.7}
 .ma-account-form-links{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin-top:24px}
 .ma-account-panel>.ma-text-link{margin-top:24px}
 .ma-account-form-links .ma-text-link,.ma-account-panel>.ma-text-link{font-size:12px;line-height:1.6}

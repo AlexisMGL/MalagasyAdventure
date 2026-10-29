@@ -73,6 +73,22 @@ describe('Verified full-phrase dialogue playback', () => {
     media[0].fire('ended'); expect(await replay).toBe('ended');
   });
 
+  it('interrupts a reminder without replaying the dialogue that was already visible', async () => {
+    const { player, media } = fixture();
+    player.sync('scene-1', [hello], { autoplay: true }); await tick();
+    const reminder = player.replay({ ...thanks, key: 'notion:example' }, .75); await tick();
+    expect(media).toHaveLength(2);
+    expect(media[0].cleared).toBe(true);
+    player.interrupt();
+    expect(await reminder).toBe('cancelled');
+    expect(media[1].cleared).toBe(true);
+    player.sync('scene-1', [hello, thanks], { autoplay: true }); await tick();
+    expect(media).toHaveLength(3);
+    expect(media[2].url).toBe('/audio/misaotra.ogg');
+    expect(media[2].playbackRate).toBe(.75);
+    player.stop();
+  });
+
   it('cancels the active clip and queued lines on context changes; stale events cannot progress a new scene', async () => {
     const { player, media, events } = fixture();
     player.sync('scene-1', [hello, thanks], { autoplay: true }); await tick();

@@ -1,0 +1,6 @@
+project_id = "malagasy-adventure"
+
+# Signup occurs before a user has a session. The body validates the public app key,
+# limits requests and exposes only internal-username account creation.
+[functions.username-signup]
+verify_jwt = false

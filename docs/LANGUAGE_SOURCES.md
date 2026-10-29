@@ -25,6 +25,8 @@ Les différents miroirs du dictionnaire pointent vers la même ressource : ils n
 
 ## Décisions pédagogiques
 
+Depuis la demande du 29 octobre 2026, les nouvelles notions passent par des fiches courtes avant leurs dialogues : 59 pense-bêtes et 126 exemples. Les explications déplient le corpus existant (notamment possessifs, sujet, article et localisation) et conservent les références internes des concepts. Les exemples réutilisent uniquement des enregistrements entiers existants ; aucune nouvelle phonétique ni voix n’est inventée pour remplir une fiche. Les références restent affichées uniquement dans Sources & crédits.
+
 Le corpus vise le malgache standard d’initiation. Il ne prétend pas représenter toutes les pratiques régionales ou tous les registres. Les références anciennes sont recoupées lorsque possible ; une source publiée n’équivaut pas à une validation actuelle par un enseignant natif.
 
 - Unité 1 : saluer, prendre congé, remercier, demander avec politesse ; eny/tsia et adresse respectueuse. Deux repères de lecture remplacent une prétendue notation de prononciation.

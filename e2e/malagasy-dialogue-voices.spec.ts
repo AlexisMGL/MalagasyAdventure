@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { readMiniLesson } from './lesson-flow';
 
 interface VoiceRecord { source: string; events: string[]; duration: number; rate: number }
 interface VoiceAudit { records: VoiceRecord[]; active: number; maxConcurrent: number; synthCalls: number }
@@ -39,6 +40,7 @@ async function openFirstDialogue(page: Page): Promise<void> {
   await page.goto('/malagasy-adventure');
   await page.locator('.ma-world-hero').waitFor();
   await page.locator('[data-action="continue"]').click();
+  await readMiniLesson(page);
   await expect(page.locator('.ma-dialogue-discovery')).toBeVisible();
 }
 async function toPractice(page: Page): Promise<void> {

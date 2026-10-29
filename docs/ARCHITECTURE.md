@@ -16,7 +16,9 @@ Malagasy Adventure est une application autonome en TypeScript strict, DOM natif 
 | `src/malagasy/world-path.ts`, `world-path.css` | Chemin des 36 étapes du monde 1 ; états courant, disponible, validé et verrouillé dérivés du moteur de progression. |
 | `src/malagasy/engine.ts` | Réponses acceptées, déblocage, mélange, maîtrise, révisions, XP et validation du contenu. |
 | `src/malagasy/storage.ts` | Chargement, sérialisation et validation du schéma de sauvegarde. |
-| `src/malagasy/account.ts`, `account-view.ts`, `account.css` | Compte mail/mot de passe, inscription, récupération et choix explicite entre deux carnets. |
+| `src/malagasy/account.ts`, `account-view.ts`, `account.css`, `account-identity.ts` | Compte identifiant/mot de passe, compatibilité des anciens comptes mail et choix explicite entre deux carnets. |
+| `supabase/functions/username-signup/`, `supabase/functions/_shared/username.ts` | Inscription sans mail, alias interne partagé, création Auth côté serveur et limitation privée des tentatives. |
+| `src/malagasy/notion-cards.ts` | 59 pense-bêtes pour les 24 parties : règles brèves, exemples traduits et sons entiers existants. |
 | `src/malagasy/cloud-sync.ts` | Synchronisation différée et sérialisée, validation v1, révisions et conflits entre appareils. |
 | `src/malagasy/supabase.ts`, `supabase/migrations/` | Client public, transport et schéma Postgres privé par utilisateur avec RLS. |
 | `src/malagasy/history-curriculum.ts` | Fil culturel des vingt mondes dès Antananarivo, résumés des escales, reprises progressives et sources historiques des crédits. Les mondes futurs restent verrouillés. |
@@ -43,7 +45,7 @@ Le contenu peut être subdivisé en fichiers de données sans modifier le contra
 ## Flux d’apprentissage
 
 1. La vue demande au moteur si les prérequis de la leçon sont satisfaits.
-2. Les expressions sont découvertes dans les scènes de Lova et Mia, tour par tour. Les traductions et les notes grammaticales sont facultatives. Les concepts sont réellement ouverts à l’entraînement lors du passage à la pratique, après cette découverte ; quitter une introduction ne doit pas ajouter toute sa banque aux révisions.
+2. La phase transitoire `notion` présente une fiche à la fois avant le dialogue, avec règle, exemples traduits, écoute normale/lente et rappel mémorisable. Le pense-bête reste consultable à côté des scènes de Lova et Mia (au-dessus sur mobile). Les dialogues sont révélés tour par tour ; leurs traductions et l’aide longue restent facultatives. Les concepts sont réellement ouverts à l’entraînement lors du passage à la pratique, après cette découverte ; quitter une fiche ou une scène ne doit pas ajouter toute sa banque aux révisions. Les quiz et révisions n’affichent pas les fiches.
 3. Les six activités rédigées de la partie conservent leur ordre conversationnel, puis jusqu’à deux rappels antérieurs éligibles sont ajoutés. Le Centre de révision utilise le sélecteur générique ; les quiz utilisent leurs douze activités dédiées.
 4. Le validateur renvoie un résultat ; la vue affiche l’explication préparée dans le contenu.
 5. `recordAnswer` produit un nouvel état, actualise la maîtrise et planifie une révision.
@@ -86,7 +88,9 @@ Il n’existe pas encore de migration entre deux versions de sauvegarde, puisque
 
 Le carnet invité garde sa clé d’origine. Les caches des comptes utilisent cette clé suivie de `.account.<uuid>` ; une déconnexion retrouve le carnet invité, sans transférer le carnet d’un utilisateur au suivant. Une première connexion peut reprendre le carnet invité. `CloudProgressSync` valide les réponses distantes par `parseSave`, charge automatiquement un carnet distant sur un appareil vierge et demande un choix si deux carnets diffèrent. Les requêtes sont sérialisées et portent une révision attendue : une modification concurrente suspend l’envoi jusqu’au choix explicite. Les erreurs réseau conservent le cache local et exposent un état d’attente ; retour en ligne, retour à l’onglet et bouton de synchronisation permettent une reprise. L’arrêt d’une instance invalide ses callbacks et temporisations.
 
-Supabase Auth gère les mots de passe et sessions. La table `learning_progress` ne contient que `user_id`, `progress` v1, `revision` et une date serveur. Les politiques SELECT/INSERT/UPDATE restreignent chaque opération à `auth.uid() = user_id`. L’accès anonyme est révoqué. La fonction de sauvegarde s’exécute en `SECURITY INVOKER`, vérifie aussi l’utilisateur explicitement attendu et applique un contrôle atomique de révision. Le navigateur ne reçoit qu’une clé publiable. Voir [la configuration effective et les limites mail](SUPABASE.md).
+Supabase Auth gère les mots de passe et sessions. Les identifiants normalisés deviennent des alias réservés sous `.invalid` ; l’ancien mail reste transmis tel quel à la connexion. La fonction Edge `username-signup` ne peut créer que ces alias et ne renvoie aucun jeton. Sa clé serveur reste dans l’environnement Supabase. Un quota atomique limite les tentatives par empreinte d’IP et par jour pour tout le projet ; aucune adresse IP brute ni mot de passe n’est stocké dans la table des quotas. Les confirmations globales ne sont pas désactivées pour les vrais mails.
+
+La table `learning_progress` ne contient que `user_id`, `progress` v1, `revision` et une date serveur. Les politiques SELECT/INSERT/UPDATE restreignent chaque opération à `auth.uid() = user_id`. L’accès anonyme est révoqué. La fonction de sauvegarde s’exécute en `SECURITY INVOKER`, vérifie aussi l’utilisateur explicitement attendu et applique un contrôle atomique de révision. Le navigateur ne reçoit qu’une clé publiable. Voir [la configuration effective](SUPABASE.md).
 
 La vue de sauvegarde permet de télécharger cette copie pour examen ; elle n’est pas automatiquement réparée ni présentée comme importable.
 

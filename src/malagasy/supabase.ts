@@ -34,15 +34,20 @@ export function cloudTransport(client: SupabaseClient, userId: string): CloudTra
 export function authErrorMessage(error: unknown): string {
   const code = (error as { code?: string })?.code;
   const messages: Record<string, string> = {
-    invalid_credentials: 'Adresse mail ou mot de passe incorrect.',
-    email_not_confirmed: 'Confirmez votre adresse mail avant de vous connecter.',
-    email_address_not_authorized: 'L’envoi des mails publics n’est pas encore configuré. Réessayez après l’activation du service mail.',
-    over_email_send_rate_limit: 'La limite d’envoi de mails est atteinte. Réessayez plus tard.',
+    invalid_credentials: 'Identifiant ou mot de passe incorrect.',
+    email_not_confirmed: 'Ce compte n’est pas encore accessible. Réessayez plus tard.',
+    email_address_not_authorized: 'La création du compte est indisponible pour le moment. Votre carnet local est conservé.',
+    over_email_send_rate_limit: 'La création du compte est indisponible pour le moment. Réessayez plus tard.',
     over_request_rate_limit: 'Trop de tentatives. Patientez avant de réessayer.',
-    weak_password: 'Choisissez un mot de passe plus robuste, avec au moins 8 caractères.',
+    weak_password: 'Choisissez un mot de passe plus robuste, de 8 à 128 caractères.',
     same_password: 'Choisissez un mot de passe différent du précédent.',
-    otp_expired: 'Ce lien a expiré ou a déjà été utilisé. Demandez un nouveau lien.',
-    user_already_exists: 'Un compte existe déjà avec cette adresse. Essayez de vous connecter.',
+    otp_expired: 'Ce lien a expiré ou a déjà été utilisé. Connectez-vous avec votre identifiant et votre mot de passe.',
+    user_already_exists: 'Cet identifiant est déjà utilisé. Connectez-vous ou choisissez-en un autre.',
+    email_exists: 'Cet identifiant est déjà utilisé. Connectez-vous ou choisissez-en un autre.',
+    username_taken: 'Cet identifiant est déjà utilisé. Connectez-vous ou choisissez-en un autre.',
+    invalid_username: 'Choisissez un identifiant de 3 à 24 caractères : lettres sans accent, chiffres, point, tiret ou _ .',
+    rate_limited: 'Trop de tentatives. Patientez avant de réessayer.',
+    signup_unavailable: 'La création du compte est indisponible pour le moment. Votre carnet local est conservé.',
   };
   return (code && messages[code]) || 'La connexion au service a échoué. Vérifiez votre réseau et réessayez. Votre carnet local est conservé.';
 }

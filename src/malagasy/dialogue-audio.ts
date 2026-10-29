@@ -105,6 +105,8 @@ export class DialogueAudioPlayer {
     this.cancelPlayback(); this.contextKey = null; this.seen.clear();
     this.emit({ state: 'idle' });
   }
+  /** Stop a manual explanation without making the visible dialogue new again. */
+  interrupt(): void { this.cancelPlayback(); this.emit({ state: 'idle' }); }
   set muted(value: boolean) {
     this.isMuted = value;
     if (value) { this.cancelPlayback(); this.emit({ state: 'idle' }); }

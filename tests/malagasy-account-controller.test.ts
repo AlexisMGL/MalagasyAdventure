@@ -1,14 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
+import { FunctionsHttpError, type AuthChangeEvent, type Session } from '@supabase/supabase-js';
 import { MalagasyAccount } from '../src/malagasy/account';
 import { createProgress } from '../src/malagasy/engine';
 import { loadAccountProgress, loadProgress, saveAccountProgress, saveProgress, SAVE_KEY, serializeSave } from '../src/malagasy/storage';
-import { supabase, cloudTransport } from '../src/malagasy/supabase';
+import { supabase, cloudTransport, authErrorMessage } from '../src/malagasy/supabase';
 import type { CloudSnapshot, CloudTransport } from '../src/malagasy/cloud-sync';
 import type { Progress } from '../src/malagasy/types';
+import { usernameEmail } from '../src/malagasy/account-identity';
 
 vi.mock('../src/malagasy/supabase', () => ({
-  supabase: { auth: { onAuthStateChange: vi.fn(), signOut: vi.fn() } },
+  supabase: { auth: { onAuthStateChange: vi.fn(), signOut: vi.fn(), signInWithPassword: vi.fn(), updateUser: vi.fn() }, functions: { invoke: vi.fn() } },
   cloudTransport: vi.fn(), authErrorMessage: vi.fn(() => 'Erreur de connexion.'),
 }));
 
@@ -159,5 +160,82 @@ describe('account controller session boundaries', () => {
     expect(ctx.account.userId).toBeNull();
     expect(ctx.account.state.mode).toBe('login');
     expect(cloudTransport).not.toHaveBeenCalled();
+  });
+});
+
+function accountForm(identifier: string, password = 'Test!Password123', passwordConfirm?: string): HTMLFormElement {
+  const fields = new Map<string, string>([['identifier', identifier], ['password', password]]);
+  if (passwordConfirm !== undefined) fields.set('passwordConfirm', passwordConfirm);
+  vi.stubGlobal('FormData', class { get(key: string) { return fields.get(key) ?? null; } });
+  return {} as HTMLFormElement;
+}
+
+describe('username account submission', () => {
+  it.each(['signup', 'reset'] as const)('rejects an out-of-range new password in %s before calling the server', async mode => {
+    const ctx = setup();
+    ctx.account.setMode(mode);
+    for (const password of ['1234567', 'x'.repeat(129)]) {
+      await ctx.account.submit(accountForm('mia_42', password, password));
+      expect(ctx.account.state.message).toBe('Choisissez un mot de passe de 8 à 128 caractères.');
+      expect(ctx.account.state.error).toBe(true);
+    }
+    expect(supabase!.functions.invoke).not.toHaveBeenCalled();
+    expect(supabase!.auth.updateUser).not.toHaveBeenCalled();
+  });
+
+  it('creates a session with only an identifier and password, without mail redirects', async () => {
+    const ctx = setup();
+    ctx.account.setMode('signup');
+    const email = usernameEmail('mia_42');
+    vi.mocked(supabase!.functions.invoke).mockResolvedValue({ data: { ok: true }, error: null });
+    vi.mocked(supabase!.auth.signInWithPassword).mockResolvedValue({ data: { user: session(ALICE).user, session: { ...session(ALICE), user: { ...session(ALICE).user, email } } }, error: null });
+    await ctx.account.submit(accountForm(' Mia_42 '));
+    expect(supabase!.functions.invoke).toHaveBeenCalledWith('username-signup', { body: { username: 'mia_42', password: 'Test!Password123' } });
+    expect(supabase!.auth.signInWithPassword).toHaveBeenCalledWith({ email, password: 'Test!Password123' });
+    expect(ctx.account.userId).toBe(ALICE);
+    expect(ctx.account.state.email).toBe('mia_42');
+    expect(ctx.account.state.message).toBe('Votre compte est prêt.');
+    expect(ctx.account.state.error).toBe(false);
+  });
+
+  it('uses the same alias for mixed-case username login and keeps old email login', async () => {
+    const ctx = setup();
+    vi.mocked(supabase!.auth.signInWithPassword).mockResolvedValue({ data: { user: session(ALICE).user, session: session(ALICE) }, error: null });
+    await ctx.account.submit(accountForm('MiA_42'));
+    expect(supabase!.auth.signInWithPassword).toHaveBeenLastCalledWith({ email: usernameEmail('mia_42'), password: 'Test!Password123' });
+    await ctx.account.submit(accountForm('Alice@Example.test'));
+    expect(supabase!.auth.signInWithPassword).toHaveBeenLastCalledWith({ email: 'alice@example.test', password: 'Test!Password123' });
+  });
+
+  it('rejects real email signup and malformed names before calling Auth', async () => {
+    const ctx = setup();
+    ctx.account.setMode('signup');
+    await ctx.account.submit(accountForm('alice@example.test'));
+    expect(supabase!.functions.invoke).not.toHaveBeenCalled();
+    expect(ctx.account.state.error).toBe(true);
+    expect(ctx.account.userId).toBeNull();
+  });
+
+  it('does not promise an email or lose the guest save if account creation fails', async () => {
+    const ctx = setup(progress(27));
+    ctx.account.setMode('signup');
+    vi.mocked(supabase!.functions.invoke).mockResolvedValue({ data: null, error: null });
+    await ctx.account.submit(accountForm('mia_42'));
+    expect(ctx.account.state.error).toBe(true);
+    expect(ctx.account.state.message).not.toMatch(/mail|confirm/);
+    expect(ctx.account.userId).toBeNull();
+    expect(ctx.current()).toEqual(progress(27));
+  });
+
+  it('reads the endpoint error code and never logs in after a rejected signup', async () => {
+    const ctx = setup();
+    ctx.account.setMode('signup');
+    const response = new Response(JSON.stringify({ code: 'username_taken', message: 'ignored' }), { status: 409 });
+    vi.mocked(supabase!.functions.invoke).mockResolvedValue({ data: null, error: new FunctionsHttpError(response) });
+    await ctx.account.submit(accountForm('mia_42'));
+    expect(ctx.account.state.error).toBe(true);
+    expect(authErrorMessage).toHaveBeenLastCalledWith({ code: 'username_taken' });
+    expect(supabase!.auth.signInWithPassword).not.toHaveBeenCalled();
+    expect(ctx.account.userId).toBeNull();
   });
 });

@@ -4,7 +4,7 @@
 
 Le dépôt autonome livre le **monde 1 complet, Antananarivo** : 12 unités, 36 leçons, 96 scènes de Lova et Mia, 288 activités, 44 concepts et 92 fiches de vocabulaire. Chaque unité se termine par douze questions ; le quiz de l’unité 12 conclut le monde après validation des prérequis. Les mondes 2–20 restent planifiés et verrouillés.
 
-Le chemin visuel de world-path.ts et world-path.css montre les 36 étapes, les parties et les quiz, la prochaine étape accessible, les validations et les verrous. Le tracé se construit à partir de la progression existante. Les compteurs du parcours ne sont pas présentés comme une maîtrise durable de la langue.
+Le chemin visuel de world-path.ts et world-path.css montre les 36 étapes, les parties et les quiz, la prochaine étape accessible, les validations et les verrous. Le tracé se construit à partir de la progression existante. Les compteurs du parcours ne sont pas présentés comme une maîtrise durable de la langue. Depuis la demande du 29 octobre, les 24 parties commencent par des pense-bêtes : 59 fiches et 126 exemples à écouter, puis un rappel consultable à côté du dialogue introductif.
 
 L’extension conserve les premiers IDs et le schéma de sauvegarde v1. Une sauvegarde des neuf leçons initiales reprend à l’unité 4 sans perdre ses acquis. La sauvegarde locale, l’export/import contrôlé, les rappels cumulatifs, les plafonds d’XP, les raccourcis chiffres/Entrée, le mobile, le muet et le mouvement réduit restent applicables.
 
@@ -19,7 +19,7 @@ La construction reste statique Vite/TypeScript, compatible Netlify. Ces modifica
 - Le parcours est composé de conversations guidées écrites. Il ne simule ni reconnaissance vocale, ni notation de prononciation, ni tuteur conversationnel génératif.
 - La maîtrise est une heuristique locale ; plusieurs journées de rappel restent nécessaires. Les XP et les médailles du chemin ne certifient pas la rétention.
 - Les licences et restrictions non commerciales d’OmniVoice, ainsi que les accords de son codec, restent à respecter. Les notices sont dans Sources & crédits et avec les fichiers publiables.
-- Le mode découverte conserve sa sauvegarde locale et l’export/import. Un compte Supabase facultatif ajoute la sauvegarde privée et la reprise sur un autre appareil. Les formulaires mail/mot de passe et la récupération sont implémentés ; les redirections Auth vers Netlify sont enregistrées. Le SMTP personnalisé pour l’envoi public reste à configurer. Voir [SUPABASE.md](SUPABASE.md).
+- Le mode découverte conserve sa sauvegarde locale et l’export/import. Un compte Supabase facultatif ajoute la sauvegarde privée et la reprise sur un autre appareil. Depuis le 29 octobre, l’inscription demande seulement un identifiant et un mot de passe ; elle fonctionne sans SMTP. Les anciens comptes gardent leur mail comme identifiant et leur progression. Sans mail, les nouveaux comptes n’ont pas de récupération automatique du mot de passe. Voir [SUPABASE.md](SUPABASE.md).
 
 ## Prochain travail utile
 

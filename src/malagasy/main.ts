@@ -12,6 +12,7 @@ import { renderWorldMap, miniIslandArt } from './map';
 import { escapeHtml as e, emptyDraft, renderAnswerControls, answerValue, hasAnswer, tokensFor } from './exercise-view';
 import { feedbackSound, completionSound, MalagasyAudio } from './audio';
 import { renderLearningSession, sessionPassed } from './lesson-view';
+import { getNotionCards } from './notion-cards';
 import type { LearningSession } from './session';
 import { characterArt } from './characters';
 import { DialogueAudioPlayer, type DialogueAudioCue, type DialogueAudioEvent } from './dialogue-audio';
@@ -145,7 +146,7 @@ function backupPage(): string {
 }
 
 function sessionPage(): string {
-  return renderLearningSession(session!, progress, CONTENT, nextLesson());
+  return renderLearningSession(session!, progress, CONTENT, nextLesson(), window.matchMedia('(max-width: 760px)').matches);
 }
 
 function render(autoplayVoices = false): void {
@@ -160,7 +161,7 @@ function refreshAccount(): void {
     const form = app.querySelector<HTMLFormElement>('#ma-account-form');
     const sameMode = form && renderedAccountMode === account.state.mode;
     const values = sameMode ? [...form.querySelectorAll<HTMLInputElement>('input')]
-      .filter(input => !account.state.busy || input.type === 'email').map(input => ({
+      .filter(input => !account.state.busy || input.name === 'identifier').map(input => ({
       id: input.id, value: input.value, start: input.selectionStart, end: input.selectionEnd,
     })) : [];
     const focused = document.activeElement?.id;
@@ -198,13 +199,13 @@ function synchronizeVoices(autoplay: boolean): void {
   dialogueAudio.sync(visible.context, visible.cues, { autoplay });
 }
 function updateVoiceStatus(event: DialogueAudioEvent): void {
-  for (const bubble of app.querySelectorAll<HTMLElement>('.ma-speech[data-voice-key]')) {
+  for (const bubble of app.querySelectorAll<HTMLElement>('.ma-speech[data-voice-key], .ma-notion-example[data-voice-key]')) {
     const active = event.turnKey === bubble.dataset.voiceKey;
     const state = active ? event.state : 'idle';
     bubble.dataset.voiceState = state;
-    for (const button of bubble.querySelectorAll<HTMLButtonElement>('.ma-voice-replay, .ma-voice-slow')) {
+    for (const button of bubble.querySelectorAll<HTMLButtonElement>('.ma-voice-replay, .ma-voice-slow, .ma-notion-listen')) {
       button.setAttribute('aria-busy', String(state === 'loading'));
-      button.setAttribute('aria-pressed', String(state === 'playing' && button.classList.contains('ma-voice-replay')));
+      button.setAttribute('aria-pressed', String(state === 'playing' && (button.classList.contains('ma-voice-replay') || button.classList.contains('ma-notion-listen'))));
     }
     const status = bubble.querySelector<HTMLElement>('.ma-voice-status');
     if (status) status.textContent = active && (event.state === 'blocked' || event.state === 'error') ? event.message ?? 'Lecture indisponible. Touchez le haut-parleur pour réessayer.' : '';
@@ -215,6 +216,25 @@ function replayDialogue(key: string, slow: boolean): void {
   if (!cue) return;
   if (progress.settings.muted) { toast('Le son est coupé. Activez-le pour écouter.'); return; }
   void dialogueAudio.replay(cue, slow ? .75 : 1);
+}
+
+function replayNotion(cardId: string, exampleIndex: number, slow: boolean): void {
+  if (!session || !['notion', 'notes'].includes(session.stage)) return;
+  const card = getNotionCards(session.lesson.id).find(item => item.id === cardId);
+  const example = card?.examples[exampleIndex];
+  if (!example?.audioId || !card) return;
+  if (progress.settings.muted) { toast('Le son est coupé. Activez-le pour écouter.'); return; }
+  audio.stop();
+  void dialogueAudio.replay({ key: `notion:${card.id}:${exampleIndex}`, audioId: example.audioId, text: example.malagasy }, slow ? .75 : 1);
+}
+
+function advanceNotion(): void {
+  if (!session || session.stage !== 'notion') return;
+  dialogueAudio.interrupt();
+  if ((session.notionIndex ?? 0) + 1 < getNotionCards(session.lesson.id).length) session.notionIndex = (session.notionIndex ?? 0) + 1;
+  else { session.stage = 'notes'; session.notionIndex = 0; }
+  render(session.stage === 'notes'); window.scrollTo({ top: 0, behavior: 'instant' });
+  app.querySelector<HTMLElement>('main h1')?.focus({ preventScroll: true });
 }
 
 function pronounceSelection(text: string): void {
@@ -241,7 +261,7 @@ function startLesson(id: string): void {
   const recalls = selectMixedExercises(CONTENT, progress, null, CONTENT.exercises.length).filter(exercise => earlierIds.has(exercise.id) && !lesson.exerciseIds.includes(exercise.id)).slice(0, 2);
   const exercises = lesson.kind === 'checkpoint' ? authored : [...authored, ...recalls];
   if (!exercises.length) { toast('Cette leçon n’a pas encore d’exercices disponibles.'); return; }
-  session = { lesson, exercises, index: 0, correct: 0, draft: emptyDraft(), answered: false, wasCorrect: false, stage: 'notes', review: false, xpBefore: progress.xp, sceneIndex: 0, revealedTurns: 1, combo: 0, maxCombo: 0, lastReward: 0, results: [] };
+  session = { lesson, exercises, index: 0, correct: 0, draft: emptyDraft(), answered: false, wasCorrect: false, stage: lesson.kind !== 'checkpoint' && getNotionCards(lesson.id).length ? 'notion' : 'notes', notionIndex: 0, review: false, xpBefore: progress.xp, sceneIndex: 0, revealedTurns: 1, combo: 0, maxCombo: 0, lastReward: 0, results: [] };
   render(true); window.scrollTo(0, 0); app.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true });
 }
 function startReview(): void {
@@ -296,6 +316,7 @@ function updateTask(focusKey?: string): void {
 }
 function advanceDialogue(): void {
   if (!session || session.stage !== 'notes') return;
+  dialogueAudio.interrupt();
   const scene = session.lesson.scenes?.[session.sceneIndex];
   if (!scene) return;
   if (session.revealedTurns < scene.turns.length) session.revealedTurns++;
@@ -368,9 +389,20 @@ app.addEventListener('input', event => {
 });
 app.addEventListener('change', event => {
   const input = event.target as HTMLInputElement;
+  if (input.id === 'ma-notion-select' && session?.stage === 'notes') {
+    const index = Number(input.value);
+    if (Number.isInteger(index) && getNotionCards(session.lesson.id)[index]) {
+      dialogueAudio.interrupt(); session.notionIndex = index; render();
+      app.querySelector<HTMLElement>('#ma-notion-select')?.focus({ preventScroll: true });
+    }
+  }
   if (input.id === 'ma-import-file') void previewImport(input.files?.[0]);
   if (input.id === 'ma-daily-goal') { progress = { ...progress, settings: { ...progress.settings, dailyGoal: Number(input.value) }, updatedAt: new Date().toISOString() }; persist(); render(); toast('Votre objectif a été enregistré.'); }
 });
+app.addEventListener('toggle', event => {
+  const disclosure = event.target as HTMLDetailsElement;
+  if (session && disclosure.classList.contains('ma-notion-example-disclosure')) session.notionExamplesOpen = disclosure.open;
+}, true);
 app.addEventListener('click', event => {
   const target = (event.target as HTMLElement).closest<HTMLElement>('button, a[data-view], [data-world]');
   if (!target || (target as HTMLButtonElement).disabled) return;
@@ -387,7 +419,7 @@ app.addEventListener('click', event => {
   }
   switch (data.action) {
     case 'account-open': navigate('account'); break;
-    case 'account-mode': if (['login', 'signup', 'forgot'].includes(data.mode ?? '')) account.setMode(data.mode as AccountMode); break;
+    case 'account-mode': if (['login', 'signup'].includes(data.mode ?? '')) account.setMode(data.mode as AccountMode); break;
     case 'account-logout': void account.logout(); break;
     case 'account-retry': account.retry(); break;
     case 'account-use-local': account.resolve('local'); break;
@@ -399,6 +431,8 @@ app.addEventListener('click', event => {
     } break;
     case 'replay-dialogue': replayDialogue(data.voiceKey ?? '', false); break;
     case 'slow-dialogue': replayDialogue(data.voiceKey ?? '', true); break;
+    case 'replay-notion': replayNotion(data.cardId ?? '', Number(data.exampleIndex), data.slow === 'true'); break;
+    case 'advance-notion': advanceNotion(); break;
     case 'advance-dialogue': advanceDialogue(); break;
     case 'play-audio': void playLanguageAudio(false); break;
     case 'replay-audio': void playLanguageAudio(true); break;
@@ -406,7 +440,7 @@ app.addEventListener('click', event => {
     case 'pause-audio': audio.pause(); break;
     case 'continue': { const next = nextLesson(); if (next) startLesson(next.id); else startReview(); break; }
     case 'review': startReview(); break;
-    case 'begin-exercises': if (session) {
+    case 'begin-exercises': if (session && session.stage === 'notes') {
       const scenes = session.lesson.scenes ?? [];
       if (scenes.length && (session.sceneIndex !== scenes.length - 1 || session.revealedTurns < scenes[session.sceneIndex].turns.length)) break;
       progress = introduceLesson(progress, session.lesson, CONTENT); persist();

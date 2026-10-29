@@ -4,6 +4,7 @@ import { normalizeAnswer } from '../src/malagasy/engine';
 import { tokensFor } from '../src/malagasy/exercise-view';
 import { RECOVERY_KEY, SAVE_KEY } from '../src/malagasy/storage';
 import type { Exercise, Progress } from '../src/malagasy/types';
+import { readMiniLesson } from './lesson-flow';
 
 test.use({ reducedMotion: 'reduce' });
 
@@ -92,10 +93,12 @@ async function finishSession(page: Page, seenTypes = new Set<string>(), correct 
 async function startLesson(page: Page, id: string): Promise<void> {
   await page.locator('[data-view="path"]').first().click();
   await page.locator(`[data-lesson="${id}"]`).click();
+  await readMiniLesson(page);
   await expect(page.locator('.ma-session h1')).toBeVisible();
   await expect(page.locator('.ma-position-rail')).toContainText('MONDE 1');
 }
 async function beginPractice(page: Page): Promise<void> {
+  await readMiniLesson(page);
   // Dialogue turns and scenes are genuinely traversed before the practice button appears.
   for (let step = 0; step < 40; step++) {
     if (await page.locator('[data-action="begin-exercises"]').count()) {

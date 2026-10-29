@@ -3,6 +3,7 @@ import { CONTENT } from '../src/malagasy/content';
 import { completeLesson, createProgress, introduceLesson, recordAnswer } from '../src/malagasy/engine';
 import { parseSave, SAVE_KEY } from '../src/malagasy/storage';
 import type { Progress } from '../src/malagasy/types';
+import { usernameEmail } from '../src/malagasy/account-identity';
 
 const API = 'https://unpvrisziuttjmzhwyid.supabase.co';
 const ALICE = '11111111-1111-4111-8111-111111111111';
@@ -70,7 +71,7 @@ async function provider(page: Page, initial?: CloudRow) {
     if (request.method() === 'OPTIONS') { await route.fulfill({ status: 204, headers: {
       'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': 'GET,POST,PUT,DELETE,OPTIONS' } }); return; }
     calls.push({ path: url.pathname, method: request.method(), body, url: url.href });
-    if (url.pathname === '/auth/v1/signup') { await reply(route, authUser()); return; }
+    if (url.pathname === '/functions/v1/username-signup') { await reply(route, { ok: true }); return; }
     if (url.pathname === '/auth/v1/recover') { await reply(route, {}); return; }
     if (url.pathname === '/auth/v1/token') {
       if (invalidLogin) { await reply(route, { error_code: 'invalid_credentials', code: 'invalid_credentials', msg: 'Invalid login credentials' }, 400); return; }
@@ -106,7 +107,7 @@ async function openAccount(page: Page): Promise<void> {
   await expect(page.locator('#ma-account-form')).toBeVisible();
 }
 async function login(page: Page, email = EMAIL): Promise<void> {
-  await page.locator('#ma-account-email').fill(email);
+  await page.locator('#ma-account-identifier').fill(email);
   await page.locator('#ma-account-password').fill(PASSWORD);
   await page.getByRole('button', { name: 'Se connecter', exact: true }).click();
   await expect(page.locator('.ma-account-email')).toHaveText(email);
@@ -132,6 +133,7 @@ test('discovery starts a real lesson without an account and keeps portable backu
   await expect(page.getByRole('button', { name: /Sauvegarder avec un compte/ })).toBeVisible();
   await captureLayouts(page, 'guest');
   await page.getByRole('button', { name: /Commencer l’aventure/ }).click();
+  while (await page.locator('[data-action="advance-notion"]').count()) await page.locator('[data-action="advance-notion"]').click();
   await expect(page.locator('.ma-dialogue-discovery')).toBeVisible();
   await expect(page.locator('.ma-speech-text').first()).toHaveText('Salama!');
   expect(backend.calls.filter(call => call.path.startsWith('/auth/'))).toEqual([]);
@@ -143,47 +145,52 @@ test('discovery starts a real lesson without an account and keeps portable backu
   await expect(page.locator('h1')).toContainText('Un nouveau monde');
 });
 
-test('signup checks confirmation and reports email confirmation without creating a session', async ({ page }) => {
+test('signup uses only a username and password and immediately saves the guest progress', async ({ page }) => {
   const backend = await provider(page);
   await page.goto('/malagasy-adventure#account');
   await page.getByRole('button', { name: 'Créer un compte', exact: true }).click();
   await captureLayouts(page, 'signup');
-  await page.locator('#ma-account-email').fill(EMAIL);
+  await expect(page.locator('#ma-account-form input')).toHaveCount(2);
+  await expect(page.locator('input[type="email"]')).toHaveCount(0);
+  await expect(page.locator('#ma-account-password')).toHaveAttribute('maxlength', '128');
+  await expect(page.locator('#ma-account-password-help')).toHaveText('8 à 128 caractères.');
+  await expect(page.getByText(/sans adresse mail, ils ne peuvent pas être récupérés/)).toBeVisible();
+  await page.locator('#ma-account-identifier').fill('Mia_42');
   await page.locator('#ma-account-password').fill(PASSWORD);
-  await page.locator('#ma-account-password-confirm').fill('Different!2026');
   await page.getByRole('button', { name: /Créer mon compte/ }).click();
-  await expect(page.locator('#ma-account-message')).toContainText('identiques');
+  await expect(page.locator('#ma-account-message')).toHaveText('Votre compte est prêt.');
+  await expect(page.locator('.ma-account-email')).toHaveText('mia_42');
+  await expect(page.locator('.ma-account-sync')).toContainText('Progression sauvegardée');
+  const request = backend.calls.find(call => call.path === '/functions/v1/username-signup');
+  expect(request?.body).toEqual({ username: 'mia_42', password: PASSWORD });
   expect(backend.calls.some(call => call.path === '/auth/v1/signup')).toBe(false);
+  expect(backend.calls.find(call => call.path === '/auth/v1/token')?.body?.email).toBe(usernameEmail('mia_42'));
+  await page.reload();
+  await expect(page.locator('.ma-account-email')).toHaveText('mia_42');
+  await page.getByRole('button', { name: 'Se déconnecter', exact: true }).click();
+  await page.locator('#ma-account-identifier').fill('MIA_42');
   await page.locator('#ma-account-password').fill(PASSWORD);
-  await page.locator('#ma-account-password-confirm').fill(PASSWORD);
-  await page.getByRole('button', { name: /Créer mon compte/ }).click();
-  await expect(page.locator('#ma-account-message')).toContainText('mail de confirmation');
-  const request = backend.calls.find(call => call.path === '/auth/v1/signup');
-  expect(request?.body).toMatchObject({ email: EMAIL, password: PASSWORD });
-  expect(new URL(request!.url).searchParams.get('redirect_to')).toBe('http://127.0.0.1:4184/malagasy-adventure');
-  expect(await page.locator('.ma-account-email').count()).toBe(0);
-  expect(backend.calls.some(call => call.path.startsWith('/rest/'))).toBe(false);
+  await page.getByRole('button', { name: 'Se connecter', exact: true }).click();
+  await expect(page.locator('.ma-account-email')).toHaveText('mia_42');
+  expect(backend.calls.filter(call => call.path === '/auth/v1/token').at(-1)?.body?.email).toBe(usernameEmail('mia_42'));
+  expect(await page.locator('body').textContent()).not.toContain('users.malagasyadventure.invalid');
 });
 
-test('wrong credentials retain the guest save and forgot password uses the app callback', async ({ page }) => {
+test('wrong credentials retain the guest save and do not request mail', async ({ page }) => {
   const backend = await provider(page);
   backend.rejectLogin();
   await page.goto('/malagasy-adventure#backup');
   await page.locator('#ma-daily-goal').selectOption('5');
   const guest = await localSave(page, SAVE_KEY);
   await openAccount(page);
-  await page.locator('#ma-account-email').fill(EMAIL);
+  await page.locator('#ma-account-identifier').fill('mia_42');
   await page.locator('#ma-account-password').fill(PASSWORD);
   await page.getByRole('button', { name: 'Se connecter', exact: true }).click();
-  await expect(page.locator('#ma-account-message')).toHaveText('Adresse mail ou mot de passe incorrect.');
+  await expect(page.locator('#ma-account-message')).toHaveText('Identifiant ou mot de passe incorrect.');
   expect(await localSave(page, SAVE_KEY)).toEqual(guest);
-  await page.getByRole('button', { name: 'Mot de passe oublié ?' }).click();
-  await page.locator('#ma-account-email').fill(EMAIL);
-  await page.getByRole('button', { name: /Recevoir le lien/ }).click();
-  await expect(page.locator('#ma-account-message')).toContainText('un lien de réinitialisation');
-  const recovery = backend.calls.find(call => call.path === '/auth/v1/recover');
-  expect(recovery?.body).toMatchObject({ email: EMAIL });
-  expect(new URL(recovery!.url).searchParams.get('redirect_to')).toBe('http://127.0.0.1:4184/malagasy-adventure');
+  await expect(page.locator('#ma-account-identifier')).toHaveValue('mia_42');
+  await expect(page.getByRole('button', { name: 'Mot de passe oublié ?' })).toHaveCount(0);
+  expect(backend.calls.some(call => call.path === '/auth/v1/recover')).toBe(false);
   expect(backend.calls.some(call => call.path.startsWith('/rest/'))).toBe(false);
 });
 
@@ -266,11 +273,11 @@ test('logout restores discovery and a second account never receives the first ac
   expect(writesForBob).toEqual([]);
 });
 
-test('an expired confirmation link offers a new reset request while discovery remains usable', async ({ page }) => {
+test('an expired old confirmation link offers login while discovery remains usable', async ({ page }) => {
   await provider(page);
   await page.goto('/malagasy-adventure#error=access_denied&error_code=otp_expired&error_description=expired');
   await expect(page.locator('#ma-account-message')).toContainText('invalide ou a expiré');
-  await expect(page.getByRole('button', { name: /Recevoir le lien/ })).toBeVisible();
+  await expect(page.locator('#ma-account-identifier')).toBeVisible();
   await page.getByRole('button', { name: /Continuer sans compte/ }).click();
   await expect(page.getByRole('button', { name: /Commencer l’aventure/ })).toBeVisible();
 });
