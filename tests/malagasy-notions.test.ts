@@ -16,7 +16,9 @@ describe('Short notion lessons before conversations', () => {
         expect(cards, lesson.id).toEqual([]);
       } else {
         expect(cards.length, lesson.id).toBeGreaterThan(0);
-        expect(cards.length, lesson.id).toBeLessThanOrEqual(3);
+        expect(cards.length, lesson.id).toBeLessThanOrEqual(4);
+        expect(new Set(cards.map(card => card.section)), lesson.id).toEqual(new Set(['vocabulary', 'notion']));
+        expect(cards.slice(0, cards.findIndex(card => card.section === 'notion')).every(card => card.section === 'vocabulary')).toBe(true);
         const covered = new Set(cards.flatMap(card => card.conceptIds));
         for (const concept of lesson.introduces) expect(covered.has(concept), `${lesson.id}: ${concept}`).toBe(true);
       }
@@ -75,8 +77,50 @@ describe('Short notion lessons before conversations', () => {
     expect(aboveBelow.examples.map(example => example.malagasy)).toEqual([
       'Eo ambony latabatra ny boky.', 'Eo ambany latabatra ny boky.',
     ]);
-    const understand = getNotionCards('lesson-10-02');
-    expect(understand[0].rule).toContain('la personne qui comprend');
-    expect(understand[0].memory).toContain('verbe actif + aho');
+    const understand = getNotionCards('lesson-10-02').find(card => card.title === 'Je comprends, tu comprends')!;
+    expect(understand.rule).toContain('la personne qui comprend');
+    expect(understand.memory).toContain('verbe actif + aho');
+  });
+
+  it('separates illustrated words from authored grammar diagrams in all parts', () => {
+    for (const lesson of CONTENT.lessons.filter(item => item.kind !== 'checkpoint')) {
+      for (const card of getNotionCards(lesson.id)) {
+        const visual = card.visual;
+        expect(visual, card.id).toBeDefined();
+        if (card.section === 'vocabulary') expect(['pictorial', 'quantity', 'directions'], card.id).toContain(visual.kind);
+        else expect(['sentence', 'possession', 'spatial', 'questions', 'sounds', 'directions'], card.id).toContain(visual.kind);
+        if (visual.kind === 'sentence') {
+          expect(visual.rows.length).toBeGreaterThan(0);
+          for (const row of visual.rows) {
+            expect(row.parts.length).toBeGreaterThan(0);
+            expect(row.parts.every(part => part.text.trim() && part.caption?.trim())).toBe(true);
+          }
+        } else if (visual.kind === 'possession') {
+          expect(visual.pairs.length).toBeGreaterThan(0);
+          for (const pair of visual.pairs) {
+            expect(pair.mine).not.toBe(pair.yours);
+            expect(pair.base.trim()).not.toBe('');
+          }
+        } else {
+          expect(visual.items.length, card.id).toBeGreaterThan(0);
+          if (visual.kind === 'quantity') {
+            for (const item of visual.items) {
+              expect(Number.isInteger(item.value)).toBe(true);
+              expect(item.value).toBeGreaterThanOrEqual(0);
+              expect(item.value).toBeLessThanOrEqual(20);
+            }
+          }
+        }
+      }
+    }
+    const possession = getNotionCards('lesson-04-02').find(card => card.title === 'Mon enfant, ton enfant')!.visual;
+    expect(possession.kind).toBe('possession');
+    if (possession.kind === 'possession') expect(possession.pairs).toEqual([
+      { base: 'enfant', mine: 'zanako', yours: 'zanakao', picture: 'child' },
+    ]);
+    const house = getNotionCards('lesson-05-02').find(card => card.title === 'Ma maison, ta maison')!.visual;
+    if (house.kind === 'possession') expect(house.pairs[0]).toMatchObject({ mine: 'tranoko', yours: 'tranonao' });
+    const spatial = getNotionCards('lesson-05-02').find(card => card.title === 'Sur ou sous la table')!.visual;
+    if (spatial.kind === 'spatial') expect(spatial.items.map(item => item.location)).toEqual(['above', 'below']);
   });
 });

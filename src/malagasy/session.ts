@@ -8,6 +8,7 @@ export interface LearningSession {
   stage: 'notion' | 'notes' | 'exercise' | 'done'; review: boolean; xpBefore: number;
   /** A temporary bookmark for the short lesson and its dialogue-side reminder. */
   notionIndex?: number;
+  notionSelections?: { vocabulary?: number; notion?: number };
   notionExamplesOpen?: boolean;
   audioReady?: boolean; sceneIndex: number; revealedTurns: number;
   combo: number; maxCombo: number; lastReward: number;

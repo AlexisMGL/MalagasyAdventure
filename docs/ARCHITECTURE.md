@@ -18,7 +18,8 @@ Malagasy Adventure est une application autonome en TypeScript strict, DOM natif 
 | `src/malagasy/storage.ts` | Chargement, sérialisation et validation du schéma de sauvegarde. |
 | `src/malagasy/account.ts`, `account-view.ts`, `account.css`, `account-identity.ts` | Compte identifiant/mot de passe, compatibilité des anciens comptes mail et choix explicite entre deux carnets. |
 | `supabase/functions/username-signup/`, `supabase/functions/_shared/username.ts` | Inscription sans mail, alias interne partagé, création Auth côté serveur et limitation privée des tentatives. |
-| `src/malagasy/notion-cards.ts` | 59 pense-bêtes pour les 24 parties : règles brèves, exemples traduits et sons entiers existants. |
+| `src/malagasy/notion-cards.ts`, `learning-visual-types.ts` | Fiches des 24 parties, sections Vocabulaire/Notions, schémas explicitement rédigés, règles brèves et sons entiers existants. |
+| `src/malagasy/lesson-visuals.ts`, `lesson-visuals.css` | Dessins SVG originaux et rendus des schémas : possessions, ordre des mots, localisation, quantités, directions, questions et repères de lecture. |
 | `src/malagasy/cloud-sync.ts` | Synchronisation différée et sérialisée, validation v1, révisions et conflits entre appareils. |
 | `src/malagasy/supabase.ts`, `supabase/migrations/` | Client public, transport et schéma Postgres privé par utilisateur avec RLS. |
 | `src/malagasy/history-curriculum.ts` | Fil culturel des vingt mondes dès Antananarivo, résumés des escales, reprises progressives et sources historiques des crédits. Les mondes futurs restent verrouillés. |
@@ -45,7 +46,7 @@ Le contenu peut être subdivisé en fichiers de données sans modifier le contra
 ## Flux d’apprentissage
 
 1. La vue demande au moteur si les prérequis de la leçon sont satisfaits.
-2. La phase transitoire `notion` présente une fiche à la fois avant le dialogue, avec règle, exemples traduits, écoute normale/lente et rappel mémorisable. Le pense-bête reste consultable à côté des scènes de Lova et Mia (au-dessus sur mobile). Les dialogues sont révélés tour par tour ; leurs traductions et l’aide longue restent facultatives. Les concepts sont réellement ouverts à l’entraînement lors du passage à la pratique, après cette découverte ; quitter une fiche ou une scène ne doit pas ajouter toute sa banque aux révisions. Les quiz et révisions n’affichent pas les fiches.
+2. La phase transitoire `notion` propose un carnet à deux sections : Vocabulaire (mots illustrés) et Notions (constructions et relations schématisées). Le joueur choisit librement une section et une fiche ; le dernier choix de chaque section est gardé pendant la séance. Chaque fiche relie un dessin ou un schéma à une règle courte et aux exemples à écouter. Le même carnet reste consultable à côté des scènes de Lova et Mia (compact au-dessus sur mobile). Les dialogues sont révélés tour par tour ; leurs traductions et l’aide longue restent facultatives. Les concepts sont réellement ouverts à l’entraînement lors du passage à la pratique, après cette découverte ; quitter une fiche ou une scène ne doit pas ajouter toute sa banque aux révisions. Les quiz et révisions n’affichent pas les fiches.
 3. Les six activités rédigées de la partie conservent leur ordre conversationnel, puis jusqu’à deux rappels antérieurs éligibles sont ajoutés. Le Centre de révision utilise le sélecteur générique ; les quiz utilisent leurs douze activités dédiées.
 4. Le validateur renvoie un résultat ; la vue affiche l’explication préparée dans le contenu.
 5. `recordAnswer` produit un nouvel état, actualise la maîtrise et planifie une révision.

@@ -25,7 +25,7 @@ Les différents miroirs du dictionnaire pointent vers la même ressource : ils n
 
 ## Décisions pédagogiques
 
-Depuis la demande du 29 octobre 2026, les nouvelles notions passent par des fiches courtes avant leurs dialogues : 59 pense-bêtes et 126 exemples. Les explications déplient le corpus existant (notamment possessifs, sujet, article et localisation) et conservent les références internes des concepts. Les exemples réutilisent uniquement des enregistrements entiers existants ; aucune nouvelle phonétique ni voix n’est inventée pour remplir une fiche. Les références restent affichées uniquement dans Sources & crédits.
+Depuis les demandes du 29 octobre 2026, les fiches précédant les dialogues séparent Vocabulaire illustré et Notions schématisées. Les explications et dessins déplient le corpus existant (notamment possessifs, sujet, article et localisation) et conservent les références internes des concepts. Les formes possédées sont vérifiées dans les entrées trano, reny et zanaka : les variations interdisent d’enseigner « nom + ko/nao » comme règle universelle. Les exemples réutilisent uniquement des enregistrements entiers existants ; aucune nouvelle phonétique ni voix n’est inventée pour remplir une fiche. Les références restent affichées uniquement dans Sources & crédits.
 
 Le corpus vise le malgache standard d’initiation. Il ne prétend pas représenter toutes les pratiques régionales ou tous les registres. Les références anciennes sont recoupées lorsque possible ; une source publiée n’équivaut pas à une validation actuelle par un enseignant natif.
 

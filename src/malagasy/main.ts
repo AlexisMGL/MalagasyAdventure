@@ -146,7 +146,7 @@ function backupPage(): string {
 }
 
 function sessionPage(): string {
-  return renderLearningSession(session!, progress, CONTENT, nextLesson(), window.matchMedia('(max-width: 760px)').matches);
+  return renderLearningSession(session!, progress, CONTENT, nextLesson(), window.matchMedia('(max-width: 1180px)').matches);
 }
 
 function render(autoplayVoices = false): void {
@@ -230,11 +230,35 @@ function replayNotion(cardId: string, exampleIndex: number, slow: boolean): void
 
 function advanceNotion(): void {
   if (!session || session.stage !== 'notion') return;
-  dialogueAudio.interrupt();
-  if ((session.notionIndex ?? 0) + 1 < getNotionCards(session.lesson.id).length) session.notionIndex = (session.notionIndex ?? 0) + 1;
-  else { session.stage = 'notes'; session.notionIndex = 0; }
-  render(session.stage === 'notes'); window.scrollTo({ top: 0, behavior: 'instant' });
+  const next = (session.notionIndex ?? 0) + 1;
+  if (next < getNotionCards(session.lesson.id).length) selectNotion(next);
+  else beginDialogue();
+}
+
+function beginDialogue(): void {
+  if (!session || session.stage !== 'notion') return;
+  dialogueAudio.interrupt(); session.stage = 'notes';
+  render(true); window.scrollTo({ top: 0, behavior: 'instant' });
   app.querySelector<HTMLElement>('main h1')?.focus({ preventScroll: true });
+}
+
+function selectNotion(index: number, focusTarget?: string): void {
+  if (!session || !['notion', 'notes'].includes(session.stage)) return;
+  const cards = getNotionCards(session.lesson.id), card = cards[index];
+  if (!Number.isInteger(index) || !card) return;
+  dialogueAudio.interrupt(); session.notionIndex = index;
+  session.notionSelections = { ...session.notionSelections, [card.section]: index };
+  render();
+  if (focusTarget) app.querySelector<HTMLElement>(focusTarget)?.focus({ preventScroll: true });
+  else app.querySelector<HTMLElement>('.ma-notion-intro [data-notion-id] h2')?.focus({ preventScroll: true });
+}
+
+function selectNotionSection(section: string): void {
+  if (!session || section !== 'vocabulary' && section !== 'notion') return;
+  const cards = getNotionCards(session.lesson.id);
+  const remembered = session.notionSelections?.[section];
+  const index = remembered !== undefined && cards[remembered]?.section === section ? remembered : cards.findIndex(card => card.section === section);
+  if (index >= 0) selectNotion(index, `#ma-notion-tab-${section}`);
 }
 
 function pronounceSelection(text: string): void {
@@ -390,11 +414,7 @@ app.addEventListener('input', event => {
 app.addEventListener('change', event => {
   const input = event.target as HTMLInputElement;
   if (input.id === 'ma-notion-select' && session?.stage === 'notes') {
-    const index = Number(input.value);
-    if (Number.isInteger(index) && getNotionCards(session.lesson.id)[index]) {
-      dialogueAudio.interrupt(); session.notionIndex = index; render();
-      app.querySelector<HTMLElement>('#ma-notion-select')?.focus({ preventScroll: true });
-    }
+    selectNotion(Number(input.value), '#ma-notion-select');
   }
   if (input.id === 'ma-import-file') void previewImport(input.files?.[0]);
   if (input.id === 'ma-daily-goal') { progress = { ...progress, settings: { ...progress.settings, dailyGoal: Number(input.value) }, updatedAt: new Date().toISOString() }; persist(); render(); toast('Votre objectif a été enregistré.'); }
@@ -433,6 +453,9 @@ app.addEventListener('click', event => {
     case 'slow-dialogue': replayDialogue(data.voiceKey ?? '', true); break;
     case 'replay-notion': replayNotion(data.cardId ?? '', Number(data.exampleIndex), data.slow === 'true'); break;
     case 'advance-notion': advanceNotion(); break;
+    case 'select-notion': selectNotion(Number(data.notionIndex), `[data-notion-index="${Number(data.notionIndex)}"]`); break;
+    case 'select-notion-section': selectNotionSection(data.section ?? ''); break;
+    case 'begin-dialogue': beginDialogue(); break;
     case 'advance-dialogue': advanceDialogue(); break;
     case 'play-audio': void playLanguageAudio(false); break;
     case 'replay-audio': void playLanguageAudio(true); break;
@@ -459,6 +482,13 @@ app.addEventListener('click', event => {
 });
 window.addEventListener('hashchange', () => navigate(readView()));
 document.addEventListener('keydown', event => {
+  const notionTab = (event.target as Element).closest<HTMLButtonElement>('.ma-notion-tabs [role="tab"]');
+  if (notionTab && ['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+    event.preventDefault();
+    const tabs = [...notionTab.parentElement!.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (tabs.indexOf(notionTab) + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+    tabs[next]?.click(); return;
+  }
   const marker = (event.target as Element).closest<SVGElement>('[data-world][role="button"]');
   if (marker && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); worldDetails(marker.dataset.world ?? ''); }
   if (event.defaultPrevented || event.repeat || event.isComposing || event.ctrlKey || event.altKey || event.metaKey

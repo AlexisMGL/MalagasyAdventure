@@ -6,6 +6,8 @@ import { characterArt } from './characters';
 import { renderDialogue, renderReward } from './dialogue-view';
 import { worldCompleted } from './engine';
 import { getNotionCards, type NotionCard } from './notion-cards';
+import { renderLearningVisual } from './lesson-visuals';
+import type { LearningVisual } from './learning-visual-types';
 import './learning.css';
 
 const pct = (value: number): number => Math.max(0, Math.min(100, Math.round(value)));
@@ -26,23 +28,40 @@ function positionRail(session: LearningSession, content: Content): string {
 function optionalHelp(lesson: Lesson): string {
   return `<details class="ma-optional-help"><summary>${icon('book', 16)} Un coup de pouce ?</summary><div>${lesson.notes.map(note => `<article><strong>${e(note.title)}</strong><p>${e(note.body)}</p>${note.example ? `<p class="ma-help-example" lang="mg">${e(note.example)}</p>` : ''}</article>`).join('')}</div></details>`;
 }
-function notionCard(card: NotionCard, heading: 'h1' | 'h2', disclosure?: { open: boolean }): string {
-  const examples = `<div class="ma-notion-examples">${card.examples.map((example, index) => `<div class="ma-notion-example" data-voice-key="notion:${e(card.id)}:${index}" data-voice-state="idle"><p lang="mg">${e(example.malagasy)}</p><span lang="fr">${e(example.french)}</span>${example.audioId ? `<div class="ma-notion-audio"><button type="button" class="ma-notion-listen" data-action="replay-notion" data-card-id="${e(card.id)}" data-example-index="${index}" aria-label="Écouter la prononciation de ${e(example.malagasy)}">${icon('sound', 16)} Écouter</button><button type="button" class="ma-notion-listen ma-notion-slow" data-action="replay-notion" data-card-id="${e(card.id)}" data-example-index="${index}" data-slow="true" aria-label="Écouter lentement ${e(example.malagasy)}">0,75×</button><span class="ma-voice-status" role="status" aria-live="polite"></span></div>` : ''}</div>`).join('')}</div>${card.memory ? `<p class="ma-notion-memory">${icon('leaf', 15)}<span>${e(card.memory)}</span></p>` : ''}`;
-  return `<article class="ma-notion-card" data-notion-id="${e(card.id)}"><${heading}${heading === 'h1' ? ' tabindex="-1"' : ''}>${e(card.title)}</${heading}><p class="ma-notion-rule">${e(card.rule)}</p>${disclosure ? `<details class="ma-notion-example-disclosure" ${disclosure.open ? 'open' : ''}><summary>Exemples & prononciation</summary>${examples}</details>` : examples}</article>`;
+function previewVisual(visual: LearningVisual): LearningVisual {
+  if (visual.kind === 'sentence') return visual.rows.length > 1 ? { ...visual, rows: visual.rows.slice(0, 1) } : visual;
+  if (visual.kind === 'possession') return visual.pairs.length > 1 ? { ...visual, pairs: visual.pairs.slice(0, 1) } : visual;
+  if (visual.kind === 'directions') return visual;
+  return visual.items.length > 2 ? { ...visual, items: visual.items.slice(0, 2) } as LearningVisual : visual;
+}
+function notionCard(card: NotionCard, disclosure?: { open: boolean }, compact = false): string {
+  const visual = disclosure ? previewVisual(card.visual) : card.visual;
+  const expandedDiagram = visual !== card.visual ? renderLearningVisual(card.visual, { compact: true }) : '';
+  const examples = `${expandedDiagram}<div class="ma-notion-examples">${card.examples.map((example, index) => `<div class="ma-notion-example" data-voice-key="notion:${e(card.id)}:${index}" data-voice-state="idle"><p lang="mg">${e(example.malagasy)}</p><span lang="fr">${e(example.french)}</span>${example.audioId ? `<div class="ma-notion-audio"><button type="button" class="ma-notion-listen" data-action="replay-notion" data-card-id="${e(card.id)}" data-example-index="${index}" aria-label="Écouter la prononciation de ${e(example.malagasy)}">${icon('sound', 16)} Écouter</button><button type="button" class="ma-notion-listen ma-notion-slow" data-action="replay-notion" data-card-id="${e(card.id)}" data-example-index="${index}" data-slow="true" aria-label="Écouter lentement ${e(example.malagasy)}">0,75×</button><span class="ma-voice-status" role="status" aria-live="polite"></span></div>` : ''}</div>`).join('')}</div>${card.memory ? `<p class="ma-notion-memory">${icon('leaf', 15)}<span>${e(card.memory)}</span></p>` : ''}`;
+  return `<article class="ma-notion-card ma-notion-${card.section}" data-notion-id="${e(card.id)}" data-notion-section="${card.section}"><h2 tabindex="-1">${e(card.title)}</h2>${renderLearningVisual(visual, { compact })}<p class="ma-notion-rule">${e(card.rule)}</p>${disclosure ? `<details class="ma-notion-example-disclosure" ${disclosure.open ? 'open' : ''}><summary>${expandedDiagram ? 'Schéma complet, exemples & prononciation' : 'Exemples & prononciation'}</summary>${examples}</details>` : examples}</article>`;
 }
 function notionMute(muted: boolean): string {
   return `<button type="button" class="ma-notion-mute" data-action="mute" aria-label="${muted ? 'Activer les sons' : 'Couper les sons'}" aria-pressed="${muted}">${icon('sound', 16)} ${muted ? 'Son coupé' : 'Son activé'}</button>`;
+}
+function notionTabs(cards: NotionCard[], index: number): string {
+  const section = cards[index]?.section;
+  return `<div class="ma-notion-tabs" role="tablist" aria-label="Contenu de la mini-leçon">${(['vocabulary', 'notion'] as const).map(id => `<button type="button" id="ma-notion-tab-${id}" role="tab" aria-selected="${section === id}" aria-controls="ma-notion-panel" tabindex="${section === id ? '0' : '-1'}" data-action="select-notion-section" data-section="${id}">${icon(id === 'vocabulary' ? 'book' : 'compass', 16)}<span>${id === 'vocabulary' ? 'Vocabulaire' : 'Notions'}</span><b>${cards.filter(card => card.section === id).length}</b></button>`).join('')}</div>`;
+}
+function notionChoices(cards: NotionCard[], index: number): string {
+  const section = cards[index]?.section;
+  return `<nav class="ma-notion-choices" aria-label="${section === 'vocabulary' ? 'Fiches de vocabulaire' : 'Fiches de notions'}">${cards.map((card, i) => card.section === section ? `<button type="button" data-action="select-notion" data-notion-index="${i}" aria-pressed="${i === index}">${e(card.title)}</button>` : '').join('')}</nav>`;
 }
 function notionPage(session: LearningSession, content: Content, progress: Progress): string {
   const cards = getNotionCards(session.lesson.id), index = Math.min(session.notionIndex ?? 0, cards.length - 1);
   const card = cards[index];
   if (!card) return scenePage(session, content, progress);
-  return `<div class="ma-session ma-notion-intro">${positionRail(session, content)}<div class="ma-notion-heading"><span class="ma-eyebrow">MINI-LEÇON · ${index + 1} / ${cards.length}</span><span>${e(session.lesson.title)}</span></div>${notionCard(card, 'h1')}<div class="ma-notion-sound">${notionMute(progress.settings.muted)}</div><div class="ma-notion-next"><button type="button" class="ma-icon-button" data-action="exit-lesson" aria-label="Quitter la leçon">${icon('close', 19)}</button><span>Ce pense-bête reste à portée de main pendant le dialogue.</span><button type="button" class="ma-primary" data-action="advance-notion">${index + 1 === cards.length ? 'Voir le dialogue' : 'La notion suivante'} ${icon('arrow', 18)}</button></div></div>`;
+  return `<div class="ma-session ma-notion-intro">${positionRail(session, content)}<div class="ma-notion-heading"><div><span class="ma-eyebrow">MINI-LEÇON</span><h1 tabindex="-1">${e(session.lesson.title)}</h1></div>${notionMute(progress.settings.muted)}</div><p class="ma-notion-invitation">Des mots à reconnaître, des repères pour construire vos phrases. Explorez dans l’ordre que vous voulez.</p>${notionTabs(cards, index)}${notionChoices(cards, index)}<div id="ma-notion-panel" role="tabpanel" aria-labelledby="ma-notion-tab-${card.section}">${notionCard(card)}</div><div class="ma-notion-browse"><span>Fiche ${index + 1} / ${cards.length}</span><button type="button" class="ma-text-link" data-action="advance-notion">${index + 1 === cards.length ? 'Passer au dialogue' : 'Fiche suivante'} ${icon('arrow', 15)}</button></div><div class="ma-notion-next"><button type="button" class="ma-icon-button" data-action="exit-lesson" aria-label="Quitter la leçon">${icon('close', 19)}</button><span>Le pense-bête reste disponible pendant le dialogue.</span><button type="button" class="ma-primary" data-action="begin-dialogue">Voir le dialogue ${icon('arrow', 18)}</button></div></div>`;
 }
 function notionAside(session: LearningSession, progress: Progress, compact: boolean): string {
   const cards = getNotionCards(session.lesson.id), index = Math.min(session.notionIndex ?? 0, cards.length - 1);
   if (!cards.length) return '';
-  return `<aside class="ma-notion-aside" aria-label="Pense-bête de la leçon"><span class="ma-eyebrow">${icon('book', 16)} PENSE-BÊTE</span>${notionMute(progress.settings.muted)}${cards.length > 1 ? `<label for="ma-notion-select">La notion à garder sous les yeux<select id="ma-notion-select">${cards.map((card, i) => `<option value="${i}" ${i === index ? 'selected' : ''}>${i + 1}. ${e(card.title)}</option>`).join('')}</select></label>` : ''}${notionCard(cards[index], 'h2', compact ? { open: session.notionExamplesOpen ?? false } : undefined)}</aside>`;
+  const card = cards[index], sectionCards = cards.map((item, i) => ({ item, i })).filter(({ item }) => item.section === card.section);
+  return `<aside class="ma-notion-aside" aria-label="Pense-bête de la leçon"><div class="ma-notion-aside-top"><span class="ma-eyebrow">${icon('book', 16)} PENSE-BÊTE</span>${notionMute(progress.settings.muted)}</div>${notionTabs(cards, index)}<label class="ma-notion-select-label" for="ma-notion-select"><span>La fiche à garder sous les yeux</span><select id="ma-notion-select">${sectionCards.map(({ item, i }) => `<option value="${i}" ${i === index ? 'selected' : ''}>${e(item.title)}</option>`).join('')}</select></label><div id="ma-notion-panel" role="tabpanel" aria-labelledby="ma-notion-tab-${card.section}">${notionCard(card, compact ? { open: session.notionExamplesOpen ?? false } : undefined, true)}</div></aside>`;
 }
 function scenePage(session: LearningSession, content: Content, progress: Progress, compactNotions = false): string {
   const scenes = session.lesson.scenes ?? [], scene = scenes[session.sceneIndex];

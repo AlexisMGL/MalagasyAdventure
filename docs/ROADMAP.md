@@ -4,7 +4,7 @@
 
 Le dépôt autonome livre le **monde 1 complet, Antananarivo** : 12 unités, 36 leçons, 96 scènes de Lova et Mia, 288 activités, 44 concepts et 92 fiches de vocabulaire. Chaque unité se termine par douze questions ; le quiz de l’unité 12 conclut le monde après validation des prérequis. Les mondes 2–20 restent planifiés et verrouillés.
 
-Le chemin visuel de world-path.ts et world-path.css montre les 36 étapes, les parties et les quiz, la prochaine étape accessible, les validations et les verrous. Le tracé se construit à partir de la progression existante. Les compteurs du parcours ne sont pas présentés comme une maîtrise durable de la langue. Depuis la demande du 29 octobre, les 24 parties commencent par des pense-bêtes : 59 fiches et 126 exemples à écouter, puis un rappel consultable à côté du dialogue introductif.
+Le chemin visuel de world-path.ts et world-path.css montre les 36 étapes, les parties et les quiz, la prochaine étape accessible, les validations et les verrous. Le tracé se construit à partir de la progression existante. Les compteurs du parcours ne sont pas présentés comme une maîtrise durable de la langue. Depuis les demandes du 29 octobre, les 24 parties proposent un carnet visuel à explorer librement : Vocabulaire pour les mots illustrés, Notions pour les schémas. Les dessins, formes colorées et exemples à écouter restent consultables à côté du dialogue introductif.
 
 L’extension conserve les premiers IDs et le schéma de sauvegarde v1. Une sauvegarde des neuf leçons initiales reprend à l’unité 4 sans perdre ses acquis. La sauvegarde locale, l’export/import contrôlé, les rappels cumulatifs, les plafonds d’XP, les raccourcis chiffres/Entrée, le mobile, le muet et le mouvement réduit restent applicables.
 

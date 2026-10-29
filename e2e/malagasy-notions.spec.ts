@@ -18,27 +18,48 @@ async function introducedIds(page: Page): Promise<string[]> {
   }, SAVE_KEY);
 }
 
-test('short lessons introduce the notions before speech and remain available beside the dialogue', async ({ page }) => {
+test('vocabulary and notions are separate visual sections with free navigation before the dialogue', async ({ page }) => {
   await openMiniLesson(page);
-  for (const [index, card] of cards.entries()) {
-    await expect(page.locator('.ma-notion-intro h1')).toHaveText(card.title);
-    await expect(page.locator('.ma-notion-heading')).toContainText(`${index + 1} / ${cards.length}`);
+  await expect(page.locator('.ma-notion-intro h1')).toHaveText(CONTENT.lessons[0].title);
+  await expect(page.getByRole('tab')).toHaveCount(2);
+  const vocabulary = cards.filter(card => card.section === 'vocabulary');
+  const notions = cards.filter(card => card.section === 'notion');
+  await expect(page.getByRole('tab', { name: /Vocabulaire/ })).toContainText(String(vocabulary.length));
+  await expect(page.getByRole('tab', { name: /Notions/ })).toContainText(String(notions.length));
+  await expect(page.getByRole('tab', { name: /Vocabulaire/ })).toHaveAttribute('aria-selected', 'true');
+  const checkCard = async (card: typeof cards[number]): Promise<void> => {
+    await expect(page.locator('.ma-notion-card h2')).toHaveText(card.title);
     await expect(page.locator('.ma-notion-rule')).toHaveText(card.rule);
     await expect(page.locator('.ma-notion-example')).toHaveCount(card.examples.length);
+    await expect(page.locator('.ma-learning-visual')).toBeVisible();
+    expect(await page.locator('.ma-learning-visual').innerHTML()).not.toBe('');
     await expect(page.locator('[data-dialogue-turn], #ma-exercise-form')).toHaveCount(0);
     await expect(page.locator('.ma-notion-card a')).toHaveCount(0);
     expect(await introducedIds(page)).toEqual([]);
-    await page.locator('[data-action="advance-notion"]').click();
-  }
+  };
+  await checkCard(vocabulary[0]);
+  // Jump straight to the other section and its final card: no forced slideshow.
+  await page.getByRole('tab', { name: /Notions/ }).click();
+  const target = notions.at(-1)!;
+  await page.locator(`[data-notion-index="${cards.indexOf(target)}"]`).click();
+  await checkCard(target);
+  await page.getByRole('tab', { name: /Vocabulaire/ }).click();
+  await checkCard(vocabulary[0]);
+  await page.getByRole('tab', { name: /Vocabulaire/ }).press('ArrowRight');
+  await expect(page.getByRole('tab', { name: /Notions/ })).toBeFocused();
+  await checkCard(target);
+  await page.locator('[data-action="begin-dialogue"]').click();
   await expect(page.locator('.ma-dialogue-discovery')).toBeVisible();
   await expect(page.getByRole('complementary', { name: 'Pense-bête de la leçon' })).toBeVisible();
-  await expect(page.locator('.ma-notion-aside h2')).toHaveText(cards[0].title);
-  await page.locator('#ma-notion-select').selectOption('1');
-  await expect(page.locator('.ma-notion-aside h2')).toHaveText(cards[1].title);
+  await expect(page.locator('.ma-notion-aside h2')).toHaveText(target.title);
+  await expect(page.getByRole('tab', { name: /Notions/ })).toHaveAttribute('aria-selected', 'true');
+  await page.getByRole('tab', { name: /Vocabulaire/ }).click();
+  await expect(page.locator('.ma-notion-aside h2')).toHaveText(vocabulary[0].title);
+  await expect(page.locator('.ma-notion-aside .ma-learning-visual')).toBeVisible();
   await expect(page.locator('[data-dialogue-turn]')).toHaveCount(1);
   await page.locator('[data-action="advance-dialogue"]').click();
   await expect(page.locator('[data-dialogue-turn]')).toHaveCount(2);
-  await expect(page.locator('.ma-notion-aside h2')).toHaveText(cards[1].title);
+  await expect(page.locator('.ma-notion-aside h2')).toHaveText(vocabulary[0].title);
   expect(await introducedIds(page)).toEqual([]);
 });
 
@@ -59,7 +80,7 @@ for (const width of [340, 390, 1440]) test(`the lesson and reminder fit a ${widt
   if (width <= 760) {
     const examples = reminder.locator('.ma-notion-example-disclosure');
     await expect(examples).not.toHaveAttribute('open');
-    expect(dialogueBox!.y).toBeLessThan(700);
+    expect(dialogueBox!.y).toBeLessThan(950);
     await examples.locator('summary').click();
     await expect(examples.locator('.ma-notion-example').first()).toBeVisible();
     await page.locator('[data-action="advance-dialogue"]').click();
@@ -110,7 +131,7 @@ test('pronunciation uses whole existing recordings, stops on mute and never over
   expect((await audit()).records).toHaveLength(2);
   await readMiniLesson(page);
   await expect.poll(async () => (await audit()).records.length).toBe(3);
-  await page.locator('#ma-notion-select').selectOption('1');
+  await page.getByRole('tab', { name: /Notions/ }).click();
   expect((await audit()).records).toHaveLength(3);
   expect((await audit()).maxActive).toBeLessThanOrEqual(1);
   await page.locator('[data-action="exit-lesson"]').click();

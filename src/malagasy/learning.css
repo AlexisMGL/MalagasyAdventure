@@ -79,18 +79,53 @@
 .ma-notion-aside .ma-notion-memory { font-size:11px; margin-top:15px; padding-top:13px; }
 .ma-notion-example-disclosure > summary { color:#476b3d; font-size:12px; line-height:1.6; cursor:pointer; padding:8px 0; }
 .ma-notion-example-disclosure[open] > summary { margin-bottom:8px; }
+.ma-notion-heading > div { min-width:0; }
+.ma-notion-heading h1 { margin:10px 0 0; font:400 31px/1.25 var(--ma-serif); color:#395d40; letter-spacing:-.5px; }
+.ma-notion-heading > .ma-notion-mute { flex-shrink:0; }
+.ma-notion-invitation { color:#566c4c; font-size:13px; line-height:1.7; margin:0 0 21px; max-width:600px; }
+.ma-notion-tabs { display:grid; grid-template-columns:1fr 1fr; gap:7px; padding:5px; background:#eaf0e1; border:1px solid #d5e0c9; border-radius:12px; margin-bottom:15px; }
+.ma-notion-tabs > button { display:flex; align-items:center; justify-content:center; gap:9px; min-height:45px; border:1px solid transparent; border-radius:8px; background:transparent; color:#607451; font:inherit; font-size:13px; font-weight:650; padding:9px; }
+.ma-notion-tabs > button[aria-selected="true"] { border-color:#c3d2b4; background:#fffef7; color:#355b3b; box-shadow:0 2px 3px #5265420d; }
+.ma-notion-tabs > button:hover { background:#f4f8ec; }
+.ma-notion-tabs b { font-size:10px; line-height:1; color:#607451; padding:5px 6px; background:#e8efde; border-radius:5px; font-weight:550; }
+.ma-notion-tabs > button:focus-visible,.ma-notion-choices > button:focus-visible { outline:2px solid #60834f; outline-offset:2px; }
+.ma-notion-choices { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 19px; }
+.ma-notion-choices > button { border:1px solid #cbd7be; background:#fffef7; color:#526c45; border-radius:8px; min-height:40px; padding:8px 12px; font:inherit; font-size:12px; line-height:1.5; text-align:left; }
+.ma-notion-choices > button[aria-pressed="true"] { border-color:#6e945b; background:#e6efda; color:#345c35; box-shadow:inset 0 0 0 1px #6e945b; }
+.ma-notion-browse { display:flex; align-items:center; justify-content:space-between; gap:18px; color:#657850; margin:14px 2px 0; font-size:11px; }
+.ma-notion-browse .ma-text-link { display:flex; align-items:center; gap:7px; font-size:12px; min-height:36px; }
+.ma-notion-aside-top { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px; }
+.ma-notion-aside-top > .ma-eyebrow { color:#557345; font-size:8px; letter-spacing:.7px; }
+.ma-notion-aside-top > .ma-notion-mute { font-size:9px; padding:5px 0 5px 4px; gap:4px; }
+.ma-notion-aside .ma-notion-tabs { margin-bottom:12px; gap:3px; padding:3px; border-radius:9px; }
+.ma-notion-aside .ma-notion-tabs > button { font-size:10px; gap:5px; padding:7px 4px; min-height:37px; }
+.ma-notion-aside .ma-notion-tabs > button > svg { width:13px; height:13px; }
+.ma-notion-aside .ma-notion-tabs b { font-size:8px; padding:3px 4px; }
+.ma-notion-aside .ma-notion-select-label { margin-top:0; }
+.ma-notion-select-label > span { display:block; font-size:10px; color:#526c47; margin-bottom:5px; }
+.ma-notion-aside .ma-notion-select-label > select { margin-top:0; }
+.ma-notion-aside .ma-notion-card { padding-top:15px; }
+.ma-notion-aside .ma-notion-card .ma-learning-visual { margin-bottom:14px; }
+@media(min-width:1181px) { .ma-notion-aside { max-height:calc(100vh - 48px); overflow-y:auto; } }
 @media(max-width:1180px) {
   .ma-with-notions .ma-notion-dialogue-layout { grid-template-columns:minmax(0,1fr); }
   .ma-conversation-body { grid-row:2; }
   .ma-notion-aside { grid-column:1; grid-row:1; position:static; margin-top:0; }
   .ma-notion-aside .ma-notion-examples { grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); }
+  .ma-notion-aside:has(select) .ma-notion-card h2 { display:none; }
 }
 @media(max-width:760px) {
   .ma-notion-heading { margin:19px 0 14px; gap:14px; align-items:flex-start; }
   .ma-notion-heading > .ma-eyebrow { font-size:8px; white-space:nowrap; }
+  .ma-notion-heading h1 { font-size:26px; margin-top:9px; }
+  .ma-notion-invitation { font-size:12px; margin-bottom:18px; }
+  .ma-notion-tabs > button { font-size:12px; min-height:44px; gap:7px; }
+  .ma-notion-choices { gap:7px; margin-bottom:16px; }
+  .ma-notion-choices > button { font-size:11px; padding:8px 10px; }
+  .ma-notion-browse { font-size:10px; }
   .ma-notion-heading > span:last-child { font-size:10px; line-height:1.6; }
   .ma-notion-card { padding:23px 19px; border-radius:14px; }
-  .ma-notion-card h1 { font-size:29px; margin-bottom:14px; }
+  .ma-notion-card h1,.ma-notion-intro .ma-notion-card h2 { font-size:29px; margin-bottom:14px; }
   .ma-notion-card .ma-notion-rule { font-size:14px; margin-bottom:21px; }
   .ma-notion-example { padding:14px; }
   .ma-notion-example > p { font-size:21px; }

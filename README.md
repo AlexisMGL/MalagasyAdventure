@@ -60,7 +60,7 @@ Un domaine ou port différent possède son propre stockage navigateur. Pour retr
 
 Le **mode découverte** permet de commencer immédiatement sans compte. **Mon compte** propose un identifiant et un mot de passe, sans mail ni confirmation. Les anciens comptes utilisent leur mail comme identifiant. Le carnet privé est sauvegardé sur Supabase ; l’import/export reste disponible. Sans adresse mail, les nouveaux comptes n’ont pas de récupération automatique du mot de passe. L’inscription est opérationnelle sans SMTP ni configuration Brevo ; voir [SUPABASE.md](docs/SUPABASE.md).
 
-Les 24 parties d’apprentissage commencent par de petites fiches : une notion, une règle courte et des exemples à écouter. Ces 59 pense-bêtes restent consultables pendant les dialogues ; les quiz se déroulent sans aide.
+Les 24 parties d’apprentissage proposent un carnet à explorer librement : **Vocabulaire** pour les mots illustrés et **Notions** pour les schémas de construction. Dessins, blocs de phrase, formes possessives colorées et positions d’objets donnent des repères à mémoriser, accompagnés d’exemples à écouter. Les mêmes pense-bêtes restent consultables pendant les dialogues ; les quiz se déroulent sans aide.
 
 ## Documentation et consignes
 
