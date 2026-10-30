@@ -1,8 +1,8 @@
 # Malagasy Adventure
 
-Dépôt autonome de l’application de malgache pour francophones. Le **monde 1, Antananarivo, est jouable en entier** : 12 unités, 36 leçons, 96 scènes, 288 activités, 44 concepts et 92 fiches de vocabulaire. Chaque unité se termine par un quiz de douze questions ; le dernier conclut le monde. Les dix-neuf autres mondes restent verrouillés et planifiés.
+Dépôt autonome de l’application de malgache pour francophones. Les **mondes 1 et 2, Antananarivo et Antsirabe, sont jouables en entier** : 24 unités, 72 leçons, 192 scènes, 576 activités, 58 concepts et 133 fiches de vocabulaire. Chaque unité se termine par un quiz de douze questions ; le dernier conclut son monde. Antsirabe devient accessible après Antananarivo. Les dix-huit autres mondes restent verrouillés et planifiés.
 
-Le dépôt Arcade voisin reste intact. Le chemin du monde 1 montre les 36 étapes, la prochaine leçon, les étapes validées et les quiz encore verrouillés. Son état est calculé depuis la progression existante, sans nouvelle sauvegarde distincte.
+Le dépôt Arcade voisin reste intact. Chaque chemin montre ses 36 étapes, la prochaine leçon, les étapes validées et les quiz encore verrouillés. Une escale historique se débloque après le quiz de l’unité 6 de chaque monde. Cet état est calculé depuis la progression v1 existante, sans nouvelle sauvegarde distincte.
 
 ## Lancer
 
@@ -29,7 +29,7 @@ L’aperçu de production est sur **http://127.0.0.1:4174**. Playwright utilise 
 
 ## Atelier audio
 
-Les voix actives sont celles d’OmniVoice pour Mia et Lova. Les **102 fichiers d’origine et leurs deux références vocales restent inchangés**. L’utilisateur a autorisé de nouveaux clips pour les unités 4–12, avec les mêmes voix ; leur préparation incrémentale emploie `--missing-only`, qui ajoute les IDs manquants et refuse d’écraser les fichiers existants. La banque complète comprend **470 fichiers**, soit 235 énoncés pour chacun des deux personnages, avec une couverture vérifiée par le manifeste et l’audit audio.
+Les voix actives sont celles d’OmniVoice pour Mia et Lova. Les **102 fichiers d’origine, les extensions déjà publiées et leurs deux références vocales restent inchangés**. Les nouveaux clips des deux mondes utilisent les mêmes voix ; leur préparation incrémentale emploie `--missing-only`, qui ajoute les IDs manquants et refuse d’écraser les fichiers existants. Le total courant et la couverture se contrôlent dans le manifeste et avec l’audit audio après génération et activation.
 
 `npm run audio:activate-omnivoice` vérifie les SHA-256 et copie les entrées du manifeste vers `public/malagasy/voices/omnivoice/`, avec provenance et licences. Le site lit ensuite ces fichiers statiques. Aucune génération n’a lieu au build, à la visite du site ou sur un backend. Les sorties restent `synthetic` / `model-generated`, sans validation malgachophone revendiquée. `review-audio.cmd` propose uniquement OmniVoice et conserve les avis et leur historique.
 
@@ -60,7 +60,7 @@ Un domaine ou port différent possède son propre stockage navigateur. Pour retr
 
 Le **mode découverte** permet de commencer immédiatement sans compte. **Mon compte** propose un identifiant et un mot de passe, sans mail ni confirmation. Les anciens comptes utilisent leur mail comme identifiant. Le carnet privé est sauvegardé sur Supabase ; l’import/export reste disponible. Sans adresse mail, les nouveaux comptes n’ont pas de récupération automatique du mot de passe. L’inscription est opérationnelle sans SMTP ni configuration Brevo ; voir [SUPABASE.md](docs/SUPABASE.md).
 
-Les 24 parties d’apprentissage proposent un carnet à explorer librement : **Vocabulaire** pour les mots illustrés et **Notions** pour les schémas de construction. Dessins, blocs de phrase, formes possessives colorées et positions d’objets donnent des repères à mémoriser, accompagnés d’exemples à écouter. Les mêmes pense-bêtes restent consultables pendant les dialogues ; les quiz se déroulent sans aide.
+Les 48 parties d’apprentissage proposent 142 fiches dans un carnet à explorer librement : **Vocabulaire** pour les mots illustrés et **Notions** pour les schémas de construction. Dessins, blocs de phrase, formes possessives colorées, positions d’objets et cadrans d’horloge donnent des repères à mémoriser, accompagnés d’exemples à écouter. Les mêmes pense-bêtes restent consultables pendant les dialogues ; les quiz se déroulent sans aide et demandent un rappel, une interprétation ou une transformation plutôt que la copie d’une réponse affichée.
 
 ## Documentation et consignes
 

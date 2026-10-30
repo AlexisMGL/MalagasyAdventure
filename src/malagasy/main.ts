@@ -5,7 +5,7 @@ import { CONTENT } from './content';
 import { renderWorldPath } from './world-path';
 import './world-path.css';
 import type { Exercise, Lesson, Progress, World } from './types';
-import { lessonAvailable, introduceLesson, recordAnswer, completeLesson, selectMixedExercises, dueConcepts, conceptStatus, playerLevel, streakDays, validateAnswer } from './engine';
+import { lessonAvailable, introduceLesson, recordAnswer, completeLesson, selectMixedExercises, worldAvailable, dueConcepts, conceptStatus, playerLevel, streakDays, validateAnswer } from './engine';
 import { loadProgress, saveProgress, parseSave, serializeSave, loadRecovery, saveAccountProgress, loadAccountRecovery } from './storage';
 import { icon, townArt } from './art';
 import { renderWorldMap, miniIslandArt } from './map';
@@ -13,6 +13,10 @@ import { escapeHtml as e, emptyDraft, renderAnswerControls, answerValue, hasAnsw
 import { feedbackSound, completionSound, MalagasyAudio } from './audio';
 import { renderLearningSession, sessionPassed } from './lesson-view';
 import { getNotionCards } from './notion-cards';
+import { historyAccess } from './world-progress';
+import { historyInterlude } from './history-interludes';
+import { HISTORY_BOOKS } from './history-books';
+import { createHistoryBookState, renderHistoryBook, type HistoryBookState } from './history-book-view';
 import type { LearningSession } from './session';
 import { characterArt } from './characters';
 import { DialogueAudioPlayer, type DialogueAudioCue, type DialogueAudioEvent } from './dialogue-audio';
@@ -29,9 +33,11 @@ const loaded = loadProgress(CONTENT);
 let progress = loaded.progress;
 let storageWarning = loaded.error ?? '';
 let view: View = readView();
+let selectedWorldId = location.hash.split('/')[1] || 'world-01';
 let session: LearningSession | null = null;
 let pendingImport: Progress | null = null;
 let search = '';
+let historyBookState: HistoryBookState | null = null;
 let renderedAccountMode: AccountMode | null = null;
 const audio = new MalagasyAudio(CONTENT.audio);
 const dialogueAudio = new DialogueAudioPlayer(CONTENT.audio, { onStatus: updateVoiceStatus });
@@ -59,7 +65,7 @@ document.documentElement.lang = 'fr';
 document.title = 'Malagasy Adventure';
 
 function readView(): View {
-  const hash = location.hash.slice(1);
+  const hash = location.hash.slice(1).split('/')[0];
   return ['path', 'worlds', 'reviews', 'vocabulary', 'stats', 'sources', 'backup', 'account'].includes(hash) ? hash as View : 'path';
 }
 const lessonById = (id: string): Lesson | undefined => CONTENT.lessons.find(lesson => lesson.id === id);
@@ -79,7 +85,7 @@ function persist(): void {
 function navigate(destination: View): void {
   const resumePath = destination === 'path' && session !== null;
   session = null; audio.stop(); dialogueAudio.stop(); view = destination;
-  history.replaceState(null, '', `#${view}`);
+  history.replaceState(null, '', view === 'path' ? `#path/${selectedWorldId}` : `#${view}`);
   render(); window.scrollTo({ top: 0, behavior: 'instant' });
   const step = resumePath ? app.querySelector<HTMLElement>('[data-path-current]') : null;
   if (step) { step.scrollIntoView({ block: 'center', behavior: 'instant' }); step.focus({ preventScroll: true }); }
@@ -102,9 +108,18 @@ function pageHeading(kicker: string, title: string, description: string): string
 }
 
 function pathPage(): string {
-  const next = nextLesson(), done = activeLessons().filter(lesson => completed(lesson.id)).length;
-  const first = CONTENT.worlds[0];
-  return `<section class="ma-welcome"><div><span class="ma-eyebrow"><i></i> TONGA SOA · BIENVENUE</span><h1 tabindex="-1">Un nouveau monde.<br><em>Un mot à la fois.</em></h1><p>Apprenez le malgache. Rencontrez une île.<br>Et faites de chaque petit pas une aventure.</p></div><div class="ma-welcome-stamp">${icon('compass', 35)}<span>LE GOÛT<br>DE LA DÉCOUVERTE</span></div></section><section class="ma-world-hero"><div class="ma-hero-copy"><div class="ma-hero-kicker"><span>MONDE 01</span> LES HAUTES TERRES</div><h2>${e(first.name)}</h2><p>Les premiers mots ouvrent les premières portes.</p><div class="ma-hero-progress"><span>${done} / ${activeLessons().length} leçons explorées</span><span>${percent(done / activeLessons().length * 100)} %</span><div><i style="width:${percent(done / activeLessons().length * 100)}%"></i></div></div><button class="ma-primary" data-action="${next ? 'continue' : 'review'}">${done ? next ? 'Continuer mon voyage' : 'Revoir mes acquis' : 'Commencer l’aventure'} ${icon('arrow', 18)}</button><span class="ma-hero-footnote">${CONTENT.units.filter(unit => unit.implemented).length} unités jouables · à votre rythme</span></div><div class="ma-hero-art">${townArt()}<div class="ma-hero-companions" aria-label="Lova et Mia, vos compagnons de voyage">${characterArt('lova', 'happy', 114)}${characterArt('mia', 'happy', 114)}</div><span class="ma-art-caption">ANTANANARIVO, MADAGASCAR</span></div></section><div class="ma-content-grid"><section class="ma-learning-path"><div class="ma-section-heading"><div><span class="ma-eyebrow">VOTRE ITINÉRAIRE</span><h2>Votre chemin à Antananarivo</h2></div><span class="ma-small-label">MONDE 01 / 20</span></div><section class="ma-discovery-card ma-culture-card"><span class="ma-eyebrow">HISTOIRE & CULTURES</span><h3>Un fil dans tout le voyage.</h3><p class="ma-discovery-note">Dès Antananarivo, des premiers souverains aux identités des Hautes Terres. Chaque monde poursuit cette découverte.</p><button data-world="world-01">Les repères de ce monde ${icon('arrow', 16)}</button></section>${renderWorldPath(CONTENT, progress)}</section><aside class="ma-path-aside"><section class="ma-daily-card"><div class="ma-card-title">${icon('compass', 20)}<h3>Le petit pas du jour</h3></div><p>Quelques minutes pour aller un peu plus loin.</p>${dailyGoal()}<div class="ma-daily-caption"><span>Objectif personnel</span><strong>${progress.settings.dailyGoal} exercices</strong></div></section><section class="ma-discovery-card"><span class="ma-eyebrow">LE MOT DU VOYAGE</span><span class="ma-featured-word" lang="mg">Salama</span><p>Bonjour · Salut</p><span class="ma-word-rule"></span><p class="ma-discovery-note">Une salutation simple pour commencer une rencontre.</p><button data-view="vocabulary">Ouvrir mon lexique ${icon('arrow', 16)}</button></section></aside></div><div class="ma-bottom-note">${icon('leaf', 18)}<span>Pas de course à la perfection. Juste le plaisir de progresser.</span></div>`;
+  const world = CONTENT.worlds.find(item => item.id === selectedWorldId && item.implemented) ?? CONTENT.worlds[0];
+  selectedWorldId = world.id;
+  const lessons = activeLessons().filter(lesson => lesson.worldId === world.id);
+  const next = lessons.find(lesson => !completed(lesson.id) && lessonAvailable(lesson, progress, CONTENT));
+  const done = lessons.filter(lesson => completed(lesson.id)).length;
+  const available = worldAvailable(world, progress, CONTENT);
+  const number = String(world.number).padStart(2, '0');
+  const following = done === lessons.length ? CONTENT.worlds.find(item => item.number > world.number && worldAvailable(item, progress, CONTENT)) : undefined;
+  const heroAction = following ? 'open-world-path' : next ? 'continue-world' : 'review';
+  const heroLabel = !available ? 'Terminez le monde précédent' : following ? 'Cap sur ' + following.name : done ? next ? 'Continuer mon voyage' : 'Revoir mes acquis' : 'Commencer l’aventure';
+  const chooser = CONTENT.worlds.filter(item => item.implemented).map(item => `<button type="button" data-action="open-world-path" data-path-world="${e(item.id)}" aria-pressed="${item.id === world.id}" ${worldAvailable(item, progress, CONTENT) ? '' : 'disabled'}>Monde ${item.number} · ${e(item.name)} ${worldAvailable(item, progress, CONTENT) ? '' : icon('lock', 13)}</button>`).join('');
+  return `<section class="ma-welcome"><div><span class="ma-eyebrow"><i></i> TONGA SOA · BIENVENUE</span><h1 tabindex="-1">Un nouveau monde.<br><em>Un mot à la fois.</em></h1><p>Apprenez le malgache. Rencontrez une île.<br>Et faites de chaque petit pas une aventure.</p></div><div class="ma-welcome-stamp">${icon('compass',35)}<span>LE GOÛT<br>DE LA DÉCOUVERTE</span></div></section><nav class="ma-world-switcher" aria-label="Choisir mon monde">${chooser}</nav><section class="ma-world-hero"><div class="ma-hero-copy"><div class="ma-hero-kicker"><span>MONDE ${number}</span> ${e(world.subtitle.toLocaleUpperCase('fr'))}</div><h2>${e(world.name)}</h2><p>${world.number === 1 ? 'Les premiers mots ouvrent les premières portes.' : e(world.description)}</p><div class="ma-hero-progress"><span>${done} / ${lessons.length} leçons explorées</span><span>${percent(done / Math.max(1,lessons.length)*100)} %</span><div><i style="width:${percent(done / Math.max(1,lessons.length)*100)}%"></i></div></div><button class="ma-primary" data-action="${heroAction}" ${following ? `data-path-world="${e(following.id)}"` : ''} ${available ? '' : 'disabled'}>${e(heroLabel)} ${icon('arrow',18)}</button><span class="ma-hero-footnote">${CONTENT.units.filter(unit => unit.worldId === world.id && unit.implemented).length} unités · à votre rythme</span></div><div class="ma-hero-art">${townArt(world.id)}<div class="ma-hero-companions" aria-label="Lova et Mia, vos compagnons de voyage">${characterArt('lova','happy',114)}${characterArt('mia','happy',114)}</div><span class="ma-art-caption">${e(world.name.toLocaleUpperCase('fr'))} · SCÈNE ILLUSTRÉE</span></div></section><div class="ma-content-grid"><section class="ma-learning-path"><div class="ma-section-heading"><div><span class="ma-eyebrow">VOTRE ITINÉRAIRE</span><h2>Votre chemin à ${e(world.name)}</h2></div><span class="ma-small-label">MONDE ${number} / 20</span></div>${renderWorldPath(CONTENT, progress, world.id)}</section><aside class="ma-path-aside"><section class="ma-daily-card"><div class="ma-card-title">${icon('compass',20)}<h3>Le petit pas du jour</h3></div><p>Quelques minutes pour aller un peu plus loin.</p>${dailyGoal()}<div class="ma-daily-caption"><span>Objectif personnel</span><strong>${progress.settings.dailyGoal} exercices</strong></div></section><section class="ma-discovery-card"><span class="ma-eyebrow">UN REPÈRE À MI-PARCOURS</span><h3>Une pause dans l’histoire.</h3><p class="ma-discovery-note">L’intermède se débloque à la moitié de ce monde. Retrouvez son étape au milieu du chemin.</p></section></aside></div>${world.number === 1 && done === lessons.length && CONTENT.worlds.some(item => item.id === 'world-02' && item.implemented) ? '<button class="ma-primary" data-action="open-world-path" data-path-world="world-02">Cap sur Antsirabe ↗</button>' : ''}`;
 }
 function dailyGoal(): string {
   const today = new Date().toLocaleDateString('en-CA'), count = progress.history.filter(event => new Date(event.at).toLocaleDateString('en-CA') === today).length;
@@ -113,7 +128,8 @@ function dailyGoal(): string {
 
 
 function worldsPage(): string {
-  return `${pageHeading('LE GRAND VOYAGE', 'Une île, vingt horizons.', 'Des Hautes Terres aux côtes de Madagascar : un programme progressif, une rencontre après l’autre.')}<div class="ma-worlds-layout">${renderWorldMap(CONTENT.worlds)}<div><div class="ma-info-banner">${icon('compass')}<p><strong>Le voyage prend forme.</strong> Antananarivo propose ${CONTENT.units.filter(unit => unit.implemented).length} unités jouables, avec un quiz à chaque étape. Les 19 autres mondes présentent leur programme prévisionnel.</p></div><div class="ma-destination-list">${CONTENT.worlds.map(world => `<button class="ma-destination ${world.implemented ? 'open' : ''}" data-world="${e(world.id)}"><span class="ma-destination-number">${String(world.number).padStart(2, '0')}</span><span><strong>${e(world.name)}</strong><small>${e(world.subtitle)}</small></span>${world.implemented ? '<span class="ma-open-tag">EXPLORER ↗</span>' : icon('lock', 16)}</button>`).join('')}</div></div></div>`;
+  const published = CONTENT.worlds.filter(world => world.implemented);
+  return `${pageHeading('LE GRAND VOYAGE','Une île, vingt horizons.','Des Hautes Terres aux côtes de Madagascar : un programme progressif, une rencontre après l’autre.')}<div class="ma-worlds-layout">${renderWorldMap(CONTENT.worlds)}<div><div class="ma-info-banner">${icon('compass')}<p><strong>Le voyage prend forme.</strong> ${published.map(world => e(world.name)).join(' et ')} proposent leurs unités. Chaque monde se déverrouille après le précédent ; les autres destinations restent en préparation.</p></div><div class="ma-destination-list">${CONTENT.worlds.map(world => `<button class="ma-destination ${world.implemented ? 'open' : ''}" data-world="${e(world.id)}"><span class="ma-destination-number">${String(world.number).padStart(2,'0')}</span><span><strong>${e(world.name)}</strong><small>${e(world.subtitle)}</small></span>${world.implemented && worldAvailable(world,progress,CONTENT) ? '<span class="ma-open-tag">EXPLORER ↗</span>' : icon('lock',16)}</button>`).join('')}</div></div></div>`;
 }
 function reviewsPage(): string {
   const due = dueConcepts(progress), known = CONTENT.concepts.filter(concept => progress.concepts[concept.id]?.introduced), weakest = [...known].sort((a, b) => progress.concepts[a.id].mastery - progress.concepts[b.id].mastery).slice(0, 8);
@@ -122,7 +138,7 @@ function reviewsPage(): string {
 const dateLabel = (value: string | null): string => value ? new Date(value).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : 'après la première pratique';
 function statusLabel(status: string): string { return ({ unseen: 'À découvrir', learning: 'En découverte', reviewing: 'À consolider', mastered: 'Maîtrisé', due: 'À revoir' })[status] ?? status; }
 function vocabularyPage(): string {
-  return `${pageHeading('VOTRE COLLECTION DE RENCONTRES', 'Des mots qui restent.', 'Un petit carnet pour retrouver les expressions du premier monde et suivre celles déjà découvertes.')}<div class="ma-lexicon-tools"><label for="ma-search">${icon('book')}<input id="ma-search" type="search" placeholder="Chercher un mot, une traduction…" value="${e(search)}"></label><span>${CONTENT.vocabulary.length} EXPRESSIONS DOCUMENTÉES</span></div><div id="ma-lexicon-results">${vocabularyResults()}</div>`;
+  return `${pageHeading('VOTRE COLLECTION DE RENCONTRES', 'Des mots qui restent.', 'Un petit carnet pour retrouver les expressions des mondes publiés et suivre celles déjà découvertes.')}<div class="ma-lexicon-tools"><label for="ma-search">${icon('book')}<input id="ma-search" type="search" placeholder="Chercher un mot, une traduction…" value="${e(search)}"></label><span>${CONTENT.vocabulary.length} EXPRESSIONS DOCUMENTÉES</span></div><div id="ma-lexicon-results">${vocabularyResults()}</div>`;
 }
 function vocabularyResults(): string {
   const words = CONTENT.vocabulary.filter(word => `${word.malagasy} ${word.french} ${word.note}`.toLocaleLowerCase('fr').includes(search.toLocaleLowerCase('fr')));
@@ -133,7 +149,7 @@ function statsPage(): string {
   return `${pageHeading('CHAQUE PAS COMPTE', 'Votre carnet de progrès.', 'Une leçon terminée est une étape. Une notion retenue est un acquis qui se construit avec le temps.')}<div class="ma-metric-grid"><div><span>EXPÉRIENCE</span><strong>${progress.xp}<small> XP</small></strong><small>Niveau ${playerLevel(progress.xp)}</small></div><div><span>LEÇONS TERMINÉES</span><strong>${progress.completedLessons.length}<small> / ${activeLessons().length}</small></strong><small>${completedUnits} / ${CONTENT.units.filter(unit => unit.implemented).length} unités validées</small></div><div><span>MAÎTRISE MOYENNE</span><strong>${averageMastery()}<small> %</small></strong><small>sur ${knownConcepts()} notions découvertes</small></div></div><div class="ma-two-columns"><section class="ma-panel"><div class="ma-card-title">${icon('stats')}<h2>Votre pratique en chiffres</h2></div><dl class="ma-stats-list"><div><dt>Réponses données</dt><dd>${progress.history.length}</dd></div><div><dt>Réussites</dt><dd>${successful}</dd></div><div><dt>Précision de l’historique</dt><dd>${progress.history.length ? percent(successful / progress.history.length * 100) : 0} %</dd></div><div><dt>Jours d’activité</dt><dd>${progress.activityDates.length}</dd></div><div><dt>Série en cours</dt><dd>${streakDays(progress)} jours</dd></div><div><dt>Notions maîtrisées</dt><dd>${masteredConcepts()}</dd></div></dl><p class="ma-page-footnote">Historique limité aux dernières réponses conservées. Aucun niveau de langue officiel n’est déduit de ces statistiques.</p></section><section class="ma-panel"><div class="ma-card-title">${icon('star')}<h2>Les petites victoires</h2></div>${[['first-lesson', 'Le premier pas', 'Terminer votre première leçon.'], ['three-lessons', 'Le goût du voyage', 'Terminer trois leçons.'], ['first-unit', 'Première escale', 'Réussir un premier bilan d’unité.']].map(([id, name, description]) => `<div class="ma-achievement ${progress.achievements.includes(id) ? 'earned' : ''}"><span>${icon(progress.achievements.includes(id) ? 'star' : 'lock', 22)}</span><div><h3>${name}</h3><p>${description}</p></div>${progress.achievements.includes(id) ? icon('check', 18) : ''}</div>`).join('')}</section></div>`;
 }
 function sourcesPage(): string {
-  return `${pageHeading('APPRENDRE AVEC CONFIANCE', 'Des mots, des sources.', 'Le contenu linguistique est accompagné de ses références. Les exercices et illustrations ont été créés pour cette application.')}<div class="ma-source-summary"><span>${icon('source', 28)}</span><div><h2>Une base documentée, une validation à poursuivre.</h2><p>Les références ci-dessous étayent les premières unités en malgache standard. Une relecture par une personne malgachophone reste nécessaire avant une diffusion pédagogique large. Le programme des mondes futurs est prévisionnel.</p></div></div><div class="ma-section-heading"><h2>Références effectivement consultées</h2><span class="ma-small-label">REGISTRE DES SOURCES</span></div><div class="ma-source-list">${CONTENT.sources.filter(source => source.consulted).map(source => `<article id="source-${e(source.id)}"><div><span class="ma-small-label">${e(source.category.toUpperCase())}${source.date ? ` · ${e(source.date)}` : ''}</span><h3><a href="${e(source.url)}" target="_blank" rel="noopener noreferrer">${e(source.title)} ↗</a></h3><span class="ma-source-author">${e(source.author)}</span><p>${e(source.supports)}</p><small>${e(source.license)}</small></div></article>`).join('')}</div>${CONTENT.sources.some(source => !source.consulted) ? `<div class="ma-section-heading"><h2>Pour aller plus loin</h2></div><p>Ces références sont proposées en complément et n’ont pas servi à valider les exercices de cette édition.</p>${CONTENT.sources.filter(source => !source.consulted).map(source => `<p><a href="${e(source.url)}" target="_blank" rel="noopener noreferrer">${e(source.title)} ↗</a></p>`).join('')}` : ''}<div class="ma-two-columns"><section class="ma-panel"><h2>Prononciation & audio</h2><p>Les dialogues du premier monde sont accompagnés de fichiers OmniVoice en malgache du Plateau (plt), préparés localement avec les deux voix des personnages. La lecture se déclenche dans les dialogues et au clic sur une réponse malgache, même incorrecte. Le haut-parleur permet de réécouter et le bouton 0,75× de ralentir. Les textes à trous restent silencieux pour ne pas inventer ni révéler un mot absent.</p><p>Mia et Lova disposent chacun de leur voix synthétique, féminine et masculine, avec une référence générée fixe par personnage. Les 102 enregistrements OmniVoice initiaux sont conservés à l’identique, y compris Azafady. Les nouvelles répliques étendent cette banque avec les mêmes références vocales, sans traitement de hauteur. La synthèse n’a pas été validée phrase par phrase par un enseignant malgachophone : la prononciation ne peut pas être garantie parfaite. Les fichiers sont identifiés comme synthétiques et ne valident aucune compétence orale. La licence du modèle est non commerciale. Les huit enregistrements humains de Manantiana, Jagwar et Bluerose25 restent conservés comme références complémentaires.</p><p><small>${e(OMNIVOICE_NOTICE)}</small></p><p><a href="/malagasy/voices/omnivoice/NOTICE.md" target="_blank" rel="noopener noreferrer">Notices audio</a> · <a href="/malagasy/voices/omnivoice/licenses/BOSON_HIGGS_AUDIO_2_LICENSE.txt" target="_blank" rel="noopener noreferrer">Licence Higgs Audio 2</a> · <a href="/malagasy/voices/omnivoice/licenses/META_LLAMA_3_LICENSE_AND_USE_POLICY.txt" target="_blank" rel="noopener noreferrer">Accords Llama 3</a></p></section><section class="ma-panel"><h2>Images & réutilisation</h2><p>Personnages, illustration d’Antananarivo et icônes : dessins vectoriels originaux créés pour Afterhours. Le fond géographique de la carte provient de Natural Earth, cité ci-dessus. Les voix humaines réutilisées sont distribuées localement avec les licences et attributions indiquées ci-dessus ; aucun média distant n’est chargé à l’utilisation.</p><p>Les références sont citées pour étayer les connaissances. Cela n’implique aucune autorisation de recopier leurs cours ou leurs enregistrements.</p></section></div>`;
+  return `${pageHeading('APPRENDRE AVEC CONFIANCE', 'Des mots, des sources.', 'Le contenu linguistique est accompagné de ses références. Les exercices et illustrations ont été créés pour cette application.')}<div class="ma-source-summary"><span>${icon('source', 28)}</span><div><h2>Une base documentée, une validation à poursuivre.</h2><p>Les références ci-dessous étayent les premières unités en malgache standard. Une relecture par une personne malgachophone reste nécessaire avant une diffusion pédagogique large. Le programme des mondes futurs est prévisionnel.</p></div></div><div class="ma-section-heading"><h2>Références effectivement consultées</h2><span class="ma-small-label">REGISTRE DES SOURCES</span></div><div class="ma-source-list">${CONTENT.sources.filter(source => source.consulted).map(source => `<article id="source-${e(source.id)}"><div><span class="ma-small-label">${e(source.category.toUpperCase())}${source.date ? ` · ${e(source.date)}` : ''}</span><h3><a href="${e(source.url)}" target="_blank" rel="noopener noreferrer">${e(source.title)} ↗</a></h3><span class="ma-source-author">${e(source.author)}</span><p>${e(source.supports)}</p><small>${e(source.license)}</small></div></article>`).join('')}</div>${CONTENT.sources.some(source => !source.consulted) ? `<div class="ma-section-heading"><h2>Pour aller plus loin</h2></div><p>Ces références sont proposées en complément et n’ont pas servi à valider les exercices de cette édition.</p>${CONTENT.sources.filter(source => !source.consulted).map(source => `<p><a href="${e(source.url)}" target="_blank" rel="noopener noreferrer">${e(source.title)} ↗</a></p>`).join('')}` : ''}<div class="ma-two-columns"><section class="ma-panel"><h2>Prononciation & audio</h2><p>Les dialogues des deux mondes sont accompagnés de fichiers OmniVoice en malgache du Plateau (plt), préparés localement avec les deux voix des personnages. La lecture se déclenche dans les dialogues et au clic sur une réponse malgache, même incorrecte. Le haut-parleur permet de réécouter et le bouton 0,75× de ralentir. Les textes à trous restent silencieux pour ne pas inventer ni révéler un mot absent.</p><p>Mia et Lova disposent chacun de leur voix synthétique, féminine et masculine, avec une référence générée fixe par personnage. Les 102 enregistrements OmniVoice initiaux sont conservés à l’identique, y compris Azafady. Les nouvelles répliques étendent cette banque avec les mêmes références vocales, sans traitement de hauteur. La synthèse n’a pas été validée phrase par phrase par un enseignant malgachophone : la prononciation ne peut pas être garantie parfaite. Les fichiers sont identifiés comme synthétiques et ne valident aucune compétence orale. La licence du modèle est non commerciale. Les huit enregistrements humains de Manantiana, Jagwar et Bluerose25 restent conservés comme références complémentaires.</p><p><small>${e(OMNIVOICE_NOTICE)}</small></p><p><a href="/malagasy/voices/omnivoice/NOTICE.md" target="_blank" rel="noopener noreferrer">Notices audio</a> · <a href="/malagasy/voices/omnivoice/licenses/BOSON_HIGGS_AUDIO_2_LICENSE.txt" target="_blank" rel="noopener noreferrer">Licence Higgs Audio 2</a> · <a href="/malagasy/voices/omnivoice/licenses/META_LLAMA_3_LICENSE_AND_USE_POLICY.txt" target="_blank" rel="noopener noreferrer">Accords Llama 3</a></p></section><section class="ma-panel"><h2>Images & réutilisation</h2><p>Personnages, illustration d’Antananarivo et icônes : dessins vectoriels originaux créés pour Afterhours. Le fond géographique de la carte provient de Natural Earth, cité ci-dessus. Les voix humaines réutilisées sont distribuées localement avec les licences et attributions indiquées ci-dessus ; aucun média distant n’est chargé à l’utilisation.</p><p>Les références sont citées pour étayer les connaissances. Cela n’implique aucune autorisation de recopier leurs cours ou leurs enregistrements.</p></section></div>`;
 }
 function currentRecovery(): string | null {
   return account.userId ? loadAccountRecovery(account.userId) : loadRecovery();
@@ -285,6 +301,8 @@ function startLesson(id: string): void {
   const recalls = selectMixedExercises(CONTENT, progress, null, CONTENT.exercises.length).filter(exercise => earlierIds.has(exercise.id) && !lesson.exerciseIds.includes(exercise.id)).slice(0, 2);
   const exercises = lesson.kind === 'checkpoint' ? authored : [...authored, ...recalls];
   if (!exercises.length) { toast('Cette leçon n’a pas encore d’exercices disponibles.'); return; }
+  selectedWorldId = lesson.worldId;
+  history.replaceState(null, '', `#path/${selectedWorldId}`);
   session = { lesson, exercises, index: 0, correct: 0, draft: emptyDraft(), answered: false, wasCorrect: false, stage: lesson.kind !== 'checkpoint' && getNotionCards(lesson.id).length ? 'notion' : 'notes', notionIndex: 0, review: false, xpBefore: progress.xp, sceneIndex: 0, revealedTurns: 1, combo: 0, maxCombo: 0, lastReward: 0, results: [] };
   render(true); window.scrollTo(0, 0); app.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true });
 }
@@ -364,17 +382,36 @@ async function playLanguageAudio(replay: boolean, rate = 1): Promise<void> {
 }
 function showDialog(title: string, body: string): void {
   const dialog = app.querySelector<HTMLDialogElement>('#ma-dialog')!;
+  dialog.classList.remove('ma-history-book-dialog');
   dialog.innerHTML = `<div class="ma-dialog-heading"><span class="ma-eyebrow">VOTRE CARNET DE VOYAGE</span><button data-action="close-dialog" class="ma-icon-button" aria-label="Fermer">${icon('close')}</button></div><h2 id="ma-dialog-title">${e(title)}</h2>${body}`;
   dialog.showModal();
 }
 function worldDetails(id: string): void {
   const world = CONTENT.worlds.find(item => item.id === id);
   if (!world) return;
+  const available = worldAvailable(world,progress,CONTENT), history = historyAccess(id,progress,CONTENT);
   const items = (title: string, values: string[]) => `<h3>${title}</h3><ul>${values.map(value => `<li>${e(value)}</li>`).join('')}</ul>`;
-  showDialog(`${String(world.number).padStart(2, '0')} · ${world.name}`, `<p class="ma-dialog-intro">${e(world.subtitle)}</p><p>${e(world.description)}</p>${world.implemented ? `<span class="ma-open-tag">${CONTENT.units.filter(unit => unit.worldId === world.id && unit.implemented).length} UNITÉS JOUABLES</span>` : '<span class="ma-planned-tag">DESTINATION EN PRÉPARATION · VERROUILLÉE</span>'}${items('Les mots à rencontrer', world.vocabulary)}${items('Les constructions à découvrir', world.grammar)}${items('Ce que vous apprendrez à faire', world.skills)}<h3>L’escale culturelle</h3><p>${e(world.culture)}</p>${world.cultureTopics?.length ? items('Les repères à explorer', world.cultureTopics) : ''}<small>${world.estimatedHours} heures indicatives pour le programme complet de ce monde. ${world.implemented ? 'Cette édition couvre les douze unités du premier monde.' : 'Ce programme est une hypothèse pédagogique à valider avant publication des leçons.'}</small>${world.implemented ? '<button class="ma-primary" data-view="path">Retrouver mon parcours ↗</button>' : ''}`);
+  showDialog(`${String(world.number).padStart(2,'0')} · ${world.name}`, `<p class="ma-dialog-intro">${e(world.subtitle)}</p><p>${e(world.description)}</p>${world.implemented ? `<span class="ma-open-tag">${CONTENT.units.filter(unit => unit.worldId === id && unit.implemented).length} UNITÉS</span>` : '<span class="ma-planned-tag">DESTINATION EN PRÉPARATION</span>'}${items('Les mots à rencontrer',world.vocabulary)}${items('Les constructions à découvrir',world.grammar)}${items('Ce que vous apprendrez à faire',world.skills)}<h3>Histoire & cultures · à mi-parcours</h3><p>${history.unlocked ? 'Votre intermède historique est disponible.' : history.required ? `Validez le quiz de l’unité ${history.midpointUnit} dans ce monde pour découvrir son intermède.` : 'L’intermède accompagnera la publication des leçons et se débloquera à la moitié du monde.'}</p>${history.unlocked ? `<button class="ma-secondary" data-action="open-history" data-history-world="${e(id)}">Découvrir l’intermède</button>` : ''}<p><small>Les durées du programme sont indicatives, sans garantie de niveau.</small></p>${world.implemented ? `<button class="ma-primary" data-action="open-world-path" data-path-world="${e(id)}" ${available ? '' : 'disabled'}>${available ? 'Retrouver ce parcours ↗' : 'Terminez le monde précédent'}</button>` : ''}`);
 }
-
+function openHistory(id: string): void {
+  const world = CONTENT.worlds.find(item => item.id === id);
+  if (!world || !historyAccess(id,progress,CONTENT).unlocked) return;
+  if (!HISTORY_BOOKS[id]) return;
+  historyBookState = historyBookState?.worldId === id ? historyBookState : createHistoryBookState(id);
+  showDialog(historyInterlude(world).title, `<div id="ma-history-content">${renderHistoryBook(historyBookState)}</div>`);
+  app.querySelector('#ma-dialog')?.classList.add('ma-history-book-dialog');
+}
+function refreshHistoryBook(focus = '.ma-history-page-title', resetScroll = true): void {
+  if (!historyBookState) return;
+  const target = app.querySelector('#ma-history-content'), dialog = app.querySelector<HTMLDialogElement>('#ma-dialog');
+  if (!target || !dialog?.open) return;
+  const scroll = dialog.scrollTop;
+  target.innerHTML = renderHistoryBook(historyBookState);
+  target.querySelector<HTMLElement>(focus)?.focus({ preventScroll: true });
+  dialog.scrollTop = resetScroll ? 0 : scroll;
+}
 let toastTimeout = 0;
+
 function toast(message: string): void {
   const element = app.querySelector<HTMLElement>('#ma-toast')!;
   element.textContent = message; element.classList.add('visible');
@@ -452,6 +489,13 @@ app.addEventListener('click', event => {
     case 'replay-dialogue': replayDialogue(data.voiceKey ?? '', false); break;
     case 'slow-dialogue': replayDialogue(data.voiceKey ?? '', true); break;
     case 'replay-notion': replayNotion(data.cardId ?? '', Number(data.exampleIndex), data.slow === 'true'); break;
+    case 'open-history': openHistory(data.historyWorld ?? ''); break;
+    case 'history-page': if (historyBookState) { const page = Number(data.historyPage); if (Number.isInteger(page) && page >= 0 && page <= HISTORY_BOOKS[historyBookState.worldId].pages.length) { historyBookState.page = page; refreshHistoryBook(); } } break;
+    case 'history-answer': if (historyBookState && !historyBookState.checked) { const question = Number(data.question), option = Number(data.option), item = HISTORY_BOOKS[historyBookState.worldId].questions[question]; if (item && Number.isInteger(option) && option >= 0 && option < item.choices.length) { historyBookState.answers[question] = option; refreshHistoryBook(`[data-question="${question}"][data-option="${option}"]`, false); } } break;
+    case 'history-check': if (historyBookState && historyBookState.answers.every(answer => answer >= 0)) { historyBookState.checked = true; refreshHistoryBook('.ma-history-score'); } break;
+    case 'history-retry': if (historyBookState) { historyBookState.answers.fill(-1); historyBookState.checked = false; refreshHistoryBook(); } break;
+    case 'open-world-path': { const world = CONTENT.worlds.find(item => item.id === data.pathWorld); if (world && worldAvailable(world,progress,CONTENT)) { selectedWorldId = world.id; navigate('path'); } } break;
+    case 'continue-world': { const next = activeLessons().find(item => item.worldId === selectedWorldId && !completed(item.id) && lessonAvailable(item,progress,CONTENT)); if (next) startLesson(next.id); } break;
     case 'advance-notion': advanceNotion(); break;
     case 'select-notion': selectNotion(Number(data.notionIndex), `[data-notion-index="${Number(data.notionIndex)}"]`); break;
     case 'select-notion-section': selectNotionSection(data.section ?? ''); break;
@@ -480,7 +524,7 @@ app.addEventListener('click', event => {
     case 'confirm-import': if (pendingImport) { progress = pendingImport; audio.muted = progress.settings.muted; dialogueAudio.muted = progress.settings.muted; pendingImport = null; storageWarning = ''; persist(); navigate('backup'); toast('Votre carnet a été restauré. Bon retour !'); } break;
   }
 });
-window.addEventListener('hashchange', () => navigate(readView()));
+window.addEventListener('hashchange', () => { const worldId = location.hash.split('/')[1]; if (worldId) selectedWorldId = worldId; navigate(readView()); });
 document.addEventListener('keydown', event => {
   const notionTab = (event.target as Element).closest<HTMLButtonElement>('.ma-notion-tabs [role="tab"]');
   if (notionTab && ['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {

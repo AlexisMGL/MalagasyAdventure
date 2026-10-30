@@ -39,7 +39,7 @@ const starts = async (page: Page): Promise<number> => (await audit(page)).record
 async function openFirstDialogue(page: Page): Promise<void> {
   await page.goto('/malagasy-adventure');
   await page.locator('.ma-world-hero').waitFor();
-  await page.locator('[data-action="continue"]').click();
+  await page.locator('[data-action="continue-world"]').click();
   await readMiniLesson(page);
   await expect(page.locator('.ma-dialogue-discovery')).toBeVisible();
 }

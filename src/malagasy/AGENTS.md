@@ -14,9 +14,14 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 
 ## Périmètre
 
-- **Dernière demande du 27 octobre 2026 : terminer les douze unités du monde 1**, avec dialogues, exercices, quiz et chemin visuel de progression dans le monde. Cette demande remplace la limitation aux trois premières unités.
+- **Retour du 30 octobre 2026 : étoffer les intermèdes historiques.** Chaque monde publié propose un livret d’environ cinq minutes de lecture, cinq chapitres illustrés et six questions avec correction expliquée et nouvel essai. Maintenir le déblocage à mi-parcours. Lecture et questions culturelles ne modifient ni XP ni maîtrise linguistique, ni le schéma v1. Références dans Sources & crédits. Les scènes dessinées sont des évocations ; les contours géographiques reprennent Natural Earth.
+
+- **Demande du 30 octobre 2026 : créer le monde 2 complet, Antsirabe**, avec les mêmes exigences que le premier : douze unités, deux parties d’apprentissage et un quiz de douze questions par unité, fiches Vocabulaire/Notions, dialogues et voix OmniVoice préparées hors ligne. Cette extension remplace les anciennes limites au seul monde 1 ; les mondes 3–20 restent planifiés et verrouillés. Le corpus des deux mondes compte 24 unités, 72 leçons, 192 scènes, 576 activités, 58 concepts, 133 entrées de vocabulaire et 142 fiches visuelles réparties sur 48 parties.
+- **Même demande : débloquer l’intermède historique au milieu de chaque monde.** Exiger la validation de toutes les leçons des premières `ceil(nombre d’unités / 2)` unités, quiz inclus, et un monde publié accessible. Pour les deux mondes actuels : six unités et 18 leçons. Le jalon se place entre les unités 6 et 7 ; l’accès est dérivé de la progression v1, y compris après import, sans nouveau drapeau, XP ou maîtrise linguistique. Les détails de destination ne doivent pas dévoiler l’intermède avant ce seuil.
+- **Même demande : les quiz ne doivent pas se réduire à recopier le dialogue ou la consigne.** La réponse complète ne doit pas déjà figurer dans les textes visibles. Préférer rappel, compréhension du sens, changement d’objet/de personne/de point de vue ou réponse adaptée à une situation. Les choix et jetons nécessaires restent visibles ; les traductions des passages sont masquées avant correction.
+- **Demande antérieure du 27 octobre 2026 : terminer les douze unités du monde 1**, avec dialogues, exercices, quiz et chemin visuel de progression dans le monde. Cette demande remplace la limitation aux trois premières unités.
 - Ajouter les nouvelles répliques OmniVoice avec les mêmes références de Mia/Lova, sur autorisation explicite de l’utilisateur. Préserver chaque octet des 102 enregistrements initiaux ; utiliser la génération incrémentale `--missing-only`.
-- Garder les autres destinations comme programme futur clairement verrouillé. Préserver les trois autres jeux, la publication statique et les sauvegardes existantes.
+- Garder les destinations 3–20 comme programme futur clairement verrouillé. Préserver la publication statique, les sauvegardes existantes et le dépôt Arcade séparé.
 
 ## Curriculum et objectifs initiaux
 
@@ -27,6 +32,7 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 - Jalons futurs : monde 5, conversation quotidienne simple cumulant les premiers acquis ; monde 10, récit simple et problèmes pratiques ; monde 15, explications et échanges développés ; monde 20, intégration autonome dans des situations familières. Ne pas les annoncer comme livrés.
 - Les unités actuelles couvrent salutations/politesse, nom/origine/pronoms, puis prédicats simples/`ny`/négation/questions. La suite prévue porte famille, maison, nourriture, nombres, interrogatifs, déplacement, besoins pratiques, conversations et aventure finale.
 - Enseigner les structures réelles du malgache : prédicat initial, sujet final selon la construction, prédicats nominaux/adjectivaux, pronoms, déterminants, possession, négation, questions, temps/aspect, voix et structure informationnelle. Ne pas calquer les catégories françaises ni enseigner « tout est VOS ».
+- Antsirabe reste aux verbes actifs au présent, heures pleines, fréquence, objets, formes possédées entières et connecteurs `sy` / `fa` dans des patrons vérifiés. Ne pas anticiper le passé/futur du monde 7. Distinguer heure et fréquence, article `ny` et possesseur `-ny` ; ce suffixe ne fixe pas à lui seul genre ou nombre. Ne pas généraliser `sy` à toute coordination de propositions ni `fa` à tous les emplois de « mais ».
 - Présenter les voix dès qu’un exemple les exige ; leur approfondissement tardif dans le curriculum ne permet pas de les ignorer auparavant.
 
 ## Apprentissage par la conversation
@@ -64,6 +70,7 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 - Toujours identifier clairement **le monde, l’unité, la partie et la position dans la séance**, notamment entre deux exercices.
 - Chaque unité se termine par un **quiz complet**, qui couvre ses acquis et réutilise les précédents.
 - Les douze unités comportent chacune un quiz de douze questions. Déclarer le monde 1 terminé seulement après validation des douze unités et de leur dernier quiz.
+- La même clôture s’applique au monde 2. Terminer le monde 1 ouvre Antsirabe ; terminer Antsirabe ne publie pas automatiquement le monde 3. Garder les IDs du premier monde et ordonner les leçons par monde puis par ID.
 - Pendant un quiz final, masquer les traductions qui révéleraient la réponse ; les rendre disponibles après la correction. Garder les traductions à la demande pendant la découverte et l’entraînement.
 - Distinguer la fin d’une partie de la fin d’une unité. Une réussite au quiz déclenche un vrai écran de clôture d’unité, avec score, compétences travaillées et accès à la prochaine unité.
 - Une tentative rejouée doit afficher son résultat actuel ; une ancienne validation peut rester conservée sans transformer un échec récent en réussite visuelle.
@@ -96,6 +103,7 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 - Utiliser un modèle qui prend réellement en charge le malgache, avec sa provenance et sa licence. Ne jamais présenter une TTS française/anglaise comme du malgache ni promettre une prononciation « toujours correcte » à partir du seul nom du modèle.
 - Prévoir lecture, pause, reprise, relecture, vitesse lente, chargement, erreur et muet via le manifeste audio et son service. Une écoute doit réellement jouer un asset valide avant sa notation.
 - Générer des fichiers de phrases entières en préparation du contenu, puis les servir avec le site statique : le joueur ne doit pas avoir besoin d’un compte Cloud, d’une clé ou d’un appel payant à chaque lecture. Le générateur doit permettre d’étendre le corpus lors de l’ajout de futures phrases.
+- L’ajout du monde 2 étend cet inventaire aux nouvelles répliques, sélections explicitement malgaches et exemples entiers des pense-bêtes. Réutiliser les mêmes références synthétiques Mia/Lova ; préserver tous les fichiers déjà publiés et les avis existants par empreinte, pas seulement les 102 clips initiaux. Générer avec `--missing-only`, contrôler la couverture puis activer les fichiers statiques avant publication.
 - Les huit références humaines (`Salama`, `Misaotra`, `Veloma`, `Azafady`, `Tonga soa`, `Tompoko`, `Eny`, `Tsia`) restent des références ou un repli documenté, pas une limite qui condamne toutes les autres répliques au silence.
 - Lire automatiquement une réplique nouvellement visible disposant d’un fichier autorisé correspondant à la phrase entière, après une action du joueur. Un rerendu, un choix de réponse, l’ouverture d’une traduction ou le passage muet/son ne doit pas relancer les répliques déjà montrées.
 - Proposer un bouton haut-parleur accessible dans les bulles pour rejouer la réplique. Une relecture interrompt proprement la lecture précédente ; aucun chevauchement. Arrêter les voix en quittant la scène, la question ou l’app, et respecter immédiatement le muet.

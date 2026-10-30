@@ -4,6 +4,8 @@ Malagasy Adventure est une application autonome en TypeScript strict, DOM natif 
 
 ## Modules et responsabilités
 
+Les livrets historiques sont dans `history-books.ts`. Rendu paginé, navigation et quiz culturel utilisent `history-book-view.ts`, `history-book.css` et les dessins/légendes SVG de `history-drawings.ts`. L’état reste temporaire : cinq chapitres et six questions sans modification du carnet v1. `history-interludes.ts` fournit les métadonnées et sources. L’accès continue de dériver du quiz de mi-parcours via `world-progress.ts`.
+
 | Fichier | Responsabilité |
 | --- | --- |
 | `src/main.ts` | Point d’entrée de l’application autonome. |
@@ -13,16 +15,18 @@ Malagasy Adventure est une application autonome en TypeScript strict, DOM natif 
 | `src/malagasy/content.ts` | Registre de contenu consultable par les moteurs et les vues. |
 | `src/malagasy/dialogue-content.ts` | Scènes d’introduction et échanges associés aux activités. |
 | `src/malagasy/world-one-units-04-07.ts`, `world-one-units-08-12.ts` | Données des unités 4–12 : dialogues, exercices, concepts, lexique et sources, fusionnés dans `CONTENT`. |
-| `src/malagasy/world-path.ts`, `world-path.css` | Chemin des 36 étapes du monde 1 ; états courant, disponible, validé et verrouillé dérivés du moteur de progression. |
+| `src/malagasy/world-two.ts`, `world-two-authoring.ts`, `world-two-units-01-06.ts`, `world-two-units-07-12.ts` | Données des douze unités d’Antsirabe et constructeur auteur commun, fusionnés dans `CONTENT` après le monde 1. |
+| `src/malagasy/world-path.ts`, `world-path.css`, `world-progress.ts` | Chemin de 36 étapes par monde publié ; états du parcours et accès à l’histoire dérivés de la progression v1. |
 | `src/malagasy/engine.ts` | Réponses acceptées, déblocage, mélange, maîtrise, révisions, XP et validation du contenu. |
 | `src/malagasy/storage.ts` | Chargement, sérialisation et validation du schéma de sauvegarde. |
 | `src/malagasy/account.ts`, `account-view.ts`, `account.css`, `account-identity.ts` | Compte identifiant/mot de passe, compatibilité des anciens comptes mail et choix explicite entre deux carnets. |
 | `supabase/functions/username-signup/`, `supabase/functions/_shared/username.ts` | Inscription sans mail, alias interne partagé, création Auth côté serveur et limitation privée des tentatives. |
-| `src/malagasy/notion-cards.ts`, `learning-visual-types.ts` | Fiches des 24 parties, sections Vocabulaire/Notions, schémas explicitement rédigés, règles brèves et sons entiers existants. |
-| `src/malagasy/lesson-visuals.ts`, `lesson-visuals.css` | Dessins SVG originaux et rendus des schémas : possessions, ordre des mots, localisation, quantités, directions, questions et repères de lecture. |
+| `src/malagasy/notion-cards.ts`, `world-two-notions*.ts`, `learning-visual-types.ts` | 142 fiches des 48 parties, sections Vocabulaire/Notions, schémas explicitement rédigés, règles brèves et correspondance des sons entiers. |
+| `src/malagasy/lesson-visuals.ts`, `lesson-visuals.css` | Dessins SVG originaux et rendus des schémas : possessions, ordre des mots, localisation, quantités, directions, questions, cadrans d’heures pleines et repères de lecture. |
 | `src/malagasy/cloud-sync.ts` | Synchronisation différée et sérialisée, validation v1, révisions et conflits entre appareils. |
 | `src/malagasy/supabase.ts`, `supabase/migrations/` | Client public, transport et schéma Postgres privé par utilisateur avec RLS. |
 | `src/malagasy/history-curriculum.ts` | Fil culturel des vingt mondes dès Antananarivo, résumés des escales, reprises progressives et sources historiques des crédits. Les mondes futurs restent verrouillés. |
+| `src/malagasy/history-interludes.ts` | Intermèdes français des deux mondes publiés : souverains et identités, puis alliances britanniques et école. Le contrôle d’accès reste dans `world-progress.ts`. |
 | `src/malagasy/exercise-view.ts` | Registre des rendus d’exercices, brouillon de réponse et échappement HTML. |
 | `src/malagasy/audio.ts` | Audio linguistique vérifié et effets de réponse synthétisés localement. |
 | `src/malagasy/dialogue-audio.ts` | File de lecture des répliques, relecture, annulation, muet et gestion des politiques audio du navigateur. |
@@ -53,9 +57,11 @@ Le contenu peut être subdivisé en fichiers de données sans modifier le contra
 6. `completeLesson` valide la partie ou le quiz lorsque le seuil est atteint. La fin d’une partie et la clôture d’une unité ont des écrans distincts ; le résultat d’une nouvelle tentative reste indépendant d’une validation historique conservée.
 7. La couche de stockage enregistre automatiquement l’état. L’export JSON fournit une sauvegarde portable.
 
-`worldAvailable` vérifie la publication du monde et la fin de ses mondes prérequis. `worldCompleted` exige toutes les unités du monde, disponibles et terminées. Le monde 1 contient maintenant ses douze unités : valider le quiz de l’unité 12 après les prérequis déclenche une vraie clôture du monde. Les mondes 2–20 restent non publiés, même après cette réussite.
+`worldAvailable` vérifie la publication du monde et la fin de ses mondes prérequis. `worldCompleted` exige toutes les unités du monde, disponibles et terminées. Les mondes 1 et 2 contiennent chacun douze unités : valider leur dernier quiz après les prérequis déclenche une vraie clôture du monde. Terminer Antananarivo ouvre Antsirabe ; les mondes 3–20 restent non publiés. Les unités et leçons sont ordonnées par monde puis par numéro/ID afin que les nouveaux identifiants ne s’intercalent pas dans le premier parcours.
 
-Le chemin visuel affiche les 36 étapes et les 12 quiz sans stocker un deuxième compteur. Son tracé, ses médaillons, son repère « Vous êtes ici » et ses compteurs utilisent les IDs de leçons validées et `lessonAvailable`. Une étape terminée peut être rejouée ; une étape verrouillée reste un vrai bouton désactivé. Cette avancée mesure le parcours, pas la maîtrise durable.
+Le chemin visuel affiche 36 étapes, dont 12 quiz, par monde sans stocker un deuxième compteur. Son tracé, ses médaillons, son repère « Vous êtes ici » et ses compteurs utilisent les IDs de leçons validées et `lessonAvailable`. Une étape terminée peut être rejouée ; une étape verrouillée reste un vrai bouton désactivé. Cette avancée mesure le parcours, pas la maîtrise durable.
+
+`historyAccess` exige un monde publié et accessible, puis la validation de toutes les leçons des premières `ceil(nombre d’unités / 2)` unités. Pour les deux mondes actuels, cela représente 18 leçons jusqu’au quiz de l’unité 6 inclus. Le jalon est rendu à cet endroit du chemin ; l’ouverture de la modale est contrôlée à nouveau. Une ancienne sauvegarde v1 atteignant déjà ce seuil ouvre l’intermède sans migration ni drapeau supplémentaire. La lecture ne donne ni XP ni maîtrise linguistique.
 
 Les fonctions des moteurs ne dépendent pas du DOM, de `localStorage` ou de l’heure globale lorsque le paramètre de date est fourni. Cela permet des tests reproductibles. La session en cours et le brouillon d’un exercice sont de l’état d’interface ; ils ne sont pas des identifiants persistants.
 
@@ -63,9 +69,9 @@ Les fonctions des moteurs ne dépendent pas du DOM, de `localStorage` ou de l’
 
 `recordingForTurn` relie un tour à un fichier `AudioAsset` uniquement lorsque la transcription correspond à l’énoncé complet. Les huit expressions humaines restent des références et un repli documenté, sans découpage ni collage de mots pour fabriquer d’autres phrases. Le personnage `any` permet de partager une référence pour Lova et Mia sans prétendre fournir deux genres de voix.
 
-Les voix actives sont OmniVoice, avec une référence synthétique fixe pour Mia et une pour Lova. Les 102 enregistrements initiaux et leurs références restent inchangés. L’ajout des unités 4–12 autorise de nouveaux clips avec les mêmes références ; `--missing-only` conserve chaque ID existant et refuse un fichier dont l’empreinte ne correspond plus au manifeste. Le total courant se contrôle dans ce manifeste et avec `npm run audio:check`, sans le déduire du nombre de leçons.
+Les voix actives sont OmniVoice, avec une référence synthétique fixe pour Mia et une pour Lova. Les 102 enregistrements initiaux, les extensions déjà publiées et leurs références restent inchangés. L’ajout du monde 2 étend la banque avec les mêmes références ; `--missing-only` conserve chaque ID existant et refuse un fichier dont l’empreinte ne correspond plus au manifeste. Le total courant se contrôle dans ce manifeste et avec `npm run audio:check`, sans le déduire du nombre de leçons.
 
-Les modèles et outils auteur restent dans `.tools/`, ignoré par Git. L’inventaire rassemble les répliques, le lexique et les sélections explicitement malgaches ; les textes incomplets restent exclus. Après préparation locale, `npm run audio:activate-omnivoice` contrôle les empreintes puis copie les clips, références et licences vers les fichiers statiques publics et prépare le registre TypeScript. Aucun modèle n’est exécuté au build ou dans le navigateur. La génération MMS est un historique, pas le pipeline actif.
+Les modèles et outils auteur restent dans `.tools/`, ignoré par Git. L’inventaire rassemble les répliques, les exemples des pense-bêtes, le lexique et les sélections explicitement malgaches ; les textes incomplets restent exclus. Après préparation locale, `npm run audio:activate-omnivoice` contrôle les empreintes puis copie les clips, références et licences vers les fichiers statiques publics et prépare le registre TypeScript. Aucun modèle n’est exécuté au build ou dans le navigateur. La génération MMS est un historique, pas le pipeline actif.
 
 `DialogueAudioPlayer` garde une seule lecture active. Sa synchronisation mémorise les tours déjà visibles pour éviter les reprises dues aux rerendus ; une relecture manuelle annule la file précédente. Un changement de contexte, le muet ou la sortie d’une leçon arrête les fichiers. Le blocage de lecture automatique par le navigateur est distinct d’un fichier illisible et permet une reprise manuelle.
 

@@ -2,6 +2,7 @@
 import importlib.util
 from pathlib import Path
 import unittest
+from unittest.mock import Mock, patch
 
 spec = importlib.util.spec_from_file_location('malagasy_neural', Path(__file__).with_name('generate-malagasy-neural.py'))
 module = importlib.util.module_from_spec(spec)
@@ -9,6 +10,20 @@ spec.loader.exec_module(module)
 
 
 class AudioCacheTests(unittest.TestCase):
+    def test_checkpoint_retries_a_temporary_windows_read_lock(self):
+        temporary = Mock()
+        temporary.replace.side_effect = [PermissionError('reader'), PermissionError('reader'), None]
+        with patch.object(module.time, 'sleep'):
+            module.replace_checkpoint(temporary, Path('manifest.json'))
+        self.assertEqual(temporary.replace.call_count, 3)
+
+    def test_checkpoint_preserves_failure_on_a_persistent_lock(self):
+        temporary = Mock()
+        temporary.replace.side_effect = PermissionError('persistent lock')
+        with patch.object(module.time, 'sleep'), self.assertRaises(PermissionError):
+            module.replace_checkpoint(temporary, Path('manifest.json'))
+        self.assertEqual(temporary.replace.call_count, 40)
+
     def test_missing_only_preserves_every_existing_file_even_without_a_review(self):
         cached = {'sha256': 'current', 'recipeSha256': 'old'}
         self.assertEqual(module.cache_decision(cached, 'new', 'current', set(), missing_only=True), 'retained')

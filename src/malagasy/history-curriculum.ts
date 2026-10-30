@@ -266,6 +266,24 @@ const consulted = 'Recherche du 28 octobre 2026';
 const rights = 'Référence consultée pour des synthèses et un programme originaux ; aucun texte long, photographie ou document redistribué.';
 export const HISTORY_SOURCES: Source[] = [
   {
+    id: 'fnl-madagascar-1817', title: 'Voyages to Madagascar — présentation du manuscrit de Thomas Locke Lewis',
+    author: 'Friends of the National Libraries / Foyle Special Collections Library, King’s College London',
+    url: 'https://grants.fnl.org.uk/voyages-madagascar', category: 'history', consulted: true, date: 'Consulté le 30 octobre 2026',
+    supports: 'Notice du manuscrit de la mission de 1817 : rôle de Maurice, intérêts britanniques, négociation avec Radama et reconnaissance diplomatique. La notice est lue ; le manuscrit entier n’est pas prétendu consulté.', license: rights,
+  },
+  {
+    id: 'cambridge-abolition-africa', title: 'The Abolition of Slavery in Africa’s Legal Histories',
+    author: 'Law and History Review — Cambridge University Press',
+    url: 'https://www.cambridge.org/core/journals/law-and-history-review/article/abolition-of-slavery-in-africas-legal-histories/47A74EA1672DB9EF11881137DB43796A',
+    category: 'history', consulted: true, date: 'Consulté le 30 octobre 2026',
+    supports: 'Passages sur les proclamations de Radama de 1817 et 1820, les articles de 1823 et les limites de l’abolition de la traite. Appuie la distinction entre interdiction d’exporter des captifs et disparition de l’esclavage.', license: rights,
+  },
+  {
+    id: 'larson-translation', title: 'Promiscuous Translation: Working the Word at Antananarivo', author: 'Pier M. Larson, historien, Johns Hopkins University',
+    url: 'https://www.malagasyword.org/bins/articles?a=larson.promiscuous&t=article', category: 'history', consulted: true, date: 'Consulté le 30 octobre 2026',
+    supports: 'Article de recherche consulté : pratiques de traduction, objectifs missionnaires, apprentissages et collaborations à Antananarivo. Appuie le rôle actif des locuteurs et élèves malgaches.', license: rights,
+  },
+  {
     id: 'unesco-ambohimanga-dossier', title: 'Ambohimanga — dossier de candidature et évaluation ICOMOS',
     author: 'État malgache, ICOMOS et Centre du patrimoine mondial de l’UNESCO',
     url: 'https://whc.unesco.org/uploads/nominations/950.pdf', category: 'history', consulted: true, date: 'Inscription 2001 ; ' + consulted,

@@ -1,5 +1,6 @@
 import type { AudioAsset, Concept, Content, Exercise, ExerciseType, Lesson, Source, Unit, Vocabulary } from './types';
 import { WORLDS } from './worlds';
+import { WORLD_TWO } from './world-two';
 import { HISTORY_SOURCES } from './history-curriculum';
 import { GROUP_04_07 } from './world-one-units-04-07';
 import { GROUP_08_12 } from './world-one-units-08-12';
@@ -156,7 +157,7 @@ export const EXERCISES: Exercise[] = [
   exercise('exercise-01-03-b', 'translate', 'Écris la formule malgache pour « excusez-moi / s’il vous plaît ».', ['Azafady', 'Aza fady'], [C.please], 'Azafady convient avant une demande. Les graphies azafady et aza fady sont toutes deux acceptées.', { context: 'Tu vas demander un renseignement à l’accueil.', sourceIds: [PC, 'dict-azafady'] }),
   exercise('exercise-01-03-c', 'match', 'Remets ces trois intentions en face des mots.', [], [C.hello, C.welcome, C.goodbye], 'Dire bonjour, accueillir et prendre congé sont trois intentions différentes.', { selectionLanguage: 'mg', pairs: [{ left: 'Salama', right: 'Saluer' }, { left: 'Tonga soa', right: 'Accueillir' }, { left: 'Veloma', right: 'Prendre congé' }] }),
   exercise('exercise-01-03-d', 'cloze', 'Pour répondre oui : « ___ »', ['Eny'], [C.yes], 'Eny est la réponse affirmative apprise dans cette unité.'),
-  exercise('exercise-01-03-e', 'reading', 'Dans cet échange, quelle expression remercie ?', ['Misaotra'], [C.welcome, C.thanks, C.respect], 'Misaotra exprime le remerciement ; tompoko précise l’adresse respectueuse.', { selectionLanguage: 'mg', context: 'Lova : Tonga soa!\nToi : Misaotra, tompoko.', choices: ['Tonga soa', 'Tompoko', 'Misaotra'], sourceIds: [PC, 'dict-tompoko'] }),
+  exercise('exercise-01-03-e', 'reading', 'Que fait Mia après l’accueil de Lova ?', ['Elle remercie avec respect'], [C.welcome, C.thanks, C.respect], 'Misaotra exprime le remerciement ; tompoko précise l’adresse respectueuse.', { context: 'Lova : Tonga soa!\nToi : Misaotra, tompoko.', choices: ['Elle salue Lova', 'Elle prend congé', 'Elle remercie avec respect'], sourceIds: [PC, 'dict-tompoko'] }),
   exercise('exercise-01-03-f', 'choice', 'Dans les mots étudiés ici, quel lien retenir entre « i » et « y » final ?', ['Ils renvoient à la même famille de son « i »'], [C.spelling], 'Le manuel présente i et y final ensemble. Ce repère écrit ne mesure pas une compétence d’écoute.', { choices: ['Le y final est toujours une consonne française', 'Ils renvoient à la même famille de son « i »', 'Le i se prononce comme « ou »'] }),
   exercise('exercise-01-03-g', 'dialogue', 'Refuse avec respect.', ['Tsia, tompoko.'], [C.no, C.respect], 'Tsia répond non ; tompoko ajoute une adresse respectueuse.', { selectionLanguage: 'mg', choices: ['Eny, tompoko.', 'Tsia, tompoko.', 'Tonga soa!'], dialogue: [{ speaker: 'mia', text: '…', translation: 'Tu déclines la place proposée d’un geste.' }], sourceIds: [PC, 'dict-tompoko'] }),
   exercise('exercise-01-03-h', 'order', 'Accueille Mia : « Bienvenue ! »', ['Tonga soa'], [C.welcome], 'Les deux mots tonga soa souhaitent la bienvenue.', { selectionLanguage: 'mg', tokens: ['soa', 'Tonga'], dialogue: [{ speaker: 'mia', text: 'Salama!', translation: 'Bonjour !' }] }),
@@ -206,7 +207,7 @@ export const EXERCISES: Exercise[] = [
   exercise('exercise-03-02-e', 'reading', 'Mia est-elle stagiaire ?', ['Non'], [C.question, C.negation, C.no, C.trainee], 'Tsia et la négation tsy indiquent ici qu’elle n’est pas stagiaire.', { context: 'Lova : Mpiofana ve ianao?\nMia : Tsia, tsy mpiofana aho.', choices: ['Oui', 'Non', 'Elle donne seulement son nom'], sourceIds: [PC, 'dict-tsy'] }),
   exercise('exercise-03-02-f', 'translate', 'Traduis en malgache : « Je ne suis pas stagiaire. »', ['Tsy mpiofana aho'], [C.negation, C.predicate, C.trainee, C.pronouns], 'Tsy + prédicat + sujet : Tsy mpiofana aho.', { sourceIds: [PC, 'dict-tsy'] }),
 
-  exercise('exercise-03-03-a', 'reading', 'Quelle phrase du texte exprime un statut ?', ['Mpiofana aho.'], [C.predicate, C.trainee, C.name, C.origin], 'Le nom est donné avec no anarako ; la provenance avec avy any ; le statut avec mpiofana.', { selectionLanguage: 'mg', context: 'Mia : Salama! Mia no anarako. Avy any Frantsa aho. Mpiofana aho.', choices: ['Mia no anarako.', 'Avy any Frantsa aho.', 'Mpiofana aho.'], sourceIds: [PC, 'dict-frantsa'] }),
+  exercise('exercise-03-03-a', 'reading', 'Quel statut Mia donne-t-elle à la fin de sa présentation ?', ['Elle est stagiaire'], [C.predicate, C.trainee, C.name, C.origin], 'Le nom est donné avec no anarako ; la provenance avec avy any ; le statut avec mpiofana.', { context: 'Mia : Salama! Mia no anarako. Avy any Frantsa aho. Mpiofana aho.', choices: ['Elle s’appelle Mia', 'Elle vient de France', 'Elle est stagiaire'], sourceIds: [PC, 'dict-frantsa'] }),
   exercise('exercise-03-03-b', 'order', 'Reconstruis : « Le/la stagiaire est en bonne santé. »', ['Salama ny mpiofana'], [C.predicate, C.article, C.trainee, C.hello], 'Le prédicat adjectival salama précède le sujet ny mpiofana. Ny vient devant le nom.', { selectionLanguage: 'mg', tokens: ['mpiofana', 'ny', 'Salama'], sourceIds: [PC, 'dict-salama', 'dict-ny', KEENAN] }),
   exercise('exercise-03-03-c', 'dialogue', 'Tu n’es pas stagiaire. Réponds clairement à Lova.', ['Tsia, tsy mpiofana aho.'], [C.question, C.no, C.negation, C.trainee, C.pronouns], 'Tsia répond non ; tsy nie ensuite le statut dans la phrase complète.', { selectionLanguage: 'mg', context: 'Lova : Mpiofana ve ianao?', choices: ['Eny, mpiofana aho.', 'Tsia, tsy mpiofana aho.', 'Tonga soa!'], sourceIds: [PC, 'dict-tsy'] }),
   exercise('exercise-03-03-d', 'translate', 'Traduis en français : « Mpiofana ve ianao? »', ['Es-tu stagiaire', 'Êtes-vous stagiaire', 'Est-ce que tu es stagiaire', 'Est-ce que vous êtes stagiaire', 'Tu es stagiaire', 'Vous êtes stagiaire'], [C.question, C.trainee, C.pronouns], 'Ve marque une question oui/non ; le français peut tutoyer ou vouvoyer. La ponctuation interrogative est facultative dans la saisie.'),
@@ -302,7 +303,13 @@ export const UNITS: Unit[] = [
 ];
 /** Explicitly synthetic dialogue voices plus published human references; no listening XP. */
 export const AUDIO: AudioAsset[] = [...OMNIVOICE_RECORDINGS, ...SYNTHETIC_RECORDINGS, ...PROFILE_RECORDINGS, ...DIALOGUE_RECORDINGS];
-UNITS.sort((a, b) => a.number - b.number);
-LESSONS.sort((a, b) => a.id.localeCompare(b.id));
+UNITS.push(...WORLD_TWO.units);
+LESSONS.push(...WORLD_TWO.lessons);
+EXERCISES.push(...WORLD_TWO.exercises);
+CONCEPTS.push(...WORLD_TWO.concepts);
+VOCABULARY.push(...WORLD_TWO.vocabulary);
+SOURCES.push(...WORLD_TWO.sources);
+UNITS.sort((a, b) => a.worldId.localeCompare(b.worldId) || a.number - b.number);
+LESSONS.sort((a, b) => a.worldId.localeCompare(b.worldId) || a.id.localeCompare(b.id));
 
 export const CONTENT: Content = { worlds: WORLDS, units: UNITS, lessons: LESSONS, exercises: EXERCISES, concepts: CONCEPTS, vocabulary: VOCABULARY, sources: SOURCES, audio: AUDIO };

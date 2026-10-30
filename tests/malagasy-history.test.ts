@@ -8,7 +8,7 @@ describe('documented cultural curriculum', () => {
     const progress = createProgress('2026-10-28T10:00:00.000Z');
     for (const worldId of Object.keys(CULTURE_CURRICULUM)) {
       const world = CONTENT.worlds.find(candidate => candidate.id === worldId)!;
-      expect(worldAvailable(world, progress, CONTENT)).toBe(world.implemented);
+      expect(worldAvailable(world, progress, CONTENT)).toBe(world.id === 'world-01');
       if (!world.implemented) expect(CONTENT.lessons.some(lesson => lesson.worldId === worldId)).toBe(false);
     }
     expect(validateContent(CONTENT)).toEqual([]);

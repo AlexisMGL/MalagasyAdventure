@@ -1,6 +1,8 @@
 # Sources linguistiques et limites
 
-Recherche initiale effectuée les 25–26 octobre 2026, puis étendue le 27 octobre aux douze unités du monde 1. Le corpus livré contient 36 leçons, 96 scènes, 288 activités, 44 concepts et 92 fiches de vocabulaire. Le registre réellement utilisé par l’app est `SOURCES` dans `src/malagasy/content.ts`, complété par les sources des deux modules d’extension ; leçons, concepts, fiches et exercices y renvoient par identifiants. L’écran « Sources & crédits » est généré depuis ce registre. Les questions, explications françaises et scènes sont originales ; leur recherche documentaire ne remplace pas une relecture malgachophone.
+Les livrets historiques enrichis du 30 octobre utilisent les références déjà enregistrées et trois nouvelles lectures : la notice FNL/King’s College London du manuscrit de la mission de 1817 (rôle de Maurice et objectifs diplomatiques), l’article de recherche de Law and History Review sur les limites des textes d’abolition de traite et l’article de Pier M. Larson sur la traduction à Antananarivo (acteurs, écoles et collaborations). Les notices et articles effectivement consultés sont distingués des manuscrits et ouvrages entiers non lus. Les illustrations sont des schémas originaux, sans portrait historique inventé ; la silhouette de repérage reprend Natural Earth. Les sources restent visibles uniquement dans Sources & crédits.
+
+Recherche initiale effectuée les 25–26 octobre 2026, étendue le 27 octobre aux douze unités du monde 1 puis au monde 2, Antsirabe, à la demande du 30 octobre. Le corpus livré contient 24 unités, 72 leçons, 192 scènes, 576 activités, 58 concepts et 133 fiches de vocabulaire. Le registre réellement utilisé par l’app est `SOURCES` dans `src/malagasy/content.ts`, complété par les modules de chaque monde ; leçons, concepts, fiches et exercices y renvoient par identifiants. L’écran « Sources & crédits » est généré depuis ce registre. Les questions, explications françaises et scènes sont originales ; leur recherche documentaire ne remplace pas une relecture malgachophone.
 
 ## Références effectivement consultées
 
@@ -23,6 +25,25 @@ Recherche initiale effectuée les 25–26 octobre 2026, puis étendue le 27 octo
 
 Les différents miroirs du dictionnaire pointent vers la même ressource : ils ne constituent pas plusieurs confirmations indépendantes. Le nom de chaque source consultée et son rôle sont conservés même lorsque seule une notice a été utilisée.
 
+## Références du monde 2 — Antsirabe
+
+Le registre `WORLD_TWO.sources` rassemble **30 entrées uniques** : le manuel institutionnel Peace Corps, un chapitre primaire de Matthew Pearson et 28 notices lexicales contrôlées. Cela ne représente pas trente ouvrages indépendants : les notices du dictionnaire citent leurs propres sources, et les miroirs appartiennent à la même ressource. Les scènes sont des recombinaisons originales ; aucun dialogue long, tableau, dessin ou fichier audio de ces documents n’est reproduit.
+
+| Référence consultée | Usage et limites |
+| --- | --- |
+| Manuel Peace Corps cité ci-dessus, p. 5, 7–9 et 11–13 | Pronoms, prédicats actifs, questions dont l’heure, formule mianatra teny malagasy aho. Les emplois du temps des personnages restent fictifs. |
+| Matthew Pearson, [Predicate-Argument Structure and Verbal Morphology, chapitre 2](https://www.reed.edu/linguistics/pearson/phd-thesis/Chapter2.MS2.pdf), p. 41 et 18 | Formes faibles -ko/-nao/-ny et exemples ny bokiko / ny bokinao ; coordination de groupes prédicatifs avec sy, distinguée de ary pour deux propositions. |
+| Dictionnaire : [maraina](https://malagasyword.org/bins/teny2/maraina), [antoandro](https://malagasyword.org/bins/teny2/antoandro), [hariva](https://malagasyword.org/bins/teny2/hariva), [alina](https://malagasyword.org/bins/teny2/alina), [izao](https://malagasyword.org/bins/teny2/izao) | Parties du jour et moment présent. Antoandro n’est pas réduit à midi pile ; hariva dépend du contexte ; aucun système passé/futur n’est déduit de izao. |
+| [mifoha](https://malagasyword.org/bins/teny2/mifoha), [matory](https://malagasyword.org/bins/teny2/matory), [ora](https://malagasyword.org/bins/teny2/ora) | Réveil, sommeil et heures pleines. Les groupes temporels sont appris entiers ; minutes et demi-heures restent hors périmètre. |
+| [mihinana](https://malagasyword.org/bins/teny2/mihinana), [misotro](https://malagasyword.org/bins/teny2/misotro), [miasa](https://malagasyword.org/bins/teny2/miasa), [mianatra](https://malagasyword.org/bins/teny2/mianatra) | Verbes actifs au présent, boire de l’eau, travailler et étudier. Avec mihinana, les patrons à objet exprimé utilisent ny + nom ; le cours ne généralise pas les changements de forme liés à d’autres contextes. |
+| [vilia](https://malagasyword.org/bins/teny2/vilia), [sotro](https://malagasyword.org/bins/teny2/sotro), [vera](https://malagasyword.org/bins/teny2/vera), [antsy](https://malagasyword.org/bins/teny2/antsy) | Objets domestiques ; lovia annoncé comme autre graphie attestée de vilia et accepté en réponse libre. Sotro, nom cuillère, n’est pas confondu avec misotro, verbe boire. |
+| [bokiny](https://malagasyword.org/bins/teny2/bokiny), [reny](https://malagasyword.org/bins/teny2/reny), [ray](https://malagasyword.org/bins/teny2/ray) | Formes possédées entières, confrontées au tableau de Pearson ; -ny ne fixe ni genre ni nombre de possesseurs ou d’objets. |
+| [mamaky](https://malagasyword.org/bins/teny2/mamaky), [manoratra](https://malagasyword.org/bins/teny2/manoratra), [manasa](https://malagasyword.org/bins/teny2/manasa), [mahandro](https://malagasyword.org/bins/teny2/mahandro) | Lire avec boky, écrire, laver la vaisselle et faire cuire du riz. Mamaky et manasa ont d’autres sens ; seuls les emplois de ces scènes sont enseignés. |
+| [isanandro](https://malagasyword.org/bins/teny2/isanandro), [matetika](https://malagasyword.org/bins/teny2/matetika), [indraindray](https://motmalgache.org/bins/teny2/indraindray) | Chaque jour, souvent et parfois. La fréquence reste distincte du moment présent et d’une heure précise ; aucune fréquence chiffrée n’est imposée à souvent/parfois. |
+| [sy](https://malagasyword.org/bins/teny2/sy), [fa](https://malagasyword.org/bins/teny2/fa) | Sy relie ici des noms ou groupes d’activité ; fa / fa tsy sont limités aux contrastes vérifiés. Les autres emplois de fa ne sont pas réduits à la traduction mais. |
+
+Le monde 2 ajoute 14 concepts et 41 entrées de vocabulaire. Ses 66 fiches visuelles préparent les constructions avant les dialogues ; leurs exemples sont reliés uniquement à un fichier correspondant à l’énoncé entier. Les variantes admises restent explicites dans les réponses. La recherche documentaire et les contrôles automatisés ne certifient pas la naturalité de chaque phrase composée.
+
 ## Décisions pédagogiques
 
 Depuis les demandes du 29 octobre 2026, les fiches précédant les dialogues séparent Vocabulaire illustré et Notions schématisées. Les explications et dessins déplient le corpus existant (notamment possessifs, sujet, article et localisation) et conservent les références internes des concepts. Les formes possédées sont vérifiées dans les entrées trano, reny et zanaka : les variations interdisent d’enseigner « nom + ko/nao » comme règle universelle. Les exemples réutilisent uniquement des enregistrements entiers existants ; aucune nouvelle phonétique ni voix n’est inventée pour remplir une fiche. Les références restent affichées uniquement dans Sources & crédits.
@@ -41,7 +62,7 @@ Le corpus vise le malgache standard d’initiation. Il ne prétend pas représen
 
 Après le choix de l’utilisateur de commencer avec les enregistrements disponibles, huit fichiers humains publiés sur Wikimedia Commons sont distribués dans leur format original : `Salama`, `Misaotra`, `Veloma`, `Azafady`, `Tonga soa`, `Tompoko`, `Eny` et `Tsia`. Les pages de provenance, interprètes, licences CC BY-SA 3.0 ou 4.0, empreintes et limites de vérification sont détaillés dans [MALAGASY_AUDIO_SOURCES.md](MALAGASY_AUDIO_SOURCES.md) et conservés avec les fichiers locaux. Leurs attributions apparaissent dans « Sources & crédits ».
 
-La banque active utilise OmniVoice avec une référence synthétique féminine pour Mia et masculine pour Lova. Les 102 clips initiaux, y compris Azafady, et leurs références restent inchangés. L’utilisateur a autorisé de nouveaux clips pour toutes les nouvelles répliques du monde 1 ; leur génération locale incrémentale utilise `--missing-only` pour ajouter les IDs absents sans remplacer les fichiers existants. Le total final et la couverture se vérifient dans le manifeste et l’audit technique après préparation. Les sorties restent `synthetic` / `model-generated`, en attente de relecture malgachophone. Aucun assemblage de mots ni voix française/anglaise ne complète les phrases. Les sources, licences et limites sont détaillées dans [MALAGASY_VOICES.md](MALAGASY_VOICES.md).
+La banque active utilise OmniVoice avec une référence synthétique féminine pour Mia et masculine pour Lova. Les 102 clips initiaux, y compris Azafady, les extensions déjà publiées et leurs références restent inchangés. Les nouveaux clips des deux mondes et de leurs pense-bêtes sont préparés par génération locale incrémentale avec `--missing-only`, qui ajoute les IDs absents sans remplacer les fichiers existants. Le total final et la couverture se vérifient dans le manifeste et l’audit technique après préparation et activation. Les sorties restent `synthetic` / `model-generated`, en attente de relecture malgachophone. Aucun assemblage de mots ni voix française/anglaise ne complète les phrases. Les sources, licences et limites sont détaillées dans [MALAGASY_VOICES.md](MALAGASY_VOICES.md).
 
 Les fichiers sont copiés vers le site statique après contrôle des empreintes. Aucune génération n’a lieu au build, pendant une écoute ou sur un backend. L’atelier de revue conserve uniquement OmniVoice, les avis existants et leur historique.
 
@@ -64,7 +85,7 @@ Avant de présenter cette application comme une formation linguistique validée 
 3. Valider une banque d’alternatives françaises et malgaches, sans accepter une erreur grammaticale par ressemblance.
 4. Faire contrôler les références et les sorties synthétiques phrase par phrase ; conserver les observations du relecteur sur les mots, l’accentuation et le registre. La couverture technique ne remplace pas une initiation phonétique ou une validation native.
 
-La provenance et les choix de rédaction des douze unités sont traçables, mais aucune certification externe ni relecture native complète n’est revendiquée. Les mondes 2–20 restent planifiés et verrouillés ; ils ne sont pas présentés comme des cours livrés.
+La provenance et les choix de rédaction des vingt-quatre unités sont traçables, mais aucune certification externe ni relecture native complète n’est revendiquée. Les mondes 3–20 restent planifiés et verrouillés ; ils ne sont pas présentés comme des cours livrés.
 
 ## Carte géographique
 
@@ -93,6 +114,8 @@ Les références suivantes alimentent le fil culturel des vingt mondes, dès les
 | Afrique contemporaine, [Madagascar après la tourmente](https://horizon.documentation.ird.fr/exl-doc/pleins_textes/doc34-08/010029705.pdf), dossier coordonné par François Roubaud, 2002 | Passage indexé « Des peuples anciens aux ethnies actuelles » : histoire des catégories, noms de groupes et limites d’un nombre fixe. |
 
 Les accès directs IRD et Archives diplomatiques étaient temporairement en maintenance : les notices du registre indiquent explicitement quand seuls des extraits indexés ont été consultés. Ce repérage suffit à préciser le programme ; il ne remplace pas la recherche de documents, la critique croisée et la relecture nécessaires aux futures leçons. Les influences britanniques du XIXe siècle sont distinguées de l’occupation militaire de 1942 et de la colonisation française.
+
+Les deux intermèdes effectivement rédigés reprennent ces références : UNESCO, Ayache et le dossier IRD des identités pour Antananarivo ; Ayache, Paillard et la notice du National Army Museum pour Antsirabe. Ils situent Andrianampoinimerina et Radama Ier, puis les accords de 1817 et les transformations scolaires des années 1820, sans faire de Madagascar une colonie britannique au XIXe siècle. Ils se débloquent après les six premières unités de leur monde et restent des repères français sans évaluation linguistique ; leurs sources ne sont affichées que dans les crédits.
 
 ## Contrôle de l’emploi des pronoms — 26 octobre 2026
 

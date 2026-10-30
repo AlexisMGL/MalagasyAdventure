@@ -8,7 +8,7 @@ test.use({ reducedMotion: 'reduce' });
 const cards = getNotionCards(CONTENT.lessons[0].id);
 async function openMiniLesson(page: Page): Promise<void> {
   await page.goto('/malagasy-adventure');
-  await page.locator('[data-action="continue"]').click();
+  await page.locator('[data-action="continue-world"]').click();
   await expect(page.locator('.ma-notion-intro')).toBeVisible();
 }
 async function introducedIds(page: Page): Promise<string[]> {

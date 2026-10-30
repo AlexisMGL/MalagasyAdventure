@@ -1,5 +1,6 @@
 import { CONTENT } from './content';
 import { recordingForTurn } from './voice-bank';
+import { WORLD_TWO_NOTIONS } from './world-two-notions';
 import type { LearningVisual } from './learning-visual-types';
 
 export type NotionSection = 'vocabulary' | 'notion';
@@ -200,6 +201,17 @@ const CARDS: Record<string, NotionCard[]> = Object.fromEntries(Object.entries(SE
     }),
   })),
 ]));
+
+for (const [lessonId, cards] of Object.entries(WORLD_TWO_NOTIONS)) {
+  CARDS[lessonId] = cards.map(card => ({
+    ...card,
+    examples: card.examples.map(example => {
+      const audio = recordingForTurn({ speaker: 'mia', text: example.malagasy, translation: example.french })
+        ?? recordingForTurn({ speaker: 'lova', text: example.malagasy, translation: example.french });
+      return { ...example, ...(audio ? { audioId: audio.id } : {}) };
+    }),
+  }));
+}
 
 /** Checkpoints deliberately have no reminder that could reveal a quiz answer. */
 export function getNotionCards(lessonId: string): NotionCard[] {

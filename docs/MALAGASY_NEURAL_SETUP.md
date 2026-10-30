@@ -2,6 +2,8 @@
 
 Mise à jour du 27 octobre 2026 : les candidats OmniVoice existants sont désormais copiés à l’identique dans le site, sans régénération. La préparation décrite plus bas reste un historique et un outil auteur ; elle n’est requise ni au build ni à la lecture. Voir [la banque active](MALAGASY_VOICES.md).
 
+L’extension aux douze unités d’Antsirabe ajoute les énoncés manquants des deux mondes et des fiches illustrées, avec `--missing-only`. Elle conserve les 470 clips déjà publiés, les références vocales et les avis existants. Le nombre réellement généré et activé se contrôle dans les manifestes et l’audit, indépendamment du nombre d’entrées préparées dans l’inventaire.
+
 ## État de l’audio existant
 
 | Élément existant | Fonction et constat |
@@ -35,7 +37,7 @@ Depuis la racine, le Node local du dépôt est disponible :
 .tools/node-v22.23.3-win-x64/node.exe scripts/malagasy-neural.mjs --help
 ```
 
-L’inventaire préparé couvre désormais toutes les répliques du monde 1 complet pour les deux personnages. Le premier lot historique contenait 51 textes distincts et 102 fichiers, conservés à l’identique. Il couvre les répliques complètes, les entrées lexicales, les choix malgaches corrects et incorrects, les mots à placer, les associations et les réponses construites. Chaque entrée conserve ses liens vers scènes, exercices, notes ou mots du lexique. La déduplication porte sur une clé NFC/casse/espaces/ponctuation ; le texte prononcé n’est pas réécrit. Les guillemets de présentation et les séparateurs des exemples ne sont pas des mots à lire.
+L’inventaire préparé couvre les deux mondes complets pour les deux personnages. Le premier lot historique contenait 51 textes distincts et 102 fichiers, conservés à l’identique. Il couvre les répliques complètes, les entrées lexicales, les exemples des fiches Vocabulaire et Notions, les choix malgaches corrects et incorrects, les mots à placer, les associations et les réponses construites. Chaque entrée conserve ses liens vers scènes, exercices, fiches, notes ou mots du lexique. La déduplication porte sur une clé NFC/casse/espaces/ponctuation ; le texte prononcé n’est pas réécrit. Les guillemets de présentation et les séparateurs des exemples ne sont pas des mots à lire.
 
 Les textes à trous restent exclus. Les réponses françaises et les réponses dont la langue n’est pas explicitement établie restent dans la liste `excluded`. Le générateur ne devine pas leur langue à partir de leur orthographe. La variante `Aza fady`, déjà acceptée par l’exercice existant, reste un texte distinct d’`Azafady`.
 
@@ -52,6 +54,16 @@ Pour compléter tout le corpus de manière incrémentale :
 ```
 
 Le lanceur choisit l’environnement auteur local et détecte CUDA, XPU ou CPU. `--device cpu`, `--device xpu` et `--device cuda` permettent un choix explicite. Aucun calcul n’est exécuté par Netlify. Le CPU fonctionne mais peut prendre plusieurs minutes par fichier ; l’accélérateur Intel local a aussi été utilisé pour les essais. Les temps dépendent fortement du matériel.
+
+L’extension Antsirabe dispose aussi d’un environnement Windows AMD isolé dans `.tools/omnivoice-rocm-runtime/`, avec les paquets portables TheRock/ROCm. Le pilote existant n’est pas modifié. La Radeon 840M de cette machine est identifiée comme `gfx1153` par le moteur, conformément aux [notes AMD ROCm 10.1](https://rocm.docs.amd.com/en/docs-10.1.0/about/release-notes.html). PyTorch expose cette accélération par son API `cuda`, bien qu’il s’agisse d’une carte AMD. L’option auteur `--cpu-codec` garde le codec audio sur CPU en float32 et fait calculer le modèle de langue sur GPU ; les placements et précisions sont enregistrés dans chaque nouvelle recette. Pour sélectionner explicitement cet environnement déjà préparé :
+
+```powershell
+$env:MALAGASY_AUDIO_PYTHON = (Resolve-Path .tools/omnivoice-rocm-runtime/Scripts/python.exe).Path
+npm run audio:generate -- --missing-only --device cuda --cpu-codec --steps 32 --threads 2 --batch-size 8
+Remove-Item Env:MALAGASY_AUDIO_PYTHON
+```
+
+Pour un environnement CPU, `--cpu-bf16` active volontairement une précision mixte du modèle de langue et `--flush-denormal` un calcul sans valeurs subnormales, si le processeur le prend en charge. Ces options restent facultatives et traçables ; les valeurs par défaut ne changent pas. Les variantes de calcul ne remplacent aucun fichier existant avec `--missing-only` et ne constituent pas une validation de prononciation.
 
 Pour régénérer une phrase non approuvée, reprendre son ID dans l’atelier ou `--plan` :
 

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { createServer } from 'vite';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-let buildNeuralInventory, content, inventory, filesBeforeImport, filesAfterImport;
+let buildNeuralInventory, content, notionCards, inventory, filesBeforeImport, filesAfterImport;
 
 function siteSnapshot() {
   const entries = [];
@@ -29,14 +29,42 @@ before(async () => {
   filesAfterImport = siteSnapshot();
   // Real authored content is loaded once; the preparation CLI is never executed.
   const server = await createServer({ root, server: { middlewareMode: true, hmr: false }, appType: 'custom' });
-  try { content = (await server.ssrLoadModule('/src/malagasy/content.ts')).CONTENT; }
+  try {
+    content = (await server.ssrLoadModule('/src/malagasy/content.ts')).CONTENT;
+    const { getNotionCards } = await server.ssrLoadModule('/src/malagasy/notion-cards.ts');
+    notionCards = Object.fromEntries(content.lessons.map(lesson => [lesson.id, getNotionCards(lesson.id)]));
+  }
   finally { await server.close(); }
-  inventory = buildNeuralInventory(content);
+  inventory = buildNeuralInventory(content, notionCards);
 });
 
 const emptyContent = extra => ({ lessons: [], vocabulary: [], exercises: [], ...extra });
 const complete = text => !!text?.trim() && !/[…_]|\.{3}/u.test(text);
 const bindings = () => inventory.utterances.flatMap(utterance => utterance.bindings);
+
+test('existing model input typography survives new mnemonic bindings without reusing changed words', () => {
+  const result = buildNeuralInventory(emptyContent({ vocabulary: [{ id: 'word', malagasy: 'avereno' }, { id: 'new', malagasy: 'Salama' }] }), {},
+    [{ transcript: 'Avereno.', spokenText: 'Avereno.' }, { transcript: 'Veloma.', spokenText: 'Veloma.' }]);
+  assert.equal(result.utterances.find(item => item.key === 'avereno').spokenText, 'Avereno.');
+  assert.equal(result.utterances.find(item => item.key === 'avereno').bindings[0].text, 'avereno');
+  assert.equal(result.utterances.find(item => item.key === 'salama').spokenText, 'Salama');
+  assert.ok(!result.utterances.some(item => item.key === 'veloma'));
+});
+
+test('every complete Malagasy mnemonic example is covered without speaking its French translation', () => {
+  const all = bindings();
+  for (const [lessonId, cards] of Object.entries(notionCards)) {
+    for (const card of cards) card.examples.forEach((example, index) => {
+      assert.equal(all.some(binding => binding.kind === 'notion-example' && binding.lessonId === lessonId
+        && binding.contentId === card.id && binding.index === index && binding.text === example.malagasy), complete(example.malagasy), card.id);
+    });
+  }
+  const isolated = buildNeuralInventory(emptyContent({}), { lesson: [{ id: 'card', examples: [
+    { malagasy: 'Salama!', french: 'Bonjour !' }, { malagasy: '...', french: 'Ne pas lire' },
+  ] }] });
+  assert.deepEqual(isolated.utterances.map(item => item.spokenText), ['Salama!']);
+  assert.equal(isolated.utterances[0].bindings[0].kind, 'notion-example');
+});
 
 test('importing the authoring module changes no src or public file', () => {
   assert.deepEqual(filesAfterImport, filesBeforeImport);

@@ -129,7 +129,7 @@ unit(8, 'Poser les bonnes questions', 'Iza? Inona? Aiza?', 'Trouver le mot qui o
     choose('Tu cherches le prix du jeu.', 'Ohatrinona ny vidiny?', ['Ohatrinona ny vidiny?', 'Iza ianao?', 'Aiza ny boky?'], ['w1.price', C.quantity], [l('…', 'Le vendeur attend ta question sur le prix.')], 'Ohatrinona demande le prix ; firy demande un nombre.', true),
     cloze('« Manana zanaka ___ ianao? »', 'firy', [C.quantity], [l('Manana zanaka … ianao?', 'Combien d’enfants as-tu ?')], 'Firy demande une quantité.'),
     choose('Quelle réponse donne le prénom Mia ?', 'Mia no anarako.', ['Mia no anarako.', 'Eto ny boky.', 'Ariary folo.'], [C.who, B.name], [l('Iza ianao?', 'Qui es-tu ?')], 'La question porte sur la personne.', true, 'dialogue'),
-    choose('Quel mot sert à demander une chose ou une information ?', 'Inona', ['Inona', 'Iza', 'Aiza'], [C.what, C.who, C.where], [m('Inona ny asanao?', 'Quel est ton travail ?')], 'Inona porte ici sur l’activité ou le travail.', true),
+    choose('Pour demander à Lova quel est son travail, quel mot interrogatif choisis-tu ?', 'Inona', ['Inona', 'Iza', 'Aiza'], [C.what, C.who, C.where], [l('Mpiofana aho.', 'Je suis stagiaire.')], 'La réponse donne un travail : la question commence par inona, pas iza ou aiza.', true),
   ] },
 ]);
 words(8, C.who, [['iza', 'qui', 'Mot interrogatif pour une personne.']]);
@@ -290,7 +290,7 @@ unit(11, 'Les premières conversations', 'Salama! Avy aiza ianao?', 'Enchaîner 
       order('Demande le prix.', 'Ohatrinona ny vidiny', ['w1.price'], [l('…', 'Lova attend ta question sur le prix du jeu.')], 'La formule déjà apprise demande la valeur.'),
       cloze('Le prix est dix ariary : « Ariary ___. »', 'folo', ['w1.price', 'w1.numbers-ten'], [m('Ariary …', 'Dix ariary.')], 'Folo est dix.'),
       choose('Tu remercies après la réponse. Choisis.', 'Misaotra.', ['Misaotra.', 'Iza ianao?', 'Aiza ny tsena?'], [B.thanks], [l('Ariary folo.', 'Dix ariary.')], 'Misaotra exprime le remerciement.', true),
-      choose('L’échange est fini. Prends congé.', 'Veloma.', ['Veloma.', 'Salama.', 'Firy?'], [B.goodbye], [l('Veloma.', 'Au revoir.')], 'Veloma termine la conversation.', true, 'dialogue'),
+      choose('Lova te remercie. La rencontre est finie : prends congé.', 'Veloma.', ['Veloma.', 'Salama.', 'Firy?'], [B.goodbye], [l('Misaotra.', 'Merci.')], 'Après le remerciement, tu prends congé avec veloma.', true, 'dialogue'),
     ] },
 ]);
 

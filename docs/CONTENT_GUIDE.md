@@ -4,7 +4,7 @@
 
 Le contenu vit dans `src/malagasy/content.ts` et les modules de données qu’il importe ; la présentation ne doit pas contenir les corpus. Les interfaces de `types.ts` sont le contrat. Les mondes planifiés se trouvent dans `worlds.ts`.
 
-Lire d’abord [les consignes propres à l’app](../src/malagasy/AGENTS.md). Le périmètre livré couvre désormais les douze unités du monde 1 ; les mondes 2–20 restent verrouillés. La demande d’achèvement remplace l’ancienne limite aux unités 1–3. Les données des unités 4–12 sont dans `world-one-units-04-07.ts` et `world-one-units-08-12.ts`, fusionnées au même registre sans renommer les IDs initiaux.
+Lire d’abord [les consignes propres à l’app](../src/malagasy/AGENTS.md). Le périmètre livré couvre les deux mondes complets Antananarivo et Antsirabe, chacun avec douze unités ; les mondes 3–20 restent verrouillés. La demande du 30 octobre remplace l’ancien périmètre limité au monde 1. Ses données initiales et les modules `world-one-units-04-07.ts` et `world-one-units-08-12.ts` restent inchangés dans leurs identifiants. `world-two.ts` agrège les deux modules d’unités d’Antsirabe, avec `world-two-authoring.ts` pour le contrat auteur commun.
 
 Un contenu est publiable lorsque ses références sont valides, ses concepts ont été présentés avant évaluation et ses réponses sont étayées par des sources réellement consultées. La quantité n’est pas un critère de qualité. Ne pas rendre une destination jouable simplement pour remplir la carte.
 
@@ -36,25 +36,31 @@ La normalisation ignore la casse, les espaces superflus, les variantes typograph
 
 Un exercice peut porter plusieurs concepts. Toute la liste doit être déjà introduite ; une révision ne peut pas enseigner implicitement un vocabulaire futur. Les exercices de révision doivent réutiliser des acquis pertinents dans un contexte cohérent.
 
+Dans les quiz, la consigne, le contexte et les répliques visibles ne doivent pas déjà donner une réponse complète à recopier. Demander une interprétation, un rappel ou une transformation utile : changer l’objet, la personne ou le point de vue, répondre depuis sa propre situation, identifier le sens en français. Une vraie compréhension peut conserver un passage malgache tout en demandant son sens ; masquer sa traduction avant correction. Les choix proposés et les jetons nécessaires à la reconstruction restent naturellement visibles.
+
 ## Histoires et dialogues
 
-Toutes les parties ordinaires (`learn` et `story`) proposent les fiches visuelles avant `Lesson.scenes`. Le monde 1 compte quatre scènes par partie, soit 96 au total, réparties entre `dialogue-content.ts` et les deux modules d’extension. Une `DialogueScene` possède un ID, un cadre très court, des `turns` et éventuellement un repère `takeaway`. Chaque tour fournit `speaker` (`lova` ou `mia`), texte malgache, traduction française et éventuel mot surligné.
+Toutes les parties ordinaires (`learn` et `story`) proposent les fiches visuelles avant `Lesson.scenes`. Les deux mondes comptent quatre scènes par partie, soit 192 au total. Les 142 fiches des 48 parties sont enregistrées dans `notion-cards.ts`, qui agrège aussi `world-two-notions.ts` et ses deux modules. Une `DialogueScene` possède un ID, un cadre très court, des `turns` et éventuellement un repère `takeaway`. Chaque tour fournit `speaker` (`lova` ou `mia`), texte malgache, traduction française et éventuel mot surligné.
 
 Les mini-leçons permettent de choisir librement Vocabulaire/Notions et une fiche, puis de passer au dialogue. Le pense-bête conserve cette séparation. Éviter le diaporama obligatoire de traductions ; les dessins et schémas précèdent l’explication courte. Les sources restent internes et les légendes restent lisibles sur mobile. Chaque son doit correspondre exactement à l’exemple entier ; ne jamais inventer une phonétique ni assembler des fragments audio. La vue révèle ensuite les tours progressivement ; la traduction reste dans un dévoilement facultatif. Les nouveaux concepts n’entrent dans la progression qu’au passage à la pratique après ces scènes. Ni une fiche consultée ni un premier tour ne rendent toute une leçon « rencontrée ». Les quiz et révisions restent sans pense-bête.
 
-Chaque activité du corpus utilise `Exercise.dialogue` pour prolonger l’échange. La question française reste une consigne courte, sans paragraphe technique préalable. Les notes de grammaire sont accessibles via une aide repliée. Les unités de consolidation peuvent réviser des notions existantes sans créer artificiellement de nouveaux concepts. Les scènes, prix et itinéraires sont fictifs ; un arbre narratif persistant demanderait encore une extension du schéma et des tests.
+Les activités de compréhension et de réponse utilisent `Exercise.dialogue` pour prolonger l’échange ; les exercices de rappel peuvent se passer de dialogue lorsque celui-ci révélerait la réponse. La question française reste une consigne courte, sans paragraphe technique préalable. Les notes de grammaire sont accessibles via une aide repliée. Les unités de consolidation peuvent réviser des notions existantes sans créer artificiellement de nouveaux concepts. Les scènes, emplois du temps, prix et itinéraires sont fictifs ; un arbre narratif persistant demanderait encore une extension du schéma et des tests.
 
 Les `sourceIds` sont obligatoires en interne. Les liens, attributions et limites documentaires sont affichés uniquement dans « Sources & crédits », jamais au fil de la conversation ou dans le feedback.
 
 ## Prononcer les sélections
 
-Déclarer `selectionLanguage: 'mg'` lorsque les choix, les jetons ou la colonne gauche d’association sont tous malgaches. Pour une question mixte, fournir `spokenSelections` avec seulement les libellés malgaches exacts. Ne pas marquer les distracteurs français et ne pas déduire la langue de la bonne réponse. La banque active est OmniVoice : voir [MALAGASY_VOICES.md](MALAGASY_VOICES.md). Les nouveaux clips du monde 1 sont autorisés avec les mêmes références vocales, en conservant les 102 fichiers initiaux : après `npm run audio:inventory`, `npm run audio:generate -- --missing-only` ajoute uniquement les IDs manquants. `npm run audio:activate-omnivoice` copie les fichiers présents après contrôle de leurs empreintes. Chaque sélection lue doit avoir son propre fichier entier ; ne pas assembler des extraits.
+Déclarer `selectionLanguage: 'mg'` lorsque les choix, les jetons ou la colonne gauche d’association sont tous malgaches. Pour une question mixte, fournir `spokenSelections` avec seulement les libellés malgaches exacts. Ne pas marquer les distracteurs français et ne pas déduire la langue de la bonne réponse. La banque active est OmniVoice : voir [MALAGASY_VOICES.md](MALAGASY_VOICES.md). Les nouveaux clips des deux mondes utilisent les mêmes références vocales, en conservant les fichiers déjà publiés : après `npm run audio:inventory`, `npm run audio:generate -- --missing-only` ajoute uniquement les IDs manquants. Inclure les exemples entiers des pense-bêtes dans cet inventaire. `npm run audio:activate-omnivoice` copie les fichiers présents après contrôle de leurs empreintes. Chaque sélection lue doit avoir son propre fichier entier ; ne pas assembler des extraits.
 
 ## Ajouter un monde
 
 Compléter sa fiche dans `worlds.ts` : objectifs lexicaux, grammaticaux et pratiques, thème culturel, prérequis, durée et coordonnées approximatives pour la carte. Ajouter ensuite unités, leçons, concepts, exercices et sources. Tant que les leçons n’existent pas, conserver `implemented: false`. Un monde disponible et un monde terminé sont deux états distincts.
 
-`world-path.ts` construit le chemin depuis les unités et leçons publiées ; aucun état supplémentaire n’est à enregistrer. Conserver les dépendances de leçons et la couverture des quiz : changer l’ordre visuel ne doit pas permettre de contourner un prérequis. La clôture du monde 1 exige les douze unités et le dernier quiz, sans déverrouiller les dix-neuf mondes non publiés.
+`world-path.ts` construit le chemin depuis les unités et leçons publiées ; aucun état supplémentaire n’est à enregistrer. Trier les leçons par monde puis par ID, en conservant les dépendances et la couverture des quiz. Le premier prérequis d’Antsirabe est `lesson-12-03`, dernier quiz d’Antananarivo. Clôturer le monde 1 ouvre le monde 2 ; clôturer le monde 2 laisse les dix-huit destinations non publiées verrouillées.
+
+Placer l’intermède historique au milieu du chemin de chaque monde. `historyAccess` dans `world-progress.ts` exige que toutes les leçons des premières `ceil(nombre d’unités / 2)` unités soient validées, quiz inclus : 18 leçons et six unités dans chacun des deux mondes actuels. Réutiliser ce contrôle dans l’affichage et lors de l’ouverture ; aucune simple visite ni validation d’une leçon tardive ne suffit. Rédiger les repères dans `history-interludes.ts`, conserver leurs `sourceIds` et afficher leurs références uniquement dans les crédits. Le déblocage se déduit des sauvegardes v1, sans drapeau ni récompense supplémentaire.
+
+Antsirabe travaille les verbes actifs au présent, les heures pleines, la fréquence, quelques formes possédées entières et les connecteurs `sy` / `fa` dans des patrons vérifiés. Ne pas généraliser `-ny` à une règle « son = masculin singulier », ni `fa` à tous les emplois de « mais ». Les temps du passé/futur restent prévus au monde 7 ; minutes et demi-heures ne sont pas enseignées ici.
 
 ## Audio
 
@@ -64,9 +70,11 @@ La génération est une préparation locale hors du build ; le site distribue se
 
 ## Validation avant livraison
 
+Les intermèdes des deux mondes sont des livrets dans `history-books.ts` : cinq chapitres, environ cinq minutes de lecture estimée, un dessin ou schéma par chapitre et six questions finales originales avec explications. `history-drawings.ts` crée les SVG et leurs légendes accessibles. `history-book-view.ts` conserve seulement un état temporaire de lecture et de réponses. Corrections cachées avant validation, relecture et nouvel essai possibles. Aucun XP, acquis de langue ou indicateur persistant n’est attribué. Les sources par chapitre sont regroupées dans Sources & crédits.
+
 `validateContent(CONTENT)` renvoie des erreurs détaillées : doublons, références absentes, cycles, réponses mal configurées, contenu vide, audio manquant et leçons inaccessibles. Son parcours simulé contrôle que les exercices ne comportent pas de concepts inconnus au moment où ils deviennent disponibles.
 
-Les tests d’auteur de `tests/malagasy-dialogues.test.ts` contrôlent aussi les scènes, le dialogue de chaque activité et la couverture des quiz. Le littoral et la projection ont leurs contrôles dédiés dans `tests/malagasy-map.test.ts`. Les motifs sonores d’interface ont des tests navigateur séparés : ils ne constituent pas une validation de prononciation malgache.
+Les tests d’auteur de `tests/malagasy-dialogues.test.ts` et `malagasy-world-two.test.ts` contrôlent les scènes et la couverture des quiz. `malagasy-quiz-recall.test.ts` et les contrôles du monde 2 recherchent les réponses déjà données dans la consigne ; `malagasy-world-progress.test.ts` vérifie le jalon historique et sa compatibilité v1. Le littoral et la projection ont leurs contrôles dédiés dans `tests/malagasy-map.test.ts`. Les motifs sonores d’interface ont des tests navigateur séparés : ils ne constituent pas une validation de prononciation malgache.
 
 Exécuter depuis la racine :
 

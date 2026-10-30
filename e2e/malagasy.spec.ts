@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { CONTENT } from '../src/malagasy/content';
-import { normalizeAnswer } from '../src/malagasy/engine';
+import { HISTORY_BOOKS } from '../src/malagasy/history-books';
+import { completeLesson, createProgress, introduceLesson, normalizeAnswer, recordAnswer } from '../src/malagasy/engine';
 import { tokensFor } from '../src/malagasy/exercise-view';
 import { RECOVERY_KEY, SAVE_KEY } from '../src/malagasy/storage';
 import type { Exercise, Progress } from '../src/malagasy/types';
@@ -91,11 +92,33 @@ async function finishSession(page: Page, seenTypes = new Set<string>(), correct 
   return answered;
 }
 async function startLesson(page: Page, id: string): Promise<void> {
+  const lesson = CONTENT.lessons.find(item => item.id === id)!;
+  const world = CONTENT.worlds.find(item => item.id === lesson.worldId)!;
   await page.locator('[data-view="path"]').first().click();
+  await page.locator(`[data-path-world="${lesson.worldId}"]`).first().click();
   await page.locator(`[data-lesson="${id}"]`).click();
   await readMiniLesson(page);
   await expect(page.locator('.ma-session h1')).toBeVisible();
-  await expect(page.locator('.ma-position-rail')).toContainText('MONDE 1');
+  await expect(page.locator('.ma-position-rail')).toContainText(`MONDE ${world.number}`);
+}
+
+/** Build a valid old-format carnet through the real engine, then use the user's import flow. */
+function carnetThrough(lastLessonId: string): Progress {
+  const at = '2026-10-29T08:00:00.000Z';
+  let progress = createProgress(at);
+  for (const lesson of CONTENT.lessons) {
+    progress = introduceLesson(progress, lesson, CONTENT);
+    for (const exerciseId of lesson.exerciseIds) progress = recordAnswer(progress, CONTENT.exercises.find(exercise => exercise.id === exerciseId)!, true, at);
+    progress = completeLesson(progress, lesson, lesson.exerciseIds.length, lesson.exerciseIds.length, at);
+    if (lesson.id === lastLessonId) return progress;
+  }
+  throw new Error(`Unknown lesson ${lastLessonId}`);
+}
+async function importCarnet(page: Page, progress: Progress): Promise<void> {
+  await page.locator('[data-view="backup"]').first().click();
+  await page.locator('#ma-import-file').setInputFiles({ name: 'carnet-v1.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(progress)) });
+  await page.getByRole('dialog').getByRole('button', { name: 'Remplacer mon carnet' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
 }
 async function beginPractice(page: Page): Promise<void> {
   await readMiniLesson(page);
@@ -113,6 +136,42 @@ async function beginPractice(page: Page): Promise<void> {
 }
 async function noHorizontalOverflow(page: Page): Promise<void> {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'The view fits the device width').toBe(true);
+}
+
+for (const width of [340, 1440]) for (const worldId of ['world-01', 'world-02']) {
+  test(`illustrated history booklet ${worldId} reads and quizzes at ${width}px without changing the carnet`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 960 });
+    await openAdventure(page);
+    await importCarnet(page, carnetThrough(worldId === 'world-01' ? 'lesson-06-03' : 'lesson-02-06-03'));
+    await page.locator('[data-view="path"]').first().click();
+    await page.locator(`.ma-world-switcher [data-path-world="${worldId}"]`).click();
+    const before = await savedProgress(page);
+    await page.locator(`[data-history-world="${worldId}"]`).click();
+    const dialog = page.getByRole('dialog'), book = HISTORY_BOOKS[worldId];
+    await expect(dialog.locator('.ma-history-chapters button')).toHaveCount(6);
+    for (let index = 0; index < book.pages.length; index++) {
+      await dialog.locator(`.ma-history-chapters [data-history-page="${index}"]`).click();
+      await expect(dialog.locator('.ma-history-page-title')).toHaveText(book.pages[index].title);
+      await expect(dialog.locator('.ma-history-drawing')).toBeVisible();
+      await noHorizontalOverflow(page);
+      if (index === 0 || index === 2) await dialog.screenshot({ path: `.tools/screens/history-book-${worldId}-${width}-${index}.png` });
+    }
+    await dialog.getByRole('button', { name: 'Passer aux questions' }).click();
+    await expect(dialog.locator('[data-action="history-check"]')).toBeDisabled();
+    for (let index = 0; index < book.questions.length; index++) await dialog.locator(`[data-question="${index}"][data-option="${(book.questions[index].answer + 1) % 3}"]`).click();
+    await dialog.locator('[data-action="history-check"]').click();
+    await expect(dialog.locator('.ma-history-score strong')).toHaveText('0 / 6');
+    await expect(dialog.locator('.ma-history-explanation')).toHaveCount(6);
+    await dialog.locator('[data-action="history-retry"]').click();
+    for (let index = 0; index < book.questions.length; index++) await dialog.locator(`[data-question="${index}"][data-option="${book.questions[index].answer}"]`).click();
+    await dialog.locator('[data-action="history-check"]').click();
+    await expect(dialog.locator('.ma-history-score strong')).toHaveText('6 / 6');
+    await expect(dialog.locator('a[href]')).toHaveCount(0);
+    await noHorizontalOverflow(page);
+    await dialog.screenshot({ path: `.tools/screens/history-book-${worldId}-${width}-quiz.png` });
+    await dialog.getByRole('button', { name: 'Reprendre mon voyage' }).click();
+    expect(await savedProgress(page)).toEqual(before);
+  });
 }
 
 test('new words appear in a gradual illustrated dialogue before the first exercise', async ({ page }) => {
@@ -236,11 +295,12 @@ test('standalone root and historical entry open the same lightweight app with tw
   expect(requests.some(url => /phaser|ArenaRenderer|ShooterRenderer/.test(url))).toBe(false);
   await expect(page.locator('[data-lesson]').first()).toBeEnabled();
   await expect(page.locator('[data-lesson]').nth(1)).toBeDisabled();
-  await expect(page.locator('[data-lesson]')).toHaveCount(CONTENT.lessons.length);
+  await expect(page.locator('[data-lesson]')).toHaveCount(CONTENT.lessons.filter(lesson => lesson.worldId === 'world-01').length);
+  await expect(page.locator('[data-path-world="world-02"]')).toBeDisabled();
   await page.locator('[data-view="worlds"]').click();
   await expect(page.locator('.ma-destination[data-world]')).toHaveCount(20);
   await expect(page.locator('.ma-journey-map [data-world]')).toHaveCount(20);
-  await expect(page.locator('.ma-destination.open')).toHaveCount(1);
+  await expect(page.locator('.ma-destination.open')).toHaveCount(CONTENT.worlds.filter(world => world.implemented).length);
   await page.locator('.ma-destination[data-world="world-20"]').click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toContainText('DESTINATION EN PRÉPARATION');
@@ -250,38 +310,141 @@ test('standalone root and historical entry open the same lightweight app with tw
   const firstMapStop = page.locator('.ma-journey-map [data-world="world-01"]');
   await firstMapStop.focus();
   await firstMapStop.press('Enter');
-  await expect(dialog).toContainText('12 UNITÉS JOUABLES');
-  await dialog.getByRole('button', { name: 'Retrouver mon parcours' }).click();
+  await expect(dialog).toContainText('12 UNITÉS');
+  await dialog.getByRole('button', { name: 'Retrouver ce parcours' }).click();
   await page.reload();
   await expect(page.locator('h1')).toContainText('Un nouveau monde');
   expect(errors).toEqual([]);
 });
 
-test('historical landmarks start in Antananarivo and continue through the early locked destinations', async ({ page }) => {
+test('each historical interlude unlocks only after its midpoint quiz and survives a v1 import', async ({ page }) => {
   await openAdventure(page);
-  await page.getByRole('button', { name: /Les repères de ce monde/ }).click();
+  const milestone = page.locator('[data-history-milestone="world-01"]');
+  await expect(milestone).toContainText('Validez le quiz de l’unité 6');
+  await expect(milestone.locator('button')).toBeDisabled();
+  const order = await page.locator('.ma-world-path').evaluate(node => [...node.children].map(child => child.getAttribute('data-history-milestone') ?? child.querySelector('h3')?.id ?? ''));
+  expect(order.indexOf('world-01')).toBeGreaterThan(order.indexOf('ma-route-unit-06'));
+  expect(order.indexOf('world-01')).toBeLessThan(order.indexOf('ma-route-unit-07'));
   const dialog = page.getByRole('dialog');
+  await importCarnet(page, carnetThrough('lesson-06-02'));
+  await page.locator('[data-view="path"]').first().click();
+  await expect(milestone.locator('button')).toBeDisabled();
+  await importCarnet(page, carnetThrough('lesson-06-03'));
+  await page.locator('[data-view="path"]').first().click();
+  await milestone.locator('button').click();
   await expect(dialog).toContainText('Andrianampoinimerina');
   await expect(dialog).toContainText('Radama Ier');
-  await expect(dialog).toContainText('12 UNITÉS JOUABLES');
+  await expect(dialog.locator('.ma-history-chapters button')).toHaveCount(6);
+  await expect(dialog.locator('.ma-history-drawing')).toBeVisible();
   await expect(dialog.locator('a[href^="https://"]')).toHaveCount(0);
-  await dialog.getByRole('button', { name: 'Fermer', exact: true }).click();
-  await page.locator('[data-view="worlds"]').click();
-  await page.locator('.ma-destination[data-world="world-02"]').click();
+  await dialog.getByRole('button', { name: 'Reprendre mon voyage' }).click();
+  await importCarnet(page, carnetThrough('lesson-02-06-02'));
+  await page.locator('[data-view="path"]').first().click();
+  await page.locator('[data-path-world="world-02"]').first().click();
+  const second = page.locator('[data-history-milestone="world-02"]');
+  await expect(second.locator('button')).toBeDisabled();
+  await importCarnet(page, carnetThrough('lesson-02-06-03'));
+  await page.locator('[data-view="path"]').first().click();
+  await second.locator('button').click();
+  await dialog.locator('.ma-history-chapters [data-history-page="1"]').click();
   await expect(dialog).toContainText('1817');
-  await expect(dialog).toContainText('DESTINATION EN PRÉPARATION');
-  await dialog.getByRole('button', { name: 'Fermer', exact: true }).click();
+  await dialog.locator('.ma-history-chapters [data-history-page="3"]').click();
+  await expect(dialog).toContainText('London Missionary Society');
+  await dialog.locator('.ma-history-chapters [data-history-page="4"]').click();
+  await expect(dialog).toContainText('colonie anglaise');
+  await expect(dialog.locator('a[href^="https://"]')).toHaveCount(0);
+  await dialog.getByRole('button', { name: 'Reprendre mon voyage' }).click();
+  await page.reload();
+  await expect(second.locator('button')).toBeEnabled();
+  await page.locator('[data-view="worlds"]').click();
   await page.locator('.ma-destination[data-world="world-07"]').click();
-  await expect(dialog).toContainText('Ranavalona III');
-  await expect(dialog).toContainText('1896');
-  await expect(dialog.locator('[data-view="path"]')).toHaveCount(0);
+  await expect(dialog).toContainText('DESTINATION EN PRÉPARATION');
+  await expect(dialog.locator('[data-action="open-history"]')).toHaveCount(0);
 });
 
-test('all thirty-six lessons are reachable through real exercises and progress survives reload', async ({ page }) => {
-  test.setTimeout(600_000);
+test('the real midpoint quiz offers its historical pause and then continues to unit seven in both worlds', async ({ page }) => {
+  await openAdventure(page);
+  for (const sample of [
+    { before: 'lesson-06-02', quiz: 'lesson-06-03', next: 'lesson-07-01', world: 'world-01', title: 'Des royaumes et des souverains' },
+    { before: 'lesson-02-06-02', quiz: 'lesson-02-06-03', next: 'lesson-02-07-01', world: 'world-02', title: 'Radama Ier : alliances et école' },
+  ]) {
+    const carnet = carnetThrough(sample.before);
+    carnet.settings.muted = true;
+    await importCarnet(page, carnet);
+    await startLesson(page, sample.quiz);
+    await expect(page.locator('.ma-history-completion')).toHaveCount(0);
+    await finishSession(page);
+    const pause = page.locator('.ma-history-completion');
+    await expect(pause).toContainText('L’intermède historique est débloqué.');
+    await pause.locator(`[data-history-world="${sample.world}"]`).click();
+    await expect(page.getByRole('dialog')).toContainText(sample.title);
+    await page.getByRole('dialog').getByRole('button', { name: 'Reprendre mon voyage' }).click();
+    await expect(page.locator('.ma-completion')).toBeVisible();
+    await page.getByRole('button', { name: 'Cap sur l’unité 7' }).click();
+    await expect(page.locator('.ma-notion-intro h1')).toHaveText(CONTENT.lessons.find(lesson => lesson.id === sample.next)!.title);
+    expect((await savedProgress(page)).completedLessons).toContain(sample.quiz);
+  }
+});
+
+test('the completed first world offers Antsirabe directly from its main card', async ({ page }) => {
+  await openAdventure(page);
+  await importCarnet(page, carnetThrough('lesson-12-03'));
+  await page.locator('[data-view="path"]').first().click();
+  const nextWorld = page.locator('.ma-world-hero [data-action="open-world-path"][data-path-world="world-02"]');
+  await expect(nextWorld).toHaveText('Cap sur Antsirabe');
+  await nextWorld.click();
+  await expect(page.locator('.ma-world-hero h2')).toHaveText('Antsirabe');
+  await expect(page.locator('[data-lesson="lesson-02-01-01"]')).toBeEnabled();
+});
+
+for (const width of [340, 390, 768, 1024, 1440]) test(`Antsirabe opens from an existing carnet and its clock lesson fits ${width}px`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 920 });
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await openAdventure(page);
+  await importCarnet(page, carnetThrough('lesson-02-02-03'));
+  await page.locator('[data-view="path"]').first().click();
+  await page.locator('[data-path-world="world-02"]').first().click();
+  await expect(page.locator('.ma-world-hero h2')).toHaveText('Antsirabe');
+  await expect(page.locator('[data-lesson]')).toHaveCount(36);
+  await expect(page.locator('[data-history-milestone="world-02"] button')).toBeDisabled();
+  await noHorizontalOverflow(page);
+  await page.locator('[data-lesson="lesson-02-03-01"]').click();
+  await expect(page.locator('.ma-notion-intro')).toBeVisible();
+  await expect(page.locator('.ma-position-rail')).toContainText('MONDE 2');
+  await expect(page.locator('.ma-position-rail')).toContainText('ANTSIRABE');
+  await expect(page.getByRole('tab', { name: /Vocabulaire/ })).toBeVisible();
+  await expect(page.getByRole('tab', { name: /Notions/ })).toBeVisible();
+  await expect(page.locator('.ma-learning-clock')).toHaveCount(3);
+  for (const hour of [6, 8, 9]) {
+    await expect(page.locator(`.ma-learning-clock[data-hour="${hour}"]`)).toHaveAttribute('aria-label', new RegExp(`${hour} h 00`));
+  }
+  await noHorizontalOverflow(page);
+  await page.getByRole('tab', { name: /Notions/ }).click();
+  await expect(page.locator('.ma-notion-card h2')).toHaveText('Demander l’heure');
+  await noHorizontalOverflow(page);
+  await readMiniLesson(page);
+  await expect(page.locator('.ma-scene-location')).toContainText('Antsirabe');
+  await expect(page.locator('.ma-notion-aside')).toBeVisible();
+  await expect(page.locator('.ma-notion-aside h2')).toHaveText('Demander l’heure');
+  await noHorizontalOverflow(page);
+  await page.locator('[data-action="exit-lesson"]').click();
+  await page.reload();
+  await expect(page.locator('.ma-world-hero h2')).toHaveText('Antsirabe');
+  await expect(page.locator('[data-lesson="lesson-02-03-01"]')).toBeEnabled();
+  await page.locator('[data-view="worlds"]').first().click();
+  await page.locator('.ma-destination[data-world="world-03"]').click();
+  await expect(page.getByRole('dialog')).toContainText('DESTINATION EN PRÉPARATION');
+  await noHorizontalOverflow(page);
+  expect(errors).toEqual([]);
+});
+
+test('all seventy-two lessons are reachable through real exercises and progress survives reload', async ({ page }) => {
+  test.setTimeout(900_000);
   const errors: string[] = [], seenTypes = new Set<string>();
   page.on('pageerror', error => errors.push(error.message));
   await openAdventure(page);
+  await page.locator('[data-action="mute"]').click();
   let answered = 0;
   for (const lesson of CONTENT.lessons) {
     await startLesson(page, lesson.id);
@@ -293,10 +456,12 @@ test('all thirty-six lessons are reachable through real exercises and progress s
     answered += await finishSession(page, seenTypes);
     if (lesson.kind === 'checkpoint') {
       const unit = CONTENT.units.find(unit => unit.id === lesson.unitId)!;
-      await expect(page.locator('.ma-unit-finale h1')).toHaveText(unit.number === 12 ? 'Monde 1 terminé !' : `Unité ${unit.number} terminée !`);
-      await expect(page.locator('.ma-unit-passport')).toContainText('Vous savez maintenant');
-      for (const objective of unit.objectives) await expect(page.locator('.ma-unit-passport')).toContainText(objective);
+      const world = CONTENT.worlds.find(item => item.id === lesson.worldId)!;
+      await expect(page.locator('.ma-unit-finale h1')).toHaveText(unit.number === 12 ? `Monde ${world.number} terminé !` : `Unité ${unit.number} terminée !`);
+      await expect(page.locator('.ma-unit-passport:not(.ma-history-completion)')).toContainText('Vous savez maintenant');
+      for (const objective of unit.objectives) await expect(page.locator('.ma-unit-passport:not(.ma-history-completion)')).toContainText(objective);
       if (unit.number < 12) await expect(page.getByRole('button', { name: `Cap sur l’unité ${unit.number + 1}` })).toBeVisible();
+      else if (world.number === 1) await expect(page.getByRole('button', { name: 'Cap sur Antsirabe' })).toBeVisible();
     } else {
       await expect(page.locator('.ma-unit-finale')).toHaveCount(0);
       await expect(page.locator('.ma-completion h1')).toContainText('Partie');
@@ -306,6 +471,13 @@ test('all thirty-six lessons are reachable through real exercises and progress s
     expect(saved.history).toHaveLength(answered);
     await page.reload();
     await expect(page.locator(`[data-lesson="${lesson.id}"]`)).toHaveClass(/done/);
+    const unit = CONTENT.units.find(item => item.id === lesson.unitId)!;
+    if (lesson.kind === 'checkpoint' && unit.number === 6) {
+      await expect(page.locator(`[data-history-milestone="${lesson.worldId}"] button`)).toBeEnabled();
+    }
+    if (lesson.id === 'lesson-12-03') {
+      await expect(page.locator('.ma-world-hero [data-action="open-world-path"][data-path-world="world-02"]')).toHaveText('Cap sur Antsirabe');
+    }
   }
   const finished = await savedProgress(page);
   expect(finished.completedLessons).toEqual(CONTENT.lessons.map(lesson => lesson.id));
@@ -314,7 +486,7 @@ test('all thirty-six lessons are reachable through real exercises and progress s
   expect(finished.xp).toBe(25 * CONTENT.lessons.length + 10 * finished.rewardedExercises.length);
   expect(seenTypes).toEqual(new Set(CONTENT.exercises.map(exercise => exercise.type)));
   await page.locator('[data-view="stats"]').click();
-  await expect(page.locator('.ma-main')).toContainText('12 / 12 unités validées');
+  await expect(page.locator('.ma-main')).toContainText('24 / 24 unités validées');
   await page.locator('[data-view="reviews"]').click();
   await page.getByRole('button', { name: 'Lancer une révision' }).click();
   await finishSession(page);

@@ -192,9 +192,10 @@ describe('Malagasy persistence and content integrity', () => {
   it('validates the shipped curriculum and plays the entire authored path without locked concepts', () => {
     expect(CONTENT.worlds).toHaveLength(20);
     expect(CONTENT.worlds[0].implemented).toBe(true);
-    expect(CONTENT.worlds.slice(1).every(world => !world.implemented)).toBe(true);
-    expect(CONTENT.units.filter(unit => unit.implemented)).toHaveLength(12);
-    expect(CONTENT.lessons).toHaveLength(36);
+    expect(CONTENT.worlds[1].implemented).toBe(true);
+    expect(CONTENT.worlds.slice(2).every(world => !world.implemented)).toBe(true);
+    expect(CONTENT.units.filter(unit => unit.implemented)).toHaveLength(24);
+    expect(CONTENT.lessons).toHaveLength(72);
     expect(validateContent(CONTENT)).toEqual([]);
     let progress = createProgress(NOW);
     for (let index = 0; index < CONTENT.lessons.length; index++) {

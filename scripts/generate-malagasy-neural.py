@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import replace
+from functools import wraps
 import hashlib
 import importlib.metadata
 import json
@@ -18,6 +19,20 @@ import subprocess
 import time
 
 ROOT = Path(__file__).resolve().parent.parent
+
+
+def replace_checkpoint(temporary: Path, destination: Path) -> None:
+    """Retry transient Windows read locks while retaining the complete checkpoint."""
+    for attempt in range(40):
+        try:
+            temporary.replace(destination)
+            return
+        except PermissionError:
+            if attempt == 39:
+                raise
+            time.sleep(.1)
+
+
 MODEL_REVISION = 'c5fdb5ccb189668d56333f77ba2629f4cd7535f4'
 MODEL_HASHES = {
     'model.safetensors': '730839316de585f4c8298ec0e1712efc10fb19c6fa4e36eb741cb8d51ebcf6aa',
@@ -96,6 +111,9 @@ def main() -> None:
     parser.add_argument('--device', default='auto', choices=['auto', 'cpu', 'xpu', 'cuda'])
     parser.add_argument('--steps', type=int, default=32)
     parser.add_argument('--threads', type=int, default=4)
+    parser.add_argument('--flush-denormal', action='store_true', help='Opt-in CPU flush-to-zero for subnormal values; recorded in the generation recipe.')
+    parser.add_argument('--cpu-codec', action='store_true', help='Keep the audio codec on CPU in float32 when using an accelerator; recorded in the generation recipe.')
+    parser.add_argument('--cpu-bf16', action='store_true', help='Opt-in CPU bfloat16 autocast for the language model; the audio codec and default recipe stay float32.')
     parser.add_argument('--batch-size', type=int, default=1, help='Optional batched inference, grouped by short-word processing policy; default preserves single-item inference.')
     parser.add_argument('--max-new-recordings', type=int, help='Stop scheduling new recordings after this many, for bounded benchmarks or incremental runs.')
     parser.add_argument('--character', choices=['mia', 'lova'])
@@ -137,7 +155,11 @@ def main() -> None:
     if args.device == 'auto':
         args.device = 'cuda' if torch.cuda.is_available() else 'xpu' if torch.xpu.is_available() else 'cpu'
 
+    if args.cpu_bf16 and args.device != 'cpu':
+        raise ValueError('--cpu-bf16 requires the CPU device.')
     torch.set_num_threads(args.threads)
+    if args.flush_denormal and not torch.set_flush_denormal(True):
+        raise ValueError('This CPU does not support flush-to-zero.')
     model_path = ROOT / '.tools/omnivoice-model'
     if args.download_model:
         from huggingface_hub import snapshot_download
@@ -165,6 +187,17 @@ def main() -> None:
     model = OmniVoice.from_pretrained(str(model_path), device_map='cpu', dtype=dtype, load_asr=False)
     if args.device != 'cpu':
         model.to(args.device)
+    if args.cpu_codec:
+        model.audio_tokenizer.to(device='cpu', dtype=torch.float32)
+    if args.cpu_bf16:
+        original_forward = model.llm.forward
+        @wraps(original_forward)
+        def bf16_forward(*forward_args, **forward_kwargs):
+            # Only the transformer runs under autocast. Keep the audio codec in
+            # float32 so its NumPy waveform output retains full signal precision.
+            with torch.autocast(device_type='cpu', dtype=torch.bfloat16):
+                return original_forward(*forward_args, **forward_kwargs)
+        model.llm.forward = bf16_forward
     config = OmniVoiceGenerationConfig(num_step=args.steps, guidance_scale=2.0,
         denoise=True, preprocess_prompt=True, postprocess_output=True,
         fade_duration=.012, pad_duration=.08)
@@ -200,7 +233,10 @@ def main() -> None:
         manifest['references'] = reference_records
         temporary = output / 'manifest.tmp.json'
         temporary.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf8')
-        temporary.replace(previous_path)
+        # Windows readers and antivirus may briefly hold a handle that denies
+        # replacement. Keep the complete temporary checkpoint and retry without
+        # rewriting or regenerating any audio.
+        replace_checkpoint(temporary, previous_path)
 
     scheduled = 0
     for character, settings in CHARACTERS.items():
@@ -248,6 +284,16 @@ def main() -> None:
                 'steps': args.steps, 'seed': seed, 'speed': .95, 'language': 'plt', 'cfg': 2.0,
                 'fadeSeconds': .012, 'padSeconds': .08, 'format': 'opus-48k-vbr', 'targetRms': .11,
                 'library': importlib.metadata.version('omnivoice'), 'torch': torch.__version__, 'dtype': str(dtype)}
+            if args.device == 'cuda' and torch.version.hip:
+                recipe['hip'] = torch.version.hip
+            if args.cpu_codec:
+                recipe['codecDevice'] = 'cpu'
+                recipe['codecDtype'] = 'torch.float32'
+            if args.flush_denormal:
+                recipe['flushDenormal'] = True
+            if args.cpu_bf16:
+                recipe['autocastDtype'] = 'torch.bfloat16'
+                recipe['autocastScope'] = 'language-model'
             if requested_duration is not None:
                 recipe['duration'] = requested_duration
                 recipe['postprocessOutput'] = False
@@ -356,6 +402,10 @@ def main() -> None:
                     'character': character, 'status': 'synthetic', 'verification': 'model-generated',
                     'model': 'k2-fsa/OmniVoice', 'language': 'plt', 'referenceSha256': digest(reference),
                     'steps': args.steps, 'seed': seed, 'speed': .95, 'torch': torch.__version__, 'device': args.device,
+                    **({'hip': torch.version.hip} if args.device == 'cuda' and torch.version.hip else {}),
+                    **({'codecDevice': 'cpu', 'codecDtype': 'torch.float32'} if args.cpu_codec else {}),
+                    **({'flushDenormal': True} if args.flush_denormal else {}),
+                    **({'autocastDtype': 'torch.bfloat16', 'autocastScope': 'language-model'} if args.cpu_bf16 else {}),
                     'requestedDuration': duration, 'actualSeed': actual_seed,
                     **signal, 'masterSha256': signal['sha256'], 'masterBytes': signal['bytes'],
                     'sha256': digest(file), 'bytes': file.stat().st_size, 'format': 'ogg-opus', 'sourceSampleRate': signal['sampleRate'],

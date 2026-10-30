@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /** Export authored full utterances for the offline neural voice authoring tool. */
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import { createServer } from 'vite';
 import { normalizeTranscript } from './generate-malagasy-mms.mjs';
 import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 
-export function buildNeuralInventory(content) {
+export function buildNeuralInventory(content, notionCards = {}, recordedUtterances = []) {
   const unique = new Map(), excluded = [];
   function add(text, binding) {
     if (!text?.trim() || /[…_]|\.{3}/u.test(text)) { excluded.push({ text, binding, reason: 'incomplete utterance' }); return; }
@@ -41,6 +41,22 @@ export function buildNeuralInventory(content) {
       else excluded.push({ text, exerciseId: exercise.id, reason: 'answer language not explicitly known as Malagasy' });
     });
   }
+  // Append mnemonic bindings after the established corpus. A newly added card
+  // must not change the original spelling/case of an already recorded utterance.
+  for (const [lessonId, cards] of Object.entries(notionCards)) {
+    for (const card of cards) card.examples.forEach((example, index) => add(example.malagasy,
+      { kind: 'notion-example', lessonId, contentId: card.id, index }));
+  }
+  for (const recorded of recordedUtterances) {
+    if (typeof recorded.transcript !== 'string' || typeof recorded.spokenText !== 'string') continue;
+    const key = normalizeTranscript(recorded.spokenText), item = unique.get(key);
+    if (item && normalizeTranscript(recorded.transcript) === key) {
+      // Safe typography is already deduplicated. Keep the exact original words
+      // sent to the model, rather than relabelling an unchanged recorded file.
+      item.transcript = recorded.transcript;
+      item.spokenText = recorded.spokenText;
+    }
+  }
   return { schemaVersion: 1, language: 'plt', utterances: [...unique.values()], excluded };
 }
 
@@ -48,7 +64,11 @@ async function main() {
 const server = await createServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom' });
 try {
   const { CONTENT } = await server.ssrLoadModule('/src/malagasy/content.ts');
-  const inventory = buildNeuralInventory(CONTENT);
+  const { getNotionCards } = await server.ssrLoadModule('/src/malagasy/notion-cards.ts');
+  let recorded = [];
+  try { recorded = JSON.parse(await readFile('audio-workbench/generated/omnivoice/manifest.json', 'utf8')).recordings; }
+  catch (error) { if (error.code !== 'ENOENT') throw error; }
+  const inventory = buildNeuralInventory(CONTENT, Object.fromEntries(CONTENT.lessons.map(lesson => [lesson.id, getNotionCards(lesson.id)])), recorded);
   await mkdir('.tools/neural-voice-authoring', { recursive: true });
   await writeFile('.tools/neural-voice-authoring/inventory.json', JSON.stringify(inventory, null, 2) + '\n');
   console.log(`${inventory.utterances.length} unique Malagasy utterances prepared; no audio generated or site file changed.`);

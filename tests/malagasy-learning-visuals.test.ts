@@ -59,4 +59,15 @@ describe('meaningful lesson diagrams', () => {
     expect(html).toContain('&lt;boky&gt;');
     expect(html).not.toContain('<script>');
   });
+
+  it('places whole-hour hands correctly at the four cardinal points', () => {
+    for (const [hour, x, y] of [[3, 67, 48], [6, 48, 67], [9, 29, 48], [12, 48, 29]]) {
+      const html = renderLearningVisual({ kind: 'clock', items: [{ hour, label: 'amin’ny ora', period: 'repère du jour' }] });
+      expect(html).toContain(`aria-label="Horloge : ${hour} h 00. repère du jour"`);
+      expect(html).toContain('class="ma-clock-minute-hand" x1="48" y1="48" x2="48" y2="19"');
+      expect(html).toContain(`class="ma-clock-hour-hand" x1="48" y1="48" x2="${x}" y2="${y}"`);
+      expect(html).toContain('<strong lang="mg">amin’ny ora</strong>');
+    }
+    for (const hour of [0, 13, 3.5]) expect(() => renderLearningVisual({ kind: 'clock', items: [{ hour, label: 'test' }] })).toThrow(RangeError);
+  });
 });

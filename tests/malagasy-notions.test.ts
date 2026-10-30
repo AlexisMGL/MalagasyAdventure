@@ -7,7 +7,7 @@ import { ALL_DIALOGUE_RECORDINGS } from '../src/malagasy/voice-bank';
 describe('Short notion lessons before conversations', () => {
   it('covers every delivered learning part and each concept before exercises can test it', () => {
     const parts = CONTENT.lessons.filter(lesson => lesson.kind !== 'checkpoint');
-    expect(parts).toHaveLength(24);
+    expect(parts).toHaveLength(48);
     const presented = new Set<string>();
     const cardIds = new Set<string>();
     for (const lesson of CONTENT.lessons) {
@@ -87,8 +87,8 @@ describe('Short notion lessons before conversations', () => {
       for (const card of getNotionCards(lesson.id)) {
         const visual = card.visual;
         expect(visual, card.id).toBeDefined();
-        if (card.section === 'vocabulary') expect(['pictorial', 'quantity', 'directions'], card.id).toContain(visual.kind);
-        else expect(['sentence', 'possession', 'spatial', 'questions', 'sounds', 'directions'], card.id).toContain(visual.kind);
+        if (card.section === 'vocabulary') expect(['pictorial', 'quantity', 'directions', 'clock'], card.id).toContain(visual.kind);
+        else expect(['sentence', 'possession', 'spatial', 'questions', 'sounds', 'directions', 'clock'], card.id).toContain(visual.kind);
         if (visual.kind === 'sentence') {
           expect(visual.rows.length).toBeGreaterThan(0);
           for (const row of visual.rows) {
@@ -108,6 +108,13 @@ describe('Short notion lessons before conversations', () => {
               expect(Number.isInteger(item.value)).toBe(true);
               expect(item.value).toBeGreaterThanOrEqual(0);
               expect(item.value).toBeLessThanOrEqual(20);
+            }
+          } else if (visual.kind === 'clock') {
+            for (const item of visual.items) {
+              expect(Number.isInteger(item.hour)).toBe(true);
+              expect(item.hour).toBeGreaterThanOrEqual(1);
+              expect(item.hour).toBeLessThanOrEqual(12);
+              expect(item.label.trim()).not.toBe('');
             }
           }
         }

@@ -56,6 +56,10 @@
 .ma-visual-sound>.ma-visual-letter{font-size:36px;color:#35584a}
 .ma-visual-sound>b{font-size:17px;color:#8d5c3e}
 .ma-visual-sound>.ma-visual-sound-word{grid-column:1/-1;padding-top:8px;border-top:1px dashed #d1dec3;font-size:15px;font-weight:500}
+.ma-visual-clock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:20px}
+.ma-visual-clock{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;min-width:0}
+.ma-learning-clock{display:block;width:145px;height:145px;max-width:100%}
+.ma-visual-clock>span{color:#617855;font-size:12px;line-height:1.5}
 .ma-learning-visual.is-compact{padding:12px;margin-bottom:15px;border-radius:10px}
 .ma-learning-visual.is-compact [lang="mg"]{font-size:15px}
 .ma-learning-visual.is-compact .ma-visual-picture-grid,.ma-learning-visual.is-compact .ma-visual-spatial-grid,.ma-learning-visual.is-compact .ma-visual-quantity-grid,.ma-learning-visual.is-compact .ma-visual-question-grid,.ma-learning-visual.is-compact .ma-visual-direction-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 8px}
@@ -74,5 +78,8 @@
 .ma-learning-visual.is-compact .ma-visual-direction>svg{width:70px;height:70px}
 .ma-learning-visual.is-compact .ma-visual-sound-grid{grid-template-columns:1fr}
 .ma-learning-visual.is-compact .ma-visual-sound>.ma-visual-letter{font-size:28px}
+.ma-learning-visual.is-compact .ma-visual-clock-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 8px}
+.ma-learning-visual.is-compact .ma-learning-clock{width:75px;height:75px}
+.ma-learning-visual.is-compact .ma-visual-clock>span{font-size:10px}
 .ma-learning-visual.is-compact>figcaption{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 @media(max-width:760px){.ma-learning-visual{padding:16px;margin-bottom:20px}.ma-visual-picture-grid,.ma-visual-spatial-grid,.ma-visual-quantity-grid,.ma-visual-question-grid,.ma-visual-direction-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:17px 11px}.ma-learning-visual [lang="mg"]{font-size:17px}.ma-learning-picture{width:85px;height:85px}.ma-learning-spatial-picture{height:130px}.ma-visual-possession-grid{grid-template-columns:1fr}.ma-visual-word{padding-left:8px;padding-right:8px}.ma-visual-sound-grid{grid-template-columns:1fr}.ma-visual-sentence-row{gap:14px}.ma-visual-word:after{right:-13px}}

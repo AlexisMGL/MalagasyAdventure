@@ -12,6 +12,24 @@ const cup = (coffee = false): string => coffee
   ? `<g stroke="${ink}" stroke-width="2.5" fill="none"><path d="M23 39h45v29q-20 15-45 0Z" fill="${sand}"/><path d="M69 43h9q13 12-9 17M18 80h61M34 29q-8-8 0-16m18 16q-8-8 0-16" stroke-linecap="round"/></g>`
   : `<g stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"><path d="m28 17 7 65h30l7-65Z" fill="#e6f5ee"/><path d="m32 44 4 36h27l4-36q-8-5-17 0-10 5-18 0" fill="#83c3c0"/><path d="m39 28 3 21" stroke="#fffdf0" stroke-width="4" stroke-linecap="round"/></g>`;
 
+/** Minute hand always points at twelve: this lesson introduces whole hours only. */
+function clockFace(hour: number): string {
+  if (!Number.isInteger(hour) || hour < 1 || hour > 12) throw new RangeError('A whole-hour clock needs an hour from 1 to 12.');
+  const angle = (hour % 12) * Math.PI / 6;
+  const x = Number((48 + Math.sin(angle) * 19).toFixed(3));
+  const y = Number((48 - Math.cos(angle) * 19).toFixed(3));
+  const numerals = Array.from({ length: 12 }, (_, index) => {
+    const number = index + 1, position = number * Math.PI / 6;
+    return `<text x="${(48 + Math.sin(position) * 27).toFixed(3)}" y="${(51 - Math.cos(position) * 27).toFixed(3)}" text-anchor="middle">${number}</text>`;
+  }).join('');
+  return `<circle cx="48" cy="48" r="40" fill="#f1d39a" stroke="${ink}" stroke-width="2.5"/><circle cx="48" cy="48" r="35" fill="#fffdf3" stroke="#d1c6a5"/><g fill="${ink}" font-size="8" font-family="sans-serif">${numerals}</g><line class="ma-clock-minute-hand" x1="48" y1="48" x2="48" y2="19" stroke="${ink}" stroke-width="2.5" stroke-linecap="round"/><line class="ma-clock-hour-hand" x1="48" y1="48" x2="${x}" y2="${y}" stroke="${coral}" stroke-width="4.5" stroke-linecap="round"/><circle cx="48" cy="48" r="3.5" fill="${ink}"/>`;
+}
+
+function sunScene(period: 'morning' | 'daytime' | 'evening'): string {
+  const full = period === 'daytime', y = full ? 34 : 58;
+  return `<circle cx="48" cy="48" r="43" fill="${full ? '#e5f0df' : '#f6e4c2'}"/><circle cx="48" cy="${y}" r="${full ? 18 : 23}" fill="${period === 'evening' ? coral : sand}"/>${full ? `<path d="M48 7v6m0 42v6M21 34h-6m66 0h-6M29 15l4 5m30 29 4 5m-38 0 4-5m30-29 4-5" stroke="${sand}" stroke-width="3" stroke-linecap="round"/>` : ''}<path d="M5 65q22-15 43 0 22-15 43 0v18H5Z" fill="#a8c591"/><path d="M8 65h80" stroke="${ink}" stroke-width="2"/>${full ? '<path d="M59 40q-3-10 7-11 8-11 17 1 12 1 6 12H60Z" fill="#fffdf3"/>' : `<path d="${period === 'morning' ? 'M77 49V26m-6 6 6-6 6 6' : 'M77 26v23m-6-6 6 6 6-6'}" fill="none" stroke="${ink}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`}`;
+}
+
 const pictures: Record<LearningPicture, { label: string; art: () => string }> = {
   greeting: { label: 'Une personne lève la main pour saluer', art: () => human('wave') },
   goodbye: { label: 'Une personne salue en repartant', art: () => `<path d="M69 13h18v71H69" fill="#e6ecda" stroke="${ink}" stroke-width="2"/><g transform="translate(-12 3) scale(.9)">${human('wave')}</g><path d="M65 65h23m-8-7 8 7-8 7" fill="none" stroke="${coral}" stroke-width="4" stroke-linecap="round"/>` },
@@ -55,6 +73,22 @@ const pictures: Record<LearningPicture, { label: string; art: () => string }> = 
   france: { label: 'Le drapeau de la France, bleu, blanc, rouge', art: () => `<path d="M18 12v75" stroke="${ink}" stroke-width="4" stroke-linecap="round"/><path d="M20 17h21v39H20Z" fill="#41679a"/><path d="M41 17h21v39H41Z" fill="#fffdf2"/><path d="M62 17h21v39H62Z" fill="#dc775e"/><path d="M20 17h63v39H20Z" stroke="${ink}" stroke-width="2" fill="none"/><path d="M10 88h17" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>` },
   work: { label: 'Une sacoche de travail', art: () => `<g stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"><path d="M35 28V16h27v12" fill="none" stroke-width="5"/><rect x="14" y="29" width="70" height="52" rx="7" fill="${sand}"/><path d="M15 41q34 23 68 0" fill="none"/><rect x="43" y="47" width="12" height="14" rx="2" fill="${teal}"/></g>` },
   number: { label: 'Trois cartes portant les nombres un, deux et trois', art: () => `<g stroke="${ink}" stroke-width="2"><rect x="7" y="26" width="29" height="44" rx="5" fill="#f1d89f"/><rect x="34" y="18" width="29" height="52" rx="5" fill="#d9e8cd"/><rect x="61" y="26" width="29" height="44" rx="5" fill="#f3cfb9"/></g><g fill="${ink}" font-size="24" font-family="sans-serif" text-anchor="middle"><text x="22" y="57">1</text><text x="49" y="54">2</text><text x="76" y="57">3</text></g>` },
+  morning: { label: 'Le soleil se lève : une flèche monte au-dessus de l’horizon', art: () => sunScene('morning') },
+  daytime: { label: 'Le soleil est haut dans le ciel : il fait jour', art: () => sunScene('daytime') },
+  evening: { label: 'Le soleil se couche : une flèche descend vers l’horizon', art: () => sunScene('evening') },
+  night: { label: 'La lune et les étoiles dans le ciel de nuit', art: () => `<circle cx="48" cy="48" r="42" fill="#405866"/><path d="M58 14a29 29 0 1 0 20 40A25 25 0 0 1 58 14Z" fill="#f6de9c"/><path d="m23 18 2 6 6 2-6 2-2 6-2-6-6-2 6-2Zm53 0 1 5 5 1-5 2-1 5-2-5-5-2 5-1Zm2 48 1 4 5 2-5 1-1 5-2-5-4-1 4-2Z" fill="#fcf1cb"/>` },
+  wake: { label: 'Une personne se réveille dans son lit au lever du jour', art: () => `<circle cx="77" cy="17" r="11" fill="${sand}"/><rect x="7" y="56" width="82" height="29" rx="8" fill="#dfe9d5"/><rect x="10" y="60" width="23" height="20" rx="5" fill="#fffaf0"/><g transform="translate(7 1) scale(.8)">${human('wave')}</g><path d="M24 69h59v17H24Z" fill="${teal}" stroke="${ink}" stroke-width="2"/>` },
+  clock: { label: 'Une horloge pour repérer une heure entière', art: () => clockFace(7) },
+  eat: { label: 'Une personne mange avec une cuillère et un bol', art: () => `<g transform="translate(-3 -1) scale(.88)">${human()}</g><path d="m54 56 13-13-8-8" fill="none" stroke="#bd7c51" stroke-width="5" stroke-linecap="round"/><path d="m60 37-9-5" stroke="${ink}" stroke-width="2"/><ellipse cx="48" cy="30" rx="6" ry="3" transform="rotate(25 48 30)" fill="${sand}" stroke="${ink}"/><path d="M22 72h55q-3 18-27 18T22 72Z" fill="${sand}" stroke="${ink}" stroke-width="2"/>` },
+  study: { label: 'Une personne étudie un livre, une ampoule évoque ce qu’elle apprend', art: () => `<g transform="translate(-10 2) scale(.85)">${human()}</g><g transform="translate(6 43) scale(.65)">${book()}</g><path d="M75 6q-15 2-8 17l5 6v7h9v-7l5-7q5-14-11-16Z" fill="#f3d382" stroke="${ink}" stroke-width="2"/><path d="M72 39h9" stroke="${ink}" stroke-width="2"/>` },
+  plate: { label: 'Une assiette ronde', art: () => `<circle cx="48" cy="48" r="36" fill="#e2eee0" stroke="${ink}" stroke-width="2.5"/><circle cx="48" cy="48" r="28" fill="#fffdf2" stroke="#8fb49b" stroke-width="2"/><circle cx="48" cy="48" r="22" fill="none" stroke="#d7e2cb"/>` },
+  spoon: { label: 'Une cuillère avec une partie creuse ovale et un manche', art: () => `<path d="M43 41h10v43q-5 7-10 0Z" fill="${sand}" stroke="${ink}" stroke-width="2.5"/><ellipse cx="48" cy="28" rx="16" ry="22" fill="#d5e4dd" stroke="${ink}" stroke-width="2.5"/><path d="M41 18q-8 11 0 21" fill="none" stroke="#fffdf3" stroke-width="4" stroke-linecap="round"/>` },
+  glass: { label: 'Un verre transparent vide', art: () => `<path d="m27 15 7 69h29l7-69Z" fill="#ecf5ed" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/><path d="m38 27 4 39" stroke="#fffdf3" stroke-width="5" stroke-linecap="round"/><path d="M36 78h25" stroke="#b6d1c1" stroke-width="2"/>` },
+  knife: { label: 'Un couteau de table avec son manche', art: () => `<g transform="rotate(28 48 48)" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"><path d="M46 10q-20 24-14 47h21V10Z" fill="#d7e5df"/><path d="M40 57h13v27q-6 7-13 0Z" fill="${sand}"/><circle cx="46" cy="67" r="1" fill="${ink}"/><circle cx="46" cy="78" r="1" fill="${ink}"/></g>` },
+  read: { label: 'Une personne lit un livre ouvert devant elle', art: () => `<g transform="translate(0 -2) scale(.95)">${human()}</g><g transform="translate(-4 37) scale(1.07 .7)">${book()}</g><path d="M19 69h-5m67 0h-5" stroke="#bd7c51" stroke-width="5" stroke-linecap="round"/>` },
+  write: { label: 'Une main écrit sur une feuille avec un crayon', art: () => `<rect x="16" y="15" width="53" height="69" rx="5" fill="#fffaf0" stroke="${ink}" stroke-width="2.5"/><path d="M25 32h20m-20 10h16m-16 31h30" stroke="#b5c9a9" stroke-width="2"/><path d="m40 61 26-41 9 6-26 41-11 5Z" fill="${sand}" stroke="${ink}" stroke-width="2" stroke-linejoin="round"/><path d="m38 72 4-9 6 4Z" fill="${ink}"/><path d="M87 65q-9-1-19-11l-10-8q-8-2-7 5l15 17-8 4 22 11" fill="#bd7c51" stroke="${ink}" stroke-width="2"/>` },
+  wash: { label: 'Des mains sont lavées sous un robinet, au-dessus d’un lavabo', art: () => `<g stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"><path d="M19 43V18h34v16H42v-5H30v14" fill="#c6dfd4"/><path d="M34 13h22m-11-4v9" fill="none"/><path d="M10 67h77q-4 20-38 20T10 67Z" fill="#e8f0e3"/><path d="m61 44-17 9-10-1q-10 0-7 7l21 6 21-11m15-1L61 65" fill="#bd7c51"/></g><path d="m44 38-2 8m10-7-2 6m7-5-2 5" stroke="#65afad" stroke-width="3" stroke-linecap="round"/>` },
+  cook: { label: 'Une marmite chauffe sur le feu, avec de la vapeur et une cuillère', art: () => `<path d="m26 84 8-11 8 9 8-14 8 14 8-9 7 11" fill="#edaa66" stroke="${ink}" stroke-width="2"/><g stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"><path d="M20 43h57v27q-28 11-57 0Z" fill="${teal}"/><path d="M20 48H9v12h11m57-12h10v12H77M16 42h65" fill="none"/><path d="m65 17-8 26" stroke-width="5" stroke-linecap="round"/><path d="M30 32q-8-8 0-15m13 14q-8-8 0-16" fill="none" stroke="#92b395" stroke-linecap="round"/></g>` },
 };
 
 function picture(name: LearningPicture, hidden = false): string {
@@ -66,7 +100,7 @@ const roleLabels: Record<WordRole, string> = { predicate: 'Ce qu’on dit', subj
 const visualLabels: Record<LearningVisual['kind'], string> = {
   pictorial: 'Les mots en images', sentence: 'La phrase, bloc par bloc', possession: 'Un mot, deux personnes de référence',
   spatial: 'Voir où se trouve la personne ou l’objet', quantity: 'Voir la quantité', questions: 'Le mot qui guide la question',
-  directions: 'Les directions en images', sounds: 'Relier une lettre à un repère sonore',
+  directions: 'Les directions en images', sounds: 'Relier une lettre à un repère sonore', clock: 'L’heure entière sur le cadran',
 };
 
 /** Highlight only the differing ends of the two supplied full words. Never build a Malagasy form. */
@@ -138,6 +172,12 @@ export function renderLearningVisual(visual: LearningVisual, options: { compact?
       break;
     case 'sounds':
       content = `<div class="ma-visual-sound-grid">${visual.items.map(item => `<div class="ma-visual-sound"><strong class="ma-visual-letter" lang="mg">${e(item.letter)}</strong><span aria-hidden="true">→</span><b lang="fr">${e(item.sound)}</b><span class="ma-visual-sound-word" lang="mg">${e(item.word)}</span></div>`).join('')}</div>`;
+      break;
+    case 'clock':
+      content = `<div class="ma-visual-clock-grid">${visual.items.map(item => {
+        const label = `Horloge : ${item.hour} h 00${item.period ? `. ${item.period}` : ''}`;
+        return `<div class="ma-visual-clock"><svg class="ma-learning-clock" viewBox="0 0 96 96" role="img" aria-label="${e(label)}" focusable="false" data-hour="${item.hour}"><title>${e(label)}</title>${clockFace(item.hour)}</svg><strong lang="mg">${e(item.label)}</strong>${item.period ? `<span lang="fr">${e(item.period)}</span>` : ''}</div>`;
+      }).join('')}</div>`;
       break;
   }
   return `<figure class="ma-learning-visual ma-learning-visual-${visual.kind}${options.compact ? ' is-compact' : ''}" aria-label="${visualLabels[visual.kind]}">${content}<figcaption>${visualLabels[visual.kind]}</figcaption></figure>`;

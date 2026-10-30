@@ -175,5 +175,5 @@ export const WORLDS: World[] = planned.map((world, index) => ({
   id: `world-${String(index + 1).padStart(2, '0')}`,
   number: index + 1,
   prerequisites: index === 0 ? [] : [`world-${String(index).padStart(2, '0')}`],
-  implemented: index === 0,
+  implemented: index < 2,
 }));

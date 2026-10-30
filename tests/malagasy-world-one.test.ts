@@ -42,8 +42,9 @@ describe('Complete world one and its visual trail', () => {
     expect(worldCompleted('world-01', beforeFinal, CONTENT)).toBe(false);
     const progress = finishLessons(36);
     expect(worldCompleted('world-01', progress, CONTENT)).toBe(true);
-    expect(CONTENT.worlds.slice(1).every(world => !world.implemented)).toBe(true);
-    const lesson = CONTENT.lessons.at(-1)!;
+    expect(CONTENT.worlds[1].implemented).toBe(true);
+    expect(CONTENT.worlds.slice(2).every(world => !world.implemented)).toBe(true);
+    const lesson = CONTENT.lessons.find(item => item.id === 'lesson-12-03')!;
     const exercises = lesson.exerciseIds.map(id => CONTENT.exercises.find(item => item.id === id)!);
     const session: LearningSession = { lesson, exercises, index: 11, correct: 12, draft: emptyDraft(), answered: true,
       wasCorrect: true, stage: 'done', review: false, xpBefore: progress.xp, sceneIndex: 0, revealedTurns: 1,
