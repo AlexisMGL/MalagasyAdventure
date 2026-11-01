@@ -6,7 +6,8 @@ interface InstallPromptEvent extends Event {
 }
 
 export interface PwaState {
-  installed: boolean;
+  runningStandalone: boolean;
+  installationRequested: boolean;
   canInstall: boolean;
   prompting: boolean;
   message: string;
@@ -17,7 +18,7 @@ export interface PwaState {
 /** Online PWA: installation and update awareness, without a service worker or content cache. */
 export class MalagasyPwa {
   readonly state: PwaState = {
-    installed: false, canInstall: false, prompting: false, message: '',
+    runningStandalone: false, installationRequested: false, canInstall: false, prompting: false, message: '',
     updateAvailable: false, updateDeferred: false,
   };
   private promptEvent: InstallPromptEvent | null = null;
@@ -28,7 +29,8 @@ export class MalagasyPwa {
   start(): void {
     const displayMode = window.matchMedia('(display-mode: standalone)');
     const updateDisplayMode = () => {
-      this.state.installed = displayMode.matches || (navigator as Navigator & { standalone?: boolean }).standalone === true;
+      // Display mode describes this window, not the device's installed applications.
+      this.state.runningStandalone = displayMode.matches || (navigator as Navigator & { standalone?: boolean }).standalone === true;
       this.onChange();
     };
     updateDisplayMode();
@@ -37,14 +39,16 @@ export class MalagasyPwa {
       event.preventDefault();
       this.promptEvent = event as InstallPromptEvent;
       this.state.canInstall = true;
+      this.state.installationRequested = false;
       this.state.message = '';
       this.onChange();
     });
     window.addEventListener('appinstalled', () => {
       this.promptEvent = null;
       this.state.canInstall = false;
-      this.state.installed = true;
-      this.state.message = 'L’application est installée. Retrouvez son icône sur votre appareil.';
+      // Android can emit this before the WebAPK has actually been created/installed.
+      this.state.installationRequested = true;
+      this.state.message = 'Le navigateur a accepté l’installation. L’ajout de l’icône peut prendre quelques instants.';
       this.onChange();
     });
     // No reload on focus, reconnection or deploy: a lesson/form must remain intact.
@@ -65,8 +69,9 @@ export class MalagasyPwa {
     try {
       await event.prompt();
       const { outcome } = await event.userChoice;
+      this.state.installationRequested = outcome === 'accepted' || this.state.installationRequested;
       this.state.message = outcome === 'accepted'
-        ? 'Installation demandée. Votre appareil va ajouter l’application.'
+        ? 'Installation demandée. Vérifiez l’ajout de l’icône sur votre appareil ; cela peut prendre quelques instants.'
         : 'Vous pourrez installer l’application plus tard depuis le menu du navigateur.';
     } catch {
       this.state.message = 'Utilisez le menu de votre navigateur pour installer l’application.';

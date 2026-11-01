@@ -11,10 +11,12 @@ export function renderInstallPage(state: PwaState): string {
 }
 
 export function renderInstallStatus(state: PwaState): string {
-  return `${state.installed ? '<p class="ma-installed">✓ L’application est installée.</p>' : state.canInstall || state.prompting
+  return `${state.runningStandalone ? '<p class="ma-installed">Vous utilisez la version app.</p>' : state.canInstall || state.prompting
     ? `<button class="ma-primary" data-action="pwa-install" ${state.prompting ? 'disabled' : ''}>${state.prompting ? 'Installation en cours…' : 'Installer l’application'} ${icon('save', 18)}</button>`
+    : state.installationRequested ? '<p class="ma-install-hint">Installation transmise au navigateur.</p>'
     : '<p class="ma-install-hint">Suivez les étapes ci-dessous pour ajouter l’application.</p>'}
     ${state.message ? `<p>${e(state.message)}</p>` : ''}
+    <details class="ma-install-help"><summary>Je ne trouve pas l’application</summary><p>Sur Android, cherchez <strong>Malagasy</strong> dans la liste des apps : c’est le nom de l’icône. Vérifiez aussi <strong>Paramètres → Applications → Voir toutes les applications</strong>.</p><p>Si elle n’y apparaît pas après quelques instants, ouvrez ce site dans <strong>Chrome</strong>, puis son menu <strong>⋮ → Installer et créer un raccourci → Installer</strong>, ou <strong>Ajouter à l’écran d’accueil</strong> selon la version, et confirmez.</p><p>Si vous avez créé un raccourci, regardez aussi sur les différentes pages de l’écran d’accueil. Sur iPhone ou iPad, suivez le guide Safari ci-dessous.</p></details>
     ${state.updateAvailable ? '<button class="ma-secondary" data-action="pwa-update">Ouvrir la nouvelle version</button>' : ''}`;
 }
 

@@ -71,7 +71,7 @@ for (const width of [340, 390]) test(`mobile navigation and installation guide w
   await page.screenshot({ path: `.tools/screens/pwa-path-${width}.png`, fullPage: true });
 });
 
-test('native install prompt is consumed once and appinstalled updates the guide without touching the carnet', async ({ page }) => {
+test('native install prompt is consumed once and Android appinstalled does not claim installation is finished', async ({ page }) => {
   await page.goto('/#install');
   const saved = await page.evaluate(key => localStorage.getItem(key), SAVE_KEY);
   await page.evaluate(() => {
@@ -91,15 +91,38 @@ test('native install prompt is consumed once and appinstalled updates the guide 
   await page.locator('[data-action="pwa-install"]').click();
   await expect(page.locator('#ma-install-status')).toContainText('Installation demandée');
   await page.evaluate(() => window.dispatchEvent(new Event('appinstalled')));
-  await expect(page.locator('#ma-install-status')).toContainText('L’application est installée');
+  await expect(page.locator('#ma-install-status')).toContainText('Installation transmise au navigateur');
+  await expect(page.locator('#ma-install-status')).not.toContainText('L’application est installée');
+  await expect(page.locator('[data-action="pwa-install"]')).toHaveCount(0);
+  await page.getByText('Je ne trouve pas l’application', { exact: true }).click();
+  await expect(page.locator('.ma-install-help')).toContainText('Paramètres → Applications → Voir toutes les applications');
+  await expect(page.locator('.ma-install-help')).toContainText('Malagasy');
   expect(await page.evaluate(key => localStorage.getItem(key), SAVE_KEY)).toBe(saved);
+  await page.reload();
+  await expect(page.locator('#ma-install-status')).not.toContainText('Installation transmise au navigateur');
 });
 
 test('an installed iOS app does not ask to install again', async ({ page }) => {
   await page.addInitScript(() => Object.defineProperty(navigator, 'standalone', { value: true }));
   await page.goto('/#install');
-  await expect(page.locator('#ma-install-status')).toContainText('L’application est installée');
+  await expect(page.locator('#ma-install-status')).toContainText('Vous utilisez la version app');
   await expect(page.locator('[data-action="pwa-install"]')).toHaveCount(0);
+});
+
+test('standalone display only describes this window and never proves the presence of an Android app', async ({ page }) => {
+  await page.addInitScript(() => {
+    const matchMedia = window.matchMedia.bind(window);
+    window.matchMedia = query => {
+      const media = matchMedia(query);
+      if (query === '(display-mode: standalone)') Object.defineProperty(media, 'matches', { value: true });
+      return media;
+    };
+  });
+  await page.goto('/#install');
+  await expect(page.locator('#ma-install-status')).toContainText('Vous utilisez la version app');
+  await expect(page.locator('#ma-install-status')).not.toContainText('L’application est installée');
+  await page.getByText('Je ne trouve pas l’application', { exact: true }).click();
+  await expect(page.locator('.ma-install-help p').first()).toBeVisible();
 });
 
 test('a new deployment preserves the current answer and is offered after leaving the lesson', async ({ page }) => {

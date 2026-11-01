@@ -7,6 +7,7 @@ Malagasy Adventure partage une seule base de code et une seule publication Netli
 Sur mobile, ouvrir **Plus d’options → Installer l’application**. Sur ordinateur, utiliser **Installer l’application** dans le menu latéral.
 
 - Chrome/Edge : le bouton d’installation apparaît lorsque le navigateur émet `beforeinstallprompt`. Sinon, le guide décrit l’installation depuis le menu du navigateur.
+- Sur Android, `appinstalled` peut précéder la création et l’installation du WebAPK : il confirme seulement que le navigateur a accepté la demande. L’interface indique « Installation transmise au navigateur » et propose une aide pour chercher « Malagasy » dans les apps et les paramètres. Le mode autonome décrit uniquement la fenêtre courante (« Vous utilisez la version app »), sans affirmer une installation vérifiée dans le système. Aucun état « installé » n’est conservé après rechargement.
 - iPhone/iPad : ouvrir dans Safari, Partager → Sur l’écran d’accueil → Ajouter ; activer « Ouvrir comme app web » si proposé.
 - Le mode autonome supprime la barre d’adresse et respecte les marges de l’écran. Une barre de navigation en bas donne accès aux cinq rubriques du voyage. Elle s’efface pendant une leçon ; les boutons de sortie existants restent disponibles.
 
@@ -30,3 +31,5 @@ Netlify revalide le HTML et le manifeste ; `/version.json` utilise `no-store`. L
 Les simulations d’événements ne remplacent pas une installation manuelle sur de vrais iPhone/Android ; celle-ci dépend aussi du navigateur et de ses critères de promotion.
 
 Références techniques : [MDN — installation](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable), [web.dev — mises à jour](https://web.dev/learn/pwa/update). Ces références auteur ne sont pas ajoutées dans les leçons.
+
+Diagnostic Android : [web.dev — délai après appinstalled](https://web.dev/learn/pwa/detection), [aide Google Chrome — installation Android](https://support.google.com/chrome/answer/9658361?co=GENIE.Platform%3DAndroid&hl=fr).
