@@ -26,8 +26,11 @@ import './voices.css';
 import './account.css';
 import { MalagasyAccount } from './account';
 import { renderAccountPage, renderAccountReminder, type AccountMode } from './account-view';
+import { MalagasyPwa } from './pwa';
+import { renderInstallPage, renderInstallStatus, renderUpdateNotice } from './pwa-view';
+import './pwa.css';
 
-type View = 'path' | 'worlds' | 'reviews' | 'vocabulary' | 'stats' | 'sources' | 'backup' | 'account';
+type View = 'path' | 'worlds' | 'reviews' | 'vocabulary' | 'stats' | 'sources' | 'backup' | 'account' | 'install';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const loaded = loadProgress(CONTENT);
 let progress = loaded.progress;
@@ -41,6 +44,7 @@ let historyBookState: HistoryBookState | null = null;
 let renderedAccountMode: AccountMode | null = null;
 const audio = new MalagasyAudio(CONTENT.audio);
 const dialogueAudio = new DialogueAudioPlayer(CONTENT.audio, { onStatus: updateVoiceStatus });
+const pwa = new MalagasyPwa(refreshPwa);
 const account = new MalagasyAccount({
   getProgress: () => progress,
   onProgress: next => {
@@ -66,7 +70,7 @@ document.title = 'Malagasy Adventure';
 
 function readView(): View {
   const hash = location.hash.slice(1).split('/')[0];
-  return ['path', 'worlds', 'reviews', 'vocabulary', 'stats', 'sources', 'backup', 'account'].includes(hash) ? hash as View : 'path';
+  return ['path', 'worlds', 'reviews', 'vocabulary', 'stats', 'sources', 'backup', 'account', 'install'].includes(hash) ? hash as View : 'path';
 }
 const lessonById = (id: string): Lesson | undefined => CONTENT.lessons.find(lesson => lesson.id === id);
 const completed = (id: string): boolean => progress.completedLessons.includes(id);
@@ -94,14 +98,14 @@ function navigate(destination: View): void {
 
 function sidebar(): string {
   const links: [View, string, string][] = [['path', 'path', 'Mon parcours'], ['worlds', 'map', 'Carte des mondes'], ['reviews', 'review', 'Révisions'], ['vocabulary', 'book', 'Mon lexique'], ['stats', 'stats', 'Ma progression']];
-  return `<aside class="ma-sidebar"><a class="ma-brand" href="/malagasy-adventure"><span class="ma-brand-icon">${icon('leaf', 26)}</span><span>malagasy<span>ADVENTURE</span></span></a><div class="ma-sidebar-label">LE VOYAGE</div><nav aria-label="Navigation principale">${links.map(([id, symbol, title]) => `<button data-view="${id}" class="${view === id && !session ? 'active' : ''}" ${view === id && !session ? 'aria-current="page"' : ''}>${icon(symbol)}<span>${title}</span>${id === 'reviews' && dueConcepts(progress).length ? `<b>${dueConcepts(progress).length}</b>` : ''}</button>`).join('')}</nav><div class="ma-sidebar-postcard">${miniIslandArt()}<span>UNE ÎLE. MILLE RENCONTRES.</span><p>Le voyage commence<br>par un <em>salama.</em></p><small>Français → Malgache standard</small></div><nav class="ma-sidebar-bottom" aria-label="Ressources"><button data-view="sources" ${view === 'sources' ? 'aria-current="page"' : ''}>${icon('source')}<span>Sources & crédits</span></button><button data-view="backup" ${view === 'backup' ? 'aria-current="page"' : ''}>${icon('save')}<span>Ma sauvegarde</span></button><button data-view="account" ${view === 'account' ? 'aria-current="page"' : ''}>${icon('book')}<span>Mon compte</span></button></nav><div class="ma-edition"><span class="ma-online-dot"></span> CARNET N° 001 <span>ÉDITION DÉCOUVERTE</span></div></aside>`;
+  return `<aside class="ma-sidebar"><a class="ma-brand" href="/malagasy-adventure"><span class="ma-brand-icon">${icon('leaf', 26)}</span><span>malagasy<span>ADVENTURE</span></span></a><button class="ma-mobile-menu" data-action="mobile-menu" aria-label="Plus d’options">${icon('more', 21)}</button><div class="ma-sidebar-label">LE VOYAGE</div><nav aria-label="Navigation principale">${links.map(([id, symbol, title]) => `<button data-view="${id}" class="${view === id && !session ? 'active' : ''}" ${view === id && !session ? 'aria-current="page"' : ''}>${icon(symbol)}<span>${title}</span>${id === 'reviews' && dueConcepts(progress).length ? `<b>${dueConcepts(progress).length}</b>` : ''}</button>`).join('')}</nav><div class="ma-sidebar-postcard">${miniIslandArt()}<span>UNE ÎLE. MILLE RENCONTRES.</span><p>Le voyage commence<br>par un <em>salama.</em></p><small>Français → Malgache standard</small></div><nav class="ma-sidebar-bottom" aria-label="Ressources"><button data-view="sources" ${view === 'sources' ? 'aria-current="page"' : ''}>${icon('source')}<span>Sources & crédits</span></button><button data-view="backup" ${view === 'backup' ? 'aria-current="page"' : ''}>${icon('save')}<span>Ma sauvegarde</span></button><button data-view="account" ${view === 'account' ? 'aria-current="page"' : ''}>${icon('book')}<span>Mon compte</span></button><button data-view="install" ${view === 'install' ? 'aria-current="page"' : ''}>${icon('save')}<span>Installer l’application</span></button></nav><div class="ma-edition"><span class="ma-online-dot"></span> CARNET N° 001 <span>ÉDITION DÉCOUVERTE</span></div></aside>`;
 }
 function accountAccess(): string {
   const label = account.state.email || view === 'account' ? 'Mon compte' : 'Se connecter';
   return `<button type="button" class="ma-account-access" data-action="account-open">${label}</button>`;
 }
 function topbar(): string {
-  return `<header class="ma-topbar"><div class="ma-breadcrumb">MADAGASCAR <span>/</span> <strong>${session ? 'EN LEÇON' : ({ path: 'MON PARCOURS', worlds: 'LES DESTINATIONS', reviews: 'LES RÉVISIONS', vocabulary: 'MON LEXIQUE', stats: 'MA PROGRESSION', sources: 'LES RÉFÉRENCES', backup: 'MA SAUVEGARDE', account: 'MON COMPTE' })[view]}</strong></div><div class="ma-top-stats"><span title="Jours consécutifs d’activité" class="ma-streak">${icon('flame', 18)} <b>${streakDays(progress)}</b><span>jour${streakDays(progress) > 1 ? 's' : ''}</span></span><span class="ma-xp">${icon('star', 18)}<b>${progress.xp}</b> XP</span><button class="ma-sound" data-action="mute" aria-label="${progress.settings.muted ? 'Activer les sons' : 'Couper les sons'}" title="Sons de l’interface" aria-pressed="${!progress.settings.muted}">${icon('sound', 18)}${progress.settings.muted ? '<span class="ma-mute-slash"></span>' : ''}</button>${accountAccess()}</div></header>`;
+  return `<header class="ma-topbar"><div class="ma-breadcrumb">MADAGASCAR <span>/</span> <strong>${session ? 'EN LEÇON' : ({ path: 'MON PARCOURS', worlds: 'LES DESTINATIONS', reviews: 'LES RÉVISIONS', vocabulary: 'MON LEXIQUE', stats: 'MA PROGRESSION', sources: 'LES RÉFÉRENCES', backup: 'MA SAUVEGARDE', account: 'MON COMPTE', install: 'L’APPLICATION' })[view]}</strong></div><div class="ma-top-stats"><span title="Jours consécutifs d’activité" class="ma-streak">${icon('flame', 18)} <b>${streakDays(progress)}</b><span>jour${streakDays(progress) > 1 ? 's' : ''}</span></span><span class="ma-xp">${icon('star', 18)}<b>${progress.xp}</b> XP</span><button class="ma-sound" data-action="mute" aria-label="${progress.settings.muted ? 'Activer les sons' : 'Couper les sons'}" title="Sons de l’interface" aria-pressed="${!progress.settings.muted}">${icon('sound', 18)}${progress.settings.muted ? '<span class="ma-mute-slash"></span>' : ''}</button>${accountAccess()}</div></header>`;
 }
 function pageHeading(kicker: string, title: string, description: string): string {
   return `<div class="ma-page-heading"><span class="ma-eyebrow">${kicker}</span><h1 tabindex="-1">${title}</h1><p>${description}</p></div>`;
@@ -166,9 +170,19 @@ function sessionPage(): string {
 }
 
 function render(autoplayVoices = false): void {
-  app.innerHTML = `<div class="ma-app ${session ? 'ma-in-session' : ''}">${sidebar()}<div class="ma-workspace">${topbar()}${storageWarning ? `<div class="ma-storage-warning" role="status">${e(storageWarning)} <button data-view="backup">Ma sauvegarde</button></div>` : ''}<main class="ma-main" id="ma-main">${view !== 'account' && !session ? renderAccountReminder(account.state) : ''}${session ? sessionPage() : ({ path: pathPage, worlds: worldsPage, reviews: reviewsPage, vocabulary: vocabularyPage, stats: statsPage, sources: sourcesPage, backup: backupPage, account: () => renderAccountPage(account.state) })[view]()}</main><footer class="ma-footer"><span>MALAGASY ADVENTURE</span><span>APPRENDRE. RENCONTRER. EXPLORER.</span></footer></div><dialog class="ma-dialog" id="ma-dialog" aria-labelledby="ma-dialog-title"></dialog><div class="ma-toast" id="ma-toast" role="status" aria-live="polite"></div></div>`;
+  app.innerHTML = `<div class="ma-app ${session ? 'ma-in-session' : ''}">${sidebar()}<div class="ma-workspace">${topbar()}<div id="ma-pwa-update">${renderUpdateNotice(pwa.state, safeToUpdate())}</div>${storageWarning ? `<div class="ma-storage-warning" role="status">${e(storageWarning)} <button data-view="backup">Ma sauvegarde</button></div>` : ''}<main class="ma-main" id="ma-main">${view !== 'account' && !session ? renderAccountReminder(account.state) : ''}${session ? sessionPage() : ({ path: pathPage, worlds: worldsPage, reviews: reviewsPage, vocabulary: vocabularyPage, stats: statsPage, sources: sourcesPage, backup: backupPage, account: () => renderAccountPage(account.state), install: () => renderInstallPage(pwa.state) })[view]()}</main><footer class="ma-footer"><span>MALAGASY ADVENTURE</span><span>APPRENDRE. RENCONTRER. EXPLORER.</span></footer></div><dialog class="ma-dialog" id="ma-dialog" aria-labelledby="ma-dialog-title"></dialog><div class="ma-toast" id="ma-toast" role="status" aria-live="polite"></div></div>`;
   synchronizeVoices(autoplayVoices);
   renderedAccountMode = account.state.mode;
+}
+
+function safeToUpdate(): boolean { return (!session || session.stage === 'done') && view !== 'account'; }
+
+/** Update only the PWA controls; keep dialogues, drafts and account forms intact. */
+function refreshPwa(): void {
+  const notice = app.querySelector('#ma-pwa-update');
+  if (notice) notice.innerHTML = renderUpdateNotice(pwa.state, safeToUpdate());
+  const install = app.querySelector('#ma-install-status');
+  if (install) install.innerHTML = renderInstallStatus(pwa.state);
 }
 
 /** Background sync must not rebuild an active dialogue or a partially typed form. */
@@ -475,6 +489,10 @@ app.addEventListener('click', event => {
     if (data.right !== undefined && session.draft.selectedLeft) { for (const left of Object.keys(session.draft.matches)) if (session.draft.matches[left] === data.right) delete session.draft.matches[left]; session.draft.matches[session.draft.selectedLeft] = data.right; session.draft.selectedLeft = ''; updateTask(); app.querySelector<HTMLElement>('[data-left]:not(.paired)')?.focus({ preventScroll: true }); return; }
   }
   switch (data.action) {
+    case 'mobile-menu': showDialog('Mon carnet de voyage', '<div class="ma-mobile-options"><button data-view="account">Mon compte</button><button data-view="backup">Ma sauvegarde</button><button data-view="install">Installer l’application</button><button data-view="sources">Sources & crédits</button><button data-action="mute">' + (progress.settings.muted ? 'Activer les sons' : 'Couper les sons') + '</button></div>'); break;
+    case 'pwa-install': void pwa.install(); break;
+    case 'pwa-later': pwa.deferUpdate(); break;
+    case 'pwa-update': if (safeToUpdate()) { persist(); window.location.reload(); } break;
     case 'account-open': navigate('account'); break;
     case 'account-mode': if (['login', 'signup'].includes(data.mode ?? '')) account.setMode(data.mode as AccountMode); break;
     case 'account-logout': void account.logout(); break;
@@ -556,3 +574,4 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) dialo
 render();
 
 account.start();
+pwa.start();

@@ -7,6 +7,7 @@ export function townArt(worldId = 'world-01'): string {
 
 export function icon(name: string, size = 20): string {
   const paths: Record<string, string> = {
+    more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
     path: '<path d="M4 6h6a4 4 0 0 1 0 8H8a4 4 0 0 0 0 8h12"/><circle cx="4" cy="6" r="2"/><path d="m17 19 3 3-3 3"/>',
     map: '<path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2zM9 3v16M15 5v16"/>',
     review: '<path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/><path d="M12 8v5l3 2"/>',

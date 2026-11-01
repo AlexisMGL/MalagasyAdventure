@@ -115,7 +115,10 @@ function carnetThrough(lastLessonId: string): Progress {
   throw new Error(`Unknown lesson ${lastLessonId}`);
 }
 async function importCarnet(page: Page, progress: Progress): Promise<void> {
-  await page.locator('[data-view="backup"]').first().click();
+  if (await page.locator('.ma-mobile-menu').isVisible()) {
+    await page.getByRole('button', { name: 'Plus d’options' }).click();
+    await page.getByRole('dialog').getByRole('button', { name: 'Ma sauvegarde', exact: true }).click();
+  } else await page.locator('[data-view="backup"]').first().click();
   await page.locator('#ma-import-file').setInputFiles({ name: 'carnet-v1.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(progress)) });
   await page.getByRole('dialog').getByRole('button', { name: 'Remplacer mon carnet' }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);

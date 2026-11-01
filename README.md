@@ -27,6 +27,12 @@ npm run preview
 
 L’aperçu de production est sur **http://127.0.0.1:4174**. Playwright utilise le port **4184**. `npm run test:all` regroupe tests, outils audio, parcours navigateur et build.
 
+## Application installable
+
+Sur téléphone, ouvrir **Plus d’options → Installer l’application** ; sur ordinateur, choisir **Installer l’application** dans le menu latéral. Le guide accompagne l’installation sur iPhone/iPad, Android et ordinateur. L’app s’ouvre dans sa propre fenêtre avec la même publication que le site. Une connexion Internet est nécessaire ; aucun monde n’est téléchargé.
+
+La navigation mobile reste en bas de l’écran et s’efface pendant les leçons. Une nouvelle version est proposée entre les séances, sans recharger une réponse ou un formulaire en cours. Le compte et l’export/import permettent de reprendre le carnet si l’app et le navigateur utilisent des espaces distincts. Voir [PWA.md](docs/PWA.md). `npm run test:pwa` construit et vérifie cette expérience sur le bundle de production.
+
 ## Atelier audio
 
 Les voix actives sont celles d’OmniVoice pour Mia et Lova. Les **102 fichiers d’origine, les extensions déjà publiées et leurs deux références vocales restent inchangés**. Les nouveaux clips des deux mondes utilisent les mêmes voix ; leur préparation incrémentale emploie `--missing-only`, qui ajoute les IDs manquants et refuse d’écraser les fichiers existants. Le total courant et la couverture se contrôlent dans le manifeste et avec l’audit audio après génération et activation.

@@ -1,0 +1,21 @@
+{
+  "id": "/",
+  "name": "Malagasy Adventure",
+  "short_name": "Malagasy",
+  "description": "Un voyage pour apprendre le malgache, un mot à la fois.",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#faf9f5",
+  "theme_color": "#49693a",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Mon parcours", "url": "/#path", "description": "Retrouver mon voyage" },
+    { "name": "Mes révisions", "url": "/#reviews", "description": "Consolider mes acquis" }
+  ]
+}

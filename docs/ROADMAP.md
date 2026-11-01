@@ -2,6 +2,8 @@
 
 ## Livraison actuelle
 
+La première PWA est installable depuis le navigateur : icône dédiée, fenêtre autonome, navigation mobile en bas et guide iPhone/Android/ordinateur. Elle nécessite Internet et ne télécharge aucun monde. Le site et l’app partagent leur publication ; une mise à jour détectée pendant une leçon attend sa fin ou le retour au parcours pour être proposée. Le carnet v1, le compte et l’export/import restent compatibles. Voir [PWA.md](PWA.md).
+
 Les intermèdes historiques sont désormais des livrets d’environ cinq minutes : cinq chapitres illustrés et six questions expliquées par monde, avec relecture et nouvel essai. Ils restent accessibles après l’unité 6 et ne changent ni le carnet v1 ni les récompenses de langue.
 
 Le dépôt autonome livre les **mondes 1 et 2 complets, Antananarivo et Antsirabe** : 24 unités, 72 leçons, 192 scènes de Lova et Mia, 576 activités, 58 concepts et 133 fiches de vocabulaire. Chaque unité se termine par douze questions ; le quiz de l’unité 12 conclut son monde après validation des prérequis. La clôture d’Antananarivo ouvre Antsirabe. Les mondes 3–20 restent planifiés et verrouillés.

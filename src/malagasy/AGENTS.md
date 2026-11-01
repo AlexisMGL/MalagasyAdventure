@@ -117,6 +117,8 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 
 ## Architecture, sauvegarde et extensions
 
+- Demande du 1er novembre 2026 : PWA installable connectée, sans mode hors ligne ni téléchargement des mondes. Garder une seule publication pour site/app, l’installation guidée selon le navigateur, les marges système sur mobile et la navigation au pouce. Aucun rechargement automatique pendant une leçon ou une saisie ; proposer les nouvelles versions entre les séances. Ne pas introduire de service worker/cache de contenu ou modifier les sauvegardes v1 pour cette étape. Voir `docs/PWA.md`.
+
 - Séparer curriculum, contenu, rendu/validation d’exercices, connaissances/révision, progression, persistance, audio et crédits. Garder les algorithmes purs et injecter les dates dans leurs tests.
 - Les schémas typés et **IDs stables**, jamais les positions de tableaux, relient mondes, unités, leçons, exercices, concepts, dialogues, sources et assets.
 - Ajouter un monde principalement par ses données ; enregistrer un nouveau format via rendu, validateur et contrôles dédiés. Pas de conditions propres au monde 1 dans les moteurs génériques.
