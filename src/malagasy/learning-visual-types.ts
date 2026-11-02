@@ -5,7 +5,8 @@ export type LearningPicture = 'greeting' | 'goodbye' | 'thanks' | 'please' | 'we
   | 'hungry' | 'thirsty' | 'market' | 'tired' | 'sleep' | 'drink' | 'toilet' | 'repeat'
   | 'slow' | 'understand' | 'coin' | 'name' | 'origin' | 'work' | 'number' | 'need' | 'like' | 'france'
   | 'morning' | 'daytime' | 'evening' | 'night' | 'wake' | 'clock' | 'eat' | 'study'
-  | 'plate' | 'spoon' | 'glass' | 'knife' | 'read' | 'write' | 'wash' | 'cook';
+  | 'plate' | 'spoon' | 'glass' | 'knife' | 'read' | 'write' | 'wash' | 'cook'
+  | 'place' | 'above' | 'below' | 'question' | 'focus' | 'link' | 'now';
 export type WordRole = 'predicate' | 'subject' | 'object' | 'marker' | 'place' | 'quantity' | 'neutral';
 export type LearningVisual =
   | { kind: 'pictorial'; items: { picture: LearningPicture; label: string; caption?: string }[] }

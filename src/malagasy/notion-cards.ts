@@ -1,6 +1,7 @@
 import { CONTENT } from './content';
 import { recordingForTurn } from './voice-bank';
 import { WORLD_TWO_NOTIONS } from './world-two-notions';
+import { completeVocabularyCards } from './vocabulary-cards';
 import type { LearningVisual } from './learning-visual-types';
 
 export type NotionSection = 'vocabulary' | 'notion';
@@ -214,6 +215,8 @@ for (const [lessonId, cards] of Object.entries(WORLD_TWO_NOTIONS)) {
 }
 
 /** Checkpoints deliberately have no reminder that could reveal a quiz answer. */
+for (const lesson of CONTENT.lessons) CARDS[lesson.id] = completeVocabularyCards(lesson.id, CARDS[lesson.id] ?? []);
+
 export function getNotionCards(lessonId: string): NotionCard[] {
   return CARDS[lessonId] ?? [];
 }

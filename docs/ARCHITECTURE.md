@@ -6,6 +6,8 @@ Malagasy Adventure est une application autonome en TypeScript strict, DOM natif 
 
 ## Modules et responsabilités
 
+La Bibliothèque (`library.ts`, `library-view.ts`, `library.css`) remplace l’ancien lexique tout en gardant `#vocabulary`. Elle présente les leçons débloquées en lecture seule et deux index alphabétiques limités à leur vocabulaire. `course-vocabulary.ts` relie 163 entrées à leur première leçon ; `vocabulary-cards.ts` complète les fiches Vocabulaire sans modifier les schémas de Notions. Le carnet v1 reste inchangé. Voir [LIBRARY.md](LIBRARY.md).
+
 Les livrets historiques sont dans `history-books.ts`. Rendu paginé, navigation et quiz culturel utilisent `history-book-view.ts`, `history-book.css` et les dessins/légendes SVG de `history-drawings.ts`. L’état reste temporaire : cinq chapitres et six questions sans modification du carnet v1. `history-interludes.ts` fournit les métadonnées et sources. L’accès continue de dériver du quiz de mi-parcours via `world-progress.ts`.
 
 | Fichier | Responsabilité |
@@ -23,7 +25,7 @@ Les livrets historiques sont dans `history-books.ts`. Rendu paginé, navigation 
 | `src/malagasy/storage.ts` | Chargement, sérialisation et validation du schéma de sauvegarde. |
 | `src/malagasy/account.ts`, `account-view.ts`, `account.css`, `account-identity.ts` | Compte identifiant/mot de passe, compatibilité des anciens comptes mail et choix explicite entre deux carnets. |
 | `supabase/functions/username-signup/`, `supabase/functions/_shared/username.ts` | Inscription sans mail, alias interne partagé, création Auth côté serveur et limitation privée des tentatives. |
-| `src/malagasy/notion-cards.ts`, `world-two-notions*.ts`, `learning-visual-types.ts` | 142 fiches des 48 parties, sections Vocabulaire/Notions, schémas explicitement rédigés, règles brèves et correspondance des sons entiers. |
+| `src/malagasy/notion-cards.ts`, `world-two-notions*.ts`, `vocabulary-cards.ts`, `learning-visual-types.ts` | 172 fiches des 48 parties, sections Vocabulaire/Notions, schémas explicitement rédigés, règles brèves et correspondance des sons entiers. |
 | `src/malagasy/lesson-visuals.ts`, `lesson-visuals.css` | Dessins SVG originaux et rendus des schémas : possessions, ordre des mots, localisation, quantités, directions, questions, cadrans d’heures pleines et repères de lecture. |
 | `src/malagasy/cloud-sync.ts` | Synchronisation différée et sérialisée, validation v1, révisions et conflits entre appareils. |
 | `src/malagasy/supabase.ts`, `supabase/migrations/` | Client public, transport et schéma Postgres privé par utilisateur avec RLS. |

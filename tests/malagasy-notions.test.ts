@@ -16,7 +16,7 @@ describe('Short notion lessons before conversations', () => {
         expect(cards, lesson.id).toEqual([]);
       } else {
         expect(cards.length, lesson.id).toBeGreaterThan(0);
-        expect(cards.length, lesson.id).toBeLessThanOrEqual(4);
+        expect(cards.length, lesson.id).toBeLessThanOrEqual(8);
         expect(new Set(cards.map(card => card.section)), lesson.id).toEqual(new Set(['vocabulary', 'notion']));
         expect(cards.slice(0, cards.findIndex(card => card.section === 'notion')).every(card => card.section === 'vocabulary')).toBe(true);
         const covered = new Set(cards.flatMap(card => card.conceptIds));

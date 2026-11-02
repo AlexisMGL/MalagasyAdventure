@@ -2,13 +2,15 @@
 
 ## Livraison actuelle
 
+La Bibliothèque réunit les leçons débloquées en lecture libre et les lexiques alphabétiques Malgache → Français / Français → Malgache, avec recherche et liens vers les fiches. Le vocabulaire est présenté explicitement avant sa première conversation, y compris lorsqu’il appartient à une notion grammaticale. Les 163 entrées du répertoire réutilisent les 133 entrées initiales et 30 gloses des formes déjà employées ; les anciennes sauvegardes restent compatibles. Voir [LIBRARY.md](LIBRARY.md).
+
 La première PWA est installable depuis le navigateur : icône dédiée, fenêtre autonome, navigation mobile en bas et guide iPhone/Android/ordinateur. Elle nécessite Internet et ne télécharge aucun monde. Le site et l’app partagent leur publication ; une mise à jour détectée pendant une leçon attend sa fin ou le retour au parcours pour être proposée. Le carnet v1, le compte et l’export/import restent compatibles. Voir [PWA.md](PWA.md).
 
 Les intermèdes historiques sont désormais des livrets d’environ cinq minutes : cinq chapitres illustrés et six questions expliquées par monde, avec relecture et nouvel essai. Ils restent accessibles après l’unité 6 et ne changent ni le carnet v1 ni les récompenses de langue.
 
 Le dépôt autonome livre les **mondes 1 et 2 complets, Antananarivo et Antsirabe** : 24 unités, 72 leçons, 192 scènes de Lova et Mia, 576 activités, 58 concepts et 133 fiches de vocabulaire. Chaque unité se termine par douze questions ; le quiz de l’unité 12 conclut son monde après validation des prérequis. La clôture d’Antananarivo ouvre Antsirabe. Les mondes 3–20 restent planifiés et verrouillés.
 
-Le chemin visuel de world-path.ts et world-path.css montre 36 étapes par monde, les parties et les quiz, la prochaine étape accessible, les validations et les verrous. Le tracé se construit à partir de la progression existante. Les compteurs du parcours ne sont pas présentés comme une maîtrise durable de la langue. Les 48 parties proposent 142 fiches dans un carnet visuel à explorer librement : Vocabulaire pour les mots illustrés, Notions pour les schémas. Les dessins, formes colorées, cadrans d’horloge et exemples à écouter restent consultables à côté du dialogue introductif.
+Le chemin visuel de world-path.ts et world-path.css montre 36 étapes par monde, les parties et les quiz, la prochaine étape accessible, les validations et les verrous. Le tracé se construit à partir de la progression existante. Les compteurs du parcours ne sont pas présentés comme une maîtrise durable de la langue. Les 48 parties proposent 172 fiches dans un carnet visuel à explorer librement : Vocabulaire pour les mots illustrés, Notions pour les schémas. Les dessins, formes colorées, cadrans d’horloge et exemples à écouter restent consultables à côté du dialogue introductif.
 
 Antsirabe travaille les moments de la journée, les heures pleines, les activités au présent, les objets de la table, la possession à la troisième personne, la fréquence et les connecteurs dans des patrons ciblés. Le passé/futur reste prévu plus tard. Les quiz des deux mondes demandent rappel, interprétation ou changement de point de vue ; leurs consignes et dialogues ne donnent plus une réponse complète à recopier.
 

@@ -29,6 +29,9 @@ import { renderAccountPage, renderAccountReminder, type AccountMode } from './ac
 import { MalagasyPwa } from './pwa';
 import { renderInstallPage, renderInstallStatus, renderUpdateNotice } from './pwa-view';
 import './pwa.css';
+import { libraryHash, readLibraryRoute, referenceLesson, type LibraryState } from './library';
+import { renderLibrary, renderLibraryResults } from './library-view';
+import './library.css';
 
 type View = 'path' | 'worlds' | 'reviews' | 'vocabulary' | 'stats' | 'sources' | 'backup' | 'account' | 'install';
 const app = document.querySelector<HTMLDivElement>('#app')!;
@@ -36,10 +39,10 @@ const loaded = loadProgress(CONTENT);
 let progress = loaded.progress;
 let storageWarning = loaded.error ?? '';
 let view: View = readView();
-let selectedWorldId = location.hash.split('/')[1] || 'world-01';
+let selectedWorldId = view === 'path' ? location.hash.split('/')[1] || 'world-01' : 'world-01';
 let session: LearningSession | null = null;
 let pendingImport: Progress | null = null;
-let search = '';
+const library: LibraryState = { ...readLibraryRoute(location.hash), query: '' };
 let historyBookState: HistoryBookState | null = null;
 let renderedAccountMode: AccountMode | null = null;
 const audio = new MalagasyAudio(CONTENT.audio);
@@ -89,7 +92,7 @@ function persist(): void {
 function navigate(destination: View): void {
   const resumePath = destination === 'path' && session !== null;
   session = null; audio.stop(); dialogueAudio.stop(); view = destination;
-  history.replaceState(null, '', view === 'path' ? `#path/${selectedWorldId}` : `#${view}`);
+  history.replaceState(null, '', view === 'path' ? `#path/${selectedWorldId}` : view === 'vocabulary' ? libraryHash(library) : `#${view}`);
   render(); window.scrollTo({ top: 0, behavior: 'instant' });
   const step = resumePath ? app.querySelector<HTMLElement>('[data-path-current]') : null;
   if (step) { step.scrollIntoView({ block: 'center', behavior: 'instant' }); step.focus({ preventScroll: true }); }
@@ -97,7 +100,7 @@ function navigate(destination: View): void {
 }
 
 function sidebar(): string {
-  const links: [View, string, string][] = [['path', 'path', 'Mon parcours'], ['worlds', 'map', 'Carte des mondes'], ['reviews', 'review', 'Révisions'], ['vocabulary', 'book', 'Mon lexique'], ['stats', 'stats', 'Ma progression']];
+  const links: [View, string, string][] = [['path', 'path', 'Mon parcours'], ['worlds', 'map', 'Carte des mondes'], ['reviews', 'review', 'Révisions'], ['vocabulary', 'book', 'Bibliothèque'], ['stats', 'stats', 'Ma progression']];
   return `<aside class="ma-sidebar"><a class="ma-brand" href="/malagasy-adventure"><span class="ma-brand-icon">${icon('leaf', 26)}</span><span>malagasy<span>ADVENTURE</span></span></a><button class="ma-mobile-menu" data-action="mobile-menu" aria-label="Plus d’options">${icon('more', 21)}</button><div class="ma-sidebar-label">LE VOYAGE</div><nav aria-label="Navigation principale">${links.map(([id, symbol, title]) => `<button data-view="${id}" class="${view === id && !session ? 'active' : ''}" ${view === id && !session ? 'aria-current="page"' : ''}>${icon(symbol)}<span>${title}</span>${id === 'reviews' && dueConcepts(progress).length ? `<b>${dueConcepts(progress).length}</b>` : ''}</button>`).join('')}</nav><div class="ma-sidebar-postcard">${miniIslandArt()}<span>UNE ÎLE. MILLE RENCONTRES.</span><p>Le voyage commence<br>par un <em>salama.</em></p><small>Français → Malgache standard</small></div><nav class="ma-sidebar-bottom" aria-label="Ressources"><button data-view="sources" ${view === 'sources' ? 'aria-current="page"' : ''}>${icon('source')}<span>Sources & crédits</span></button><button data-view="backup" ${view === 'backup' ? 'aria-current="page"' : ''}>${icon('save')}<span>Ma sauvegarde</span></button><button data-view="account" ${view === 'account' ? 'aria-current="page"' : ''}>${icon('book')}<span>Mon compte</span></button><button data-view="install" ${view === 'install' ? 'aria-current="page"' : ''}>${icon('save')}<span>Installer l’application</span></button></nav><div class="ma-edition"><span class="ma-online-dot"></span> CARNET N° 001 <span>ÉDITION DÉCOUVERTE</span></div></aside>`;
 }
 function accountAccess(): string {
@@ -105,7 +108,7 @@ function accountAccess(): string {
   return `<button type="button" class="ma-account-access" data-action="account-open">${label}</button>`;
 }
 function topbar(): string {
-  return `<header class="ma-topbar"><div class="ma-breadcrumb">MADAGASCAR <span>/</span> <strong>${session ? 'EN LEÇON' : ({ path: 'MON PARCOURS', worlds: 'LES DESTINATIONS', reviews: 'LES RÉVISIONS', vocabulary: 'MON LEXIQUE', stats: 'MA PROGRESSION', sources: 'LES RÉFÉRENCES', backup: 'MA SAUVEGARDE', account: 'MON COMPTE', install: 'L’APPLICATION' })[view]}</strong></div><div class="ma-top-stats"><span title="Jours consécutifs d’activité" class="ma-streak">${icon('flame', 18)} <b>${streakDays(progress)}</b><span>jour${streakDays(progress) > 1 ? 's' : ''}</span></span><span class="ma-xp">${icon('star', 18)}<b>${progress.xp}</b> XP</span><button class="ma-sound" data-action="mute" aria-label="${progress.settings.muted ? 'Activer les sons' : 'Couper les sons'}" title="Sons de l’interface" aria-pressed="${!progress.settings.muted}">${icon('sound', 18)}${progress.settings.muted ? '<span class="ma-mute-slash"></span>' : ''}</button>${accountAccess()}</div></header>`;
+  return `<header class="ma-topbar"><div class="ma-breadcrumb">MADAGASCAR <span>/</span> <strong>${session ? 'EN LEÇON' : ({ path: 'MON PARCOURS', worlds: 'LES DESTINATIONS', reviews: 'LES RÉVISIONS', vocabulary: 'MA BIBLIOTHÈQUE', stats: 'MA PROGRESSION', sources: 'LES RÉFÉRENCES', backup: 'MA SAUVEGARDE', account: 'MON COMPTE', install: 'L’APPLICATION' })[view]}</strong></div><div class="ma-top-stats"><span title="Jours consécutifs d’activité" class="ma-streak">${icon('flame', 18)} <b>${streakDays(progress)}</b><span>jour${streakDays(progress) > 1 ? 's' : ''}</span></span><span class="ma-xp">${icon('star', 18)}<b>${progress.xp}</b> XP</span><button class="ma-sound" data-action="mute" aria-label="${progress.settings.muted ? 'Activer les sons' : 'Couper les sons'}" title="Sons de l’interface" aria-pressed="${!progress.settings.muted}">${icon('sound', 18)}${progress.settings.muted ? '<span class="ma-mute-slash"></span>' : ''}</button>${accountAccess()}</div></header>`;
 }
 function pageHeading(kicker: string, title: string, description: string): string {
   return `<div class="ma-page-heading"><span class="ma-eyebrow">${kicker}</span><h1 tabindex="-1">${title}</h1><p>${description}</p></div>`;
@@ -141,13 +144,7 @@ function reviewsPage(): string {
 }
 const dateLabel = (value: string | null): string => value ? new Date(value).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : 'après la première pratique';
 function statusLabel(status: string): string { return ({ unseen: 'À découvrir', learning: 'En découverte', reviewing: 'À consolider', mastered: 'Maîtrisé', due: 'À revoir' })[status] ?? status; }
-function vocabularyPage(): string {
-  return `${pageHeading('VOTRE COLLECTION DE RENCONTRES', 'Des mots qui restent.', 'Un petit carnet pour retrouver les expressions des mondes publiés et suivre celles déjà découvertes.')}<div class="ma-lexicon-tools"><label for="ma-search">${icon('book')}<input id="ma-search" type="search" placeholder="Chercher un mot, une traduction…" value="${e(search)}"></label><span>${CONTENT.vocabulary.length} EXPRESSIONS DOCUMENTÉES</span></div><div id="ma-lexicon-results">${vocabularyResults()}</div>`;
-}
-function vocabularyResults(): string {
-  const words = CONTENT.vocabulary.filter(word => `${word.malagasy} ${word.french} ${word.note}`.toLocaleLowerCase('fr').includes(search.toLocaleLowerCase('fr')));
-  return words.length ? `<div class="ma-lexicon-grid">${words.map(word => { const known = progress.concepts[word.conceptId]?.introduced; return `<article class="ma-word-card"><div><span class="ma-small-label">UNITÉ ${CONTENT.units.find(unit => unit.id === word.unitId)?.number ?? '—'}</span><span class="ma-word-state ${known ? 'known' : ''}">${known ? 'Découvert' : 'À découvrir'}</span></div><h2 lang="mg">${e(word.malagasy)}</h2><p>${e(word.french)}</p><small>${e(word.note)}</small></article>`; }).join('')}</div>` : '<p class="ma-empty-state">Aucune expression ne correspond à votre recherche.</p>';
-}
+function vocabularyPage(): string { return renderLibrary(progress, library); }
 function statsPage(): string {
   const successful = progress.history.filter(event => event.correct).length, completedUnits = CONTENT.units.filter(unit => unitComplete(unit.id)).length;
   return `${pageHeading('CHAQUE PAS COMPTE', 'Votre carnet de progrès.', 'Une leçon terminée est une étape. Une notion retenue est un acquis qui se construit avec le temps.')}<div class="ma-metric-grid"><div><span>EXPÉRIENCE</span><strong>${progress.xp}<small> XP</small></strong><small>Niveau ${playerLevel(progress.xp)}</small></div><div><span>LEÇONS TERMINÉES</span><strong>${progress.completedLessons.length}<small> / ${activeLessons().length}</small></strong><small>${completedUnits} / ${CONTENT.units.filter(unit => unit.implemented).length} unités validées</small></div><div><span>MAÎTRISE MOYENNE</span><strong>${averageMastery()}<small> %</small></strong><small>sur ${knownConcepts()} notions découvertes</small></div></div><div class="ma-two-columns"><section class="ma-panel"><div class="ma-card-title">${icon('stats')}<h2>Votre pratique en chiffres</h2></div><dl class="ma-stats-list"><div><dt>Réponses données</dt><dd>${progress.history.length}</dd></div><div><dt>Réussites</dt><dd>${successful}</dd></div><div><dt>Précision de l’historique</dt><dd>${progress.history.length ? percent(successful / progress.history.length * 100) : 0} %</dd></div><div><dt>Jours d’activité</dt><dd>${progress.activityDates.length}</dd></div><div><dt>Série en cours</dt><dd>${streakDays(progress)} jours</dd></div><div><dt>Notions maîtrisées</dt><dd>${masteredConcepts()}</dd></div></dl><p class="ma-page-footnote">Historique limité aux dernières réponses conservées. Aucun niveau de langue officiel n’est déduit de ces statistiques.</p></section><section class="ma-panel"><div class="ma-card-title">${icon('star')}<h2>Les petites victoires</h2></div>${[['first-lesson', 'Le premier pas', 'Terminer votre première leçon.'], ['three-lessons', 'Le goût du voyage', 'Terminer trois leçons.'], ['first-unit', 'Première escale', 'Réussir un premier bilan d’unité.']].map(([id, name, description]) => `<div class="ma-achievement ${progress.achievements.includes(id) ? 'earned' : ''}"><span>${icon(progress.achievements.includes(id) ? 'star' : 'lock', 22)}</span><div><h3>${name}</h3><p>${description}</p></div>${progress.achievements.includes(id) ? icon('check', 18) : ''}</div>`).join('')}</section></div>`;
@@ -249,8 +246,10 @@ function replayDialogue(key: string, slow: boolean): void {
 }
 
 function replayNotion(cardId: string, exampleIndex: number, slow: boolean): void {
-  if (!session || !['notion', 'notes'].includes(session.stage)) return;
-  const card = getNotionCards(session.lesson.id).find(item => item.id === cardId);
+  const lessonId = session && ['notion', 'notes'].includes(session.stage) ? session.lesson.id
+    : !session && view === 'vocabulary' ? referenceLesson(library.lessonId, progress)?.id : undefined;
+  if (!lessonId) return;
+  const card = getNotionCards(lessonId).find(item => item.id === cardId);
   const example = card?.examples[exampleIndex];
   if (!example?.audioId || !card) return;
   if (progress.settings.muted) { toast('Le son est coupé. Activez-le pour écouter.'); return; }
@@ -460,7 +459,7 @@ app.addEventListener('submit', event => { if ((event.target as HTMLElement).id =
 app.addEventListener('input', event => {
   const input = event.target as HTMLInputElement;
   if (input.id === 'ma-answer' && session && !session.answered) { session.draft.text = input.value; const submit = app.querySelector<HTMLButtonElement>('#ma-submit'); if (submit) submit.disabled = !answerReady(); }
-  if (input.id === 'ma-search') { search = input.value; const results = app.querySelector('#ma-lexicon-results'); if (results) results.innerHTML = vocabularyResults(); }
+  if (input.id === 'ma-search') { library.query = input.value; const results = app.querySelector('#ma-library-results'); if (results) results.innerHTML = renderLibraryResults(progress, library); }
 });
 app.addEventListener('change', event => {
   const input = event.target as HTMLInputElement;
@@ -478,6 +477,18 @@ app.addEventListener('click', event => {
   const target = (event.target as HTMLElement).closest<HTMLElement>('button, a[data-view], [data-world]');
   if (!target || (target as HTMLButtonElement).disabled) return;
   const data = target.dataset;
+  if (data.libraryMode && ['lessons', 'mg-fr', 'fr-mg'].includes(data.libraryMode)) {
+    library.mode = data.libraryMode as LibraryState['mode']; delete library.lessonId;
+    navigate('vocabulary'); app.querySelector<HTMLElement>(`#ma-library-tab-${library.mode}`)?.focus({ preventScroll: true }); return;
+  }
+  if (data.libraryLesson) {
+    if (referenceLesson(data.libraryLesson, progress)) { library.lessonId = data.libraryLesson; navigate('vocabulary'); }
+    return;
+  }
+  if (data.libraryLetter || data.librarySection) {
+    const heading = document.getElementById(data.libraryLetter ? `ma-letter-${data.libraryLetter}` : `ma-reference-${data.librarySection}`)?.querySelector<HTMLElement>('h2');
+    heading?.setAttribute('tabindex', '-1'); heading?.scrollIntoView({ block: 'start', behavior: 'instant' }); heading?.focus({ preventScroll: true }); return;
+  }
   if (data.view) { navigate(data.view as View); return; }
   if (data.lesson) { startLesson(data.lesson); return; }
   if (data.world) { worldDetails(data.world); return; }
@@ -542,8 +553,20 @@ app.addEventListener('click', event => {
     case 'confirm-import': if (pendingImport) { progress = pendingImport; audio.muted = progress.settings.muted; dialogueAudio.muted = progress.settings.muted; pendingImport = null; storageWarning = ''; persist(); navigate('backup'); toast('Votre carnet a été restauré. Bon retour !'); } break;
   }
 });
-window.addEventListener('hashchange', () => { const worldId = location.hash.split('/')[1]; if (worldId) selectedWorldId = worldId; navigate(readView()); });
+window.addEventListener('hashchange', () => {
+  const next = readView();
+  if (next === 'path') selectedWorldId = location.hash.split('/')[1] || selectedWorldId;
+  if (next === 'vocabulary') { delete library.lessonId; Object.assign(library, readLibraryRoute(location.hash)); }
+  navigate(next);
+});
 document.addEventListener('keydown', event => {
+  const libraryTab = (event.target as Element).closest<HTMLButtonElement>('.ma-library-tabs [role="tab"]');
+  if (libraryTab && ['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+    event.preventDefault();
+    const tabs = [...libraryTab.parentElement!.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (tabs.indexOf(libraryTab) + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+    tabs[next]?.click(); return;
+  }
   const notionTab = (event.target as Element).closest<HTMLButtonElement>('.ma-notion-tabs [role="tab"]');
   if (notionTab && ['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
     event.preventDefault();

@@ -31,6 +31,13 @@ function sunScene(period: 'morning' | 'daytime' | 'evening'): string {
 }
 
 const pictures: Record<LearningPicture, { label: string; art: () => string }> = {
+  place: { label: 'Un repère désigne un lieu', art: () => `<path d="M48 80S20 52 20 32a28 28 0 0 1 56 0c0 20-28 48-28 48Z" fill="${sand}" stroke="${ink}" stroke-width="3"/><circle cx="48" cy="32" r="10" fill="#fffdf3" stroke="${ink}" stroke-width="2"/>` },
+  above: { label: 'Un livre est sur la table', art: () => `${table()}<g transform="translate(24 -7) scale(.5)">${book()}</g>` },
+  below: { label: 'Un livre est sous la table', art: () => `${table()}<g transform="translate(24 45) scale(.5)">${book()}</g>` },
+  question: { label: 'Une question appelle une réponse', art: () => `<path d="M12 12h72v55H46L25 83V67H12Z" fill="${sand}" stroke="${ink}" stroke-width="3"/><text x="48" y="53" text-anchor="middle" fill="${ink}" font-size="40" font-family="sans-serif">?</text>` },
+  focus: { label: 'Un élément de la phrase est mis en avant', art: () => `<rect x="7" y="35" width="22" height="25" rx="5" fill="${sand}"/><rect x="35" y="28" width="26" height="39" rx="5" fill="${coral}"/><rect x="67" y="35" width="22" height="25" rx="5" fill="${teal}"/><path d="M48 10v11m-8-7 8 7 8-7" fill="none" stroke="${ink}" stroke-width="3"/>` },
+  link: { label: 'Un mot relie deux éléments', art: () => `<rect x="7" y="30" width="30" height="36" rx="7" fill="${sand}"/><rect x="59" y="30" width="30" height="36" rx="7" fill="${teal}"/><path d="M30 48h36" stroke="${ink}" stroke-width="5"/><circle cx="48" cy="48" r="9" fill="${coral}" stroke="${ink}" stroke-width="2"/>` },
+  now: { label: 'Le moment présent est repéré sur une ligne du temps', art: () => `<path d="M7 52h82m-10-7 10 7-10 7" fill="none" stroke="${ink}" stroke-width="3"/><circle cx="48" cy="52" r="11" fill="${coral}" stroke="${ink}" stroke-width="2"/><path d="M48 12v23m-7-7 7 7 7-7" stroke="${ink}" stroke-width="3" fill="none"/><path d="M18 45v14m60-14v14" stroke="${ink}" stroke-width="2"/>` },
   greeting: { label: 'Une personne lève la main pour saluer', art: () => human('wave') },
   goodbye: { label: 'Une personne salue en repartant', art: () => `<path d="M69 13h18v71H69" fill="#e6ecda" stroke="${ink}" stroke-width="2"/><g transform="translate(-12 3) scale(.9)">${human('wave')}</g><path d="M65 65h23m-8-7 8 7-8 7" fill="none" stroke="${coral}" stroke-width="4" stroke-linecap="round"/>` },
   thanks: { label: 'Une personne remercie, la main sur le cœur', art: () => `${human('me')}<path d="M77 14c-7-9-17 2-1 13 17-11 7-22 1-13" fill="${coral}"/>` },

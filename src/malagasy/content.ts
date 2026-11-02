@@ -4,6 +4,7 @@ import { WORLD_TWO } from './world-two';
 import { HISTORY_SOURCES } from './history-curriculum';
 import { GROUP_04_07 } from './world-one-units-04-07';
 import { GROUP_08_12 } from './world-one-units-08-12';
+import { VOCABULARY_SOURCES } from './vocabulary-supplements';
 
 const WORLD_ONE_ADDITIONS = {
   sources: [...GROUP_04_07.sources, ...GROUP_08_12.sources],
@@ -59,6 +60,7 @@ export const SOURCES: Source[] = [
     url: 'https://whc.unesco.org/en/list/950/', category: 'geography', consulted: true,
     supports: 'Thème du monde Ambohimanga : patrimoine royal et lieu sacré ; position géographique.',
     license: 'Conditions UNESCO ; description paraphrasée, aucune photographie ou carte reprise.' },
+  ...VOCABULARY_SOURCES,
   ...MAP_SOURCES,
   ...HISTORY_SOURCES,
   ...VOICE_SOURCES,

@@ -42,7 +42,7 @@ Le registre `WORLD_TWO.sources` rassemble **30 entrées uniques** : le manuel in
 | [isanandro](https://malagasyword.org/bins/teny2/isanandro), [matetika](https://malagasyword.org/bins/teny2/matetika), [indraindray](https://motmalgache.org/bins/teny2/indraindray) | Chaque jour, souvent et parfois. La fréquence reste distincte du moment présent et d’une heure précise ; aucune fréquence chiffrée n’est imposée à souvent/parfois. |
 | [sy](https://malagasyword.org/bins/teny2/sy), [fa](https://malagasyword.org/bins/teny2/fa) | Sy relie ici des noms ou groupes d’activité ; fa / fa tsy sont limités aux contrastes vérifiés. Les autres emplois de fa ne sont pas réduits à la traduction mais. |
 
-Le monde 2 ajoute 14 concepts et 41 entrées de vocabulaire. Ses 66 fiches visuelles préparent les constructions avant les dialogues ; leurs exemples sont reliés uniquement à un fichier correspondant à l’énoncé entier. Les variantes admises restent explicites dans les réponses. La recherche documentaire et les contrôles automatisés ne certifient pas la naturalité de chaque phrase composée.
+Le monde 2 ajoute 14 concepts et 41 entrées de vocabulaire. Ses 76 fiches visuelles préparent les constructions avant les dialogues ; leurs exemples sont reliés uniquement à un fichier correspondant à l’énoncé entier. Les variantes admises restent explicites dans les réponses. La recherche documentaire et les contrôles automatisés ne certifient pas la naturalité de chaque phrase composée.
 
 ## Décisions pédagogiques
 
@@ -123,3 +123,7 @@ L’entrée [aho du dictionnaire malgache](https://malagasyword.org/bins/teny2/a
 
 La courte scène d’apprentissage cite donc explicitement ces mots entre guillemets ; elle ne présente plus `Aho.` comme une réponse autonome naturelle signifiant « moi ». Les répliques complètes continuent à réutiliser les formules déjà documentées, telles que `Avy any Frantsa aho.` La référence est conservée sous l’ID `dict-aho` dans les crédits, sans lien de source dans la scène.
 
+
+## Compléments lexicaux du 2 novembre 2026
+
+La bibliothèque et les fiches Vocabulaire explicitent les formes déjà employées dans les phrases : mots-outils, états, impératifs, formes après te et composants de groupes temporels. Le registre de référence compte 163 entrées (133 initiales et 30 gloses contextuelles), sans ajout de dialogue ou génération audio. Les notices [asa](https://malagasyword.org/bins/teny2/asa), [any](https://malagasyword.org/bins/teny2/any) et [eo](https://malagasyword.org/bins/teny2/eo), consultées le 2 novembre, complètent respectivement le travail/asanao et les repères hors de vue/visibles. Les autres formes restent liées aux références existantes de leurs leçons. Sources seulement dans Sources & crédits ; la vérification de couverture ne vaut pas relecture native.

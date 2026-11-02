@@ -2,6 +2,8 @@
 
 ## Contrat de publication
 
+Depuis la demande du 2 novembre, un mot nouveau doit avoir sa propre étiquette traduite dans **Vocabulaire**, même s’il figure déjà dans une explication de Notions. Le registre `course-vocabulary.ts` réunit les entrées du corpus et les formes contextuelles documentées de `vocabulary-supplements.ts`. `vocabulary-cards.ts` complète leur première présentation ; les tests vérifient les étiquettes et tous les dialogues/sélections. Ajouter les gloses et sources avant l’usage dans les scènes ou les quiz. Voir [LIBRARY.md](LIBRARY.md).
+
 Le contenu vit dans `src/malagasy/content.ts` et les modules de données qu’il importe ; la présentation ne doit pas contenir les corpus. Les interfaces de `types.ts` sont le contrat. Les mondes planifiés se trouvent dans `worlds.ts`.
 
 Lire d’abord [les consignes propres à l’app](../src/malagasy/AGENTS.md). Le périmètre livré couvre les deux mondes complets Antananarivo et Antsirabe, chacun avec douze unités ; les mondes 3–20 restent verrouillés. La demande du 30 octobre remplace l’ancien périmètre limité au monde 1. Ses données initiales et les modules `world-one-units-04-07.ts` et `world-one-units-08-12.ts` restent inchangés dans leurs identifiants. `world-two.ts` agrège les deux modules d’unités d’Antsirabe, avec `world-two-authoring.ts` pour le contrat auteur commun.
@@ -40,7 +42,7 @@ Dans les quiz, la consigne, le contexte et les répliques visibles ne doivent pa
 
 ## Histoires et dialogues
 
-Toutes les parties ordinaires (`learn` et `story`) proposent les fiches visuelles avant `Lesson.scenes`. Les deux mondes comptent quatre scènes par partie, soit 192 au total. Les 142 fiches des 48 parties sont enregistrées dans `notion-cards.ts`, qui agrège aussi `world-two-notions.ts` et ses deux modules. Une `DialogueScene` possède un ID, un cadre très court, des `turns` et éventuellement un repère `takeaway`. Chaque tour fournit `speaker` (`lova` ou `mia`), texte malgache, traduction française et éventuel mot surligné.
+Toutes les parties ordinaires (`learn` et `story`) proposent les fiches visuelles avant `Lesson.scenes`. Les deux mondes comptent quatre scènes par partie, soit 192 au total. Les 172 fiches des 48 parties sont enregistrées dans `notion-cards.ts`, qui agrège aussi `world-two-notions.ts` et ses deux modules. Une `DialogueScene` possède un ID, un cadre très court, des `turns` et éventuellement un repère `takeaway`. Chaque tour fournit `speaker` (`lova` ou `mia`), texte malgache, traduction française et éventuel mot surligné.
 
 Les mini-leçons permettent de choisir librement Vocabulaire/Notions et une fiche, puis de passer au dialogue. Le pense-bête conserve cette séparation. Éviter le diaporama obligatoire de traductions ; les dessins et schémas précèdent l’explication courte. Les sources restent internes et les légendes restent lisibles sur mobile. Chaque son doit correspondre exactement à l’exemple entier ; ne jamais inventer une phonétique ni assembler des fragments audio. La vue révèle ensuite les tours progressivement ; la traduction reste dans un dévoilement facultatif. Les nouveaux concepts n’entrent dans la progression qu’au passage à la pratique après ces scènes. Ni une fiche consultée ni un premier tour ne rendent toute une leçon « rencontrée ». Les quiz et révisions restent sans pense-bête.
 

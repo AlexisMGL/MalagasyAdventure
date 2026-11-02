@@ -27,6 +27,10 @@ npm run preview
 
 L’aperçu de production est sur **http://127.0.0.1:4174**. Playwright utilise le port **4184**. `npm run test:all` regroupe tests, outils audio, parcours navigateur et build.
 
+## Bibliothèque
+
+L’onglet **Bibliothèque** rassemble toutes les leçons débloquées, à relire librement avec leurs dessins, schémas et voix, ainsi que deux lexiques alphabétiques **Malgache → Français** et **Français → Malgache**. Recherche dans les deux langues, navigation par lettres et liens vers la leçon d’introduction. Les 163 entrées sont limitées au contenu débloqué ; consulter une fiche ne modifie pas la progression. Les mots nouveaux sont aussi présentés explicitement dans Vocabulaire avant leurs dialogues. Voir [LIBRARY.md](docs/LIBRARY.md).
+
 ## Application installable
 
 Sur téléphone, ouvrir **Plus d’options → Installer l’application** ; sur ordinateur, choisir **Installer l’application** dans le menu latéral. Le guide accompagne l’installation sur iPhone/iPad, Android et ordinateur. L’app s’ouvre dans sa propre fenêtre avec la même publication que le site. Une connexion Internet est nécessaire ; aucun monde n’est téléchargé.
@@ -66,7 +70,7 @@ Un domaine ou port différent possède son propre stockage navigateur. Pour retr
 
 Le **mode découverte** permet de commencer immédiatement sans compte. **Mon compte** propose un identifiant et un mot de passe, sans mail ni confirmation. Les anciens comptes utilisent leur mail comme identifiant. Le carnet privé est sauvegardé sur Supabase ; l’import/export reste disponible. Sans adresse mail, les nouveaux comptes n’ont pas de récupération automatique du mot de passe. L’inscription est opérationnelle sans SMTP ni configuration Brevo ; voir [SUPABASE.md](docs/SUPABASE.md).
 
-Les 48 parties d’apprentissage proposent 142 fiches dans un carnet à explorer librement : **Vocabulaire** pour les mots illustrés et **Notions** pour les schémas de construction. Dessins, blocs de phrase, formes possessives colorées, positions d’objets et cadrans d’horloge donnent des repères à mémoriser, accompagnés d’exemples à écouter. Les mêmes pense-bêtes restent consultables pendant les dialogues ; les quiz se déroulent sans aide et demandent un rappel, une interprétation ou une transformation plutôt que la copie d’une réponse affichée.
+Les 48 parties d’apprentissage proposent 172 fiches dans un carnet à explorer librement : **Vocabulaire** pour les mots illustrés et **Notions** pour les schémas de construction. Dessins, blocs de phrase, formes possessives colorées, positions d’objets et cadrans d’horloge donnent des repères à mémoriser, accompagnés d’exemples à écouter. Les mêmes pense-bêtes restent consultables pendant les dialogues ; les quiz se déroulent sans aide et demandent un rappel, une interprétation ou une transformation plutôt que la copie d’une réponse affichée.
 
 ## Documentation et consignes
 
