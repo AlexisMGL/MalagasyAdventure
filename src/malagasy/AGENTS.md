@@ -60,6 +60,8 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 
 ## Personnages et plaisir de progresser
 
+- Choix du 2 novembre 2026 : le logo de marque est le **maki stylisé** approuvé, vert forêt/crème avec les yeux miel. Source vectorielle `public/brand/maki.svg` ; déclinaisons générées par `scripts/generate-pwa-icons.mjs`. Remplacer la feuille du logo, du favicon et des icônes d’app, sans modifier l’identité stable `/` de la PWA ni ses sauvegardes. Les petites feuilles décoratives du parcours ne sont pas le logo.
+
 - Privilégier une direction **cartoon, chaleureuse et vivante**, avec de petits personnages expressifs qui se parlent dans des bulles. Des avatars ou icônes seuls ne suffisent pas à créer une scène.
 - Une bonne réponse doit produire une récompense brève et perceptible : mouvement, expression du personnage, éclat visuel et son de réussite clair.
 - Le succès sonore doit comporter des notes distinctes et joyeuses ; éviter un simple glissement de fréquence neutre. Créer les sons du projet, sans reprendre les fichiers d’une autre app.

@@ -24,7 +24,8 @@ Netlify revalide le HTML et le manifeste ; `/version.json` utilise `no-store`. L
 ## Fichiers et vérification
 
 - `public/manifest.webmanifest` : identité stable `/`, portée `/`, démarrage `/`, affichage autonome, couleurs, icônes PNG et raccourcis.
-- `scripts/generate-pwa-icons.mjs` : décline la feuille originale de `favicon.svg` en PNG 192, 512, maskable 512 et Apple 180. Les PNG sont commis ; leur génération n’est pas nécessaire au build.
+- `public/brand/maki.svg` : logo original choisi le 2 novembre 2026. `scripts/generate-pwa-icons.mjs` en dérive le favicon, le symbole du menu et les PNG 192, 512, maskable 512 et Apple 180. La version maskable réduit le dessin dans la zone centrale sûre. Les fichiers générés sont commis ; leur génération n’est pas nécessaire au build.
+- Les icônes du manifeste utilisent de nouvelles adresses `maki-*.png`, pour signaler le changement à Chrome 144 et versions suivantes. Les anciennes adresses restent disponibles avec le maki. `id`, `start_url` et `scope` restent `/` : c’est la même app, avec les mêmes sauvegardes. Le contenu s’actualise sans réinstallation ; l’icône système peut être mise à jour plus tard et demander une confirmation dans le menu de l’app, selon Chrome et le type d’installation. Voir [Chrome — mises à jour des icônes](https://developer.chrome.com/blog/improvements-to-web-app-updates).
 - `src/malagasy/pwa.ts`, `pwa-view.ts`, `pwa.css` : installation, détection des mises à jour, guide et ergonomie mobile, sans dépendance supplémentaire.
 - `npm run test:pwa` : construit puis teste le vrai bundle de production via Playwright. Contrôle du manifeste et des critères Chromium d’installation, décodage des icônes, absence de service worker/cache applicatif, navigation à 340/390 px, événements d’installation et mises à jour simulées pendant une réponse ou un mot de passe.
 

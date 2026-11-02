@@ -27,7 +27,8 @@ test('both entries expose an installable manifest, valid icons and a matching re
     expect(appManifest.errors).toEqual([]);
     const manifest = JSON.parse(appManifest.data!);
     expect(manifest).toMatchObject({ id: '/', scope: '/', start_url: '/', display: 'standalone', lang: 'fr' });
-    for (const item of [...manifest.icons, { src: '/icons/apple-touch-icon.png', sizes: '180x180' }]) {
+    const appleIcon = await page.locator('link[rel="apple-touch-icon"]').getAttribute('href');
+    for (const item of [...manifest.icons, { src: appleIcon, sizes: '180x180' }]) {
       expect(await page.evaluate(async icon => {
         const image = new Image(); image.src = icon.src; await image.decode();
         return `${image.naturalWidth}x${image.naturalHeight}`;
