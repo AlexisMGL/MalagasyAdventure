@@ -30,6 +30,7 @@ import { MalagasyPwa } from './pwa';
 import { renderInstallPage, renderInstallStatus, renderUpdateNotice } from './pwa-view';
 import './pwa.css';
 import { libraryHash, readLibraryRoute, referenceLesson, type LibraryState } from './library';
+import { referenceCard } from './library-cards';
 import { renderLibrary, renderLibraryResults } from './library-view';
 import './library.css';
 import './brand.css';
@@ -250,6 +251,7 @@ function replayNotion(cardId: string, exampleIndex: number, slow: boolean): void
   const lessonId = session && ['notion', 'notes'].includes(session.stage) ? session.lesson.id
     : !session && view === 'vocabulary' ? referenceLesson(library.lessonId, progress)?.id : undefined;
   if (!lessonId) return;
+  if (!session && library.cardId && referenceCard(library.lessonId, library.cardId, progress)?.card.id !== cardId) return;
   const card = getNotionCards(lessonId).find(item => item.id === cardId);
   const example = card?.examples[exampleIndex];
   if (!example?.audioId || !card) return;
@@ -478,16 +480,20 @@ app.addEventListener('click', event => {
   const target = (event.target as HTMLElement).closest<HTMLElement>('button, a[data-view], [data-world]');
   if (!target || (target as HTMLButtonElement).disabled) return;
   const data = target.dataset;
-  if (data.libraryMode && ['lessons', 'mg-fr', 'fr-mg'].includes(data.libraryMode)) {
-    library.mode = data.libraryMode as LibraryState['mode']; delete library.lessonId;
+  if (data.libraryMode && ['lessons', 'notions', 'mg-fr', 'fr-mg'].includes(data.libraryMode)) {
+    library.mode = data.libraryMode as LibraryState['mode']; delete library.lessonId; delete library.cardId;
     navigate('vocabulary'); app.querySelector<HTMLElement>(`#ma-library-tab-${library.mode}`)?.focus({ preventScroll: true }); return;
   }
   if (data.libraryLesson) {
-    if (referenceLesson(data.libraryLesson, progress)) { library.lessonId = data.libraryLesson; navigate('vocabulary'); }
+    if (referenceLesson(data.libraryLesson, progress) && (!data.libraryCard || referenceCard(data.libraryLesson, data.libraryCard, progress))) {
+      library.lessonId = data.libraryLesson; delete library.cardId;
+      if (data.libraryCard) library.cardId = data.libraryCard;
+      navigate('vocabulary');
+    }
     return;
   }
-  if (data.libraryLetter || data.librarySection) {
-    const heading = document.getElementById(data.libraryLetter ? `ma-letter-${data.libraryLetter}` : `ma-reference-${data.librarySection}`)?.querySelector<HTMLElement>('h2');
+  if (data.libraryLetter || data.librarySection || data.libraryTopic) {
+    const heading = document.getElementById(data.libraryLetter ? `ma-letter-${data.libraryLetter}` : data.libraryTopic ? `ma-topic-${data.libraryTopic}` : `ma-reference-${data.librarySection}`)?.querySelector<HTMLElement>('h2');
     heading?.setAttribute('tabindex', '-1'); heading?.scrollIntoView({ block: 'start', behavior: 'instant' }); heading?.focus({ preventScroll: true }); return;
   }
   if (data.view) { navigate(data.view as View); return; }
@@ -557,7 +563,7 @@ app.addEventListener('click', event => {
 window.addEventListener('hashchange', () => {
   const next = readView();
   if (next === 'path') selectedWorldId = location.hash.split('/')[1] || selectedWorldId;
-  if (next === 'vocabulary') { delete library.lessonId; Object.assign(library, readLibraryRoute(location.hash)); }
+  if (next === 'vocabulary') { delete library.lessonId; delete library.cardId; Object.assign(library, readLibraryRoute(location.hash)); }
   navigate(next);
 });
 document.addEventListener('keydown', event => {

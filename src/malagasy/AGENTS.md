@@ -37,6 +37,8 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 
 ## Apprentissage par la conversation
 
+- **Précision du 2 novembre 2026 : la Bibliothèque est un carnet de fiches, pas un répertoire des étapes.** Deux sections Vocabulaire et Notions reprennent toutes les mini-leçons débloquées, classées par thème avec une icône représentative. Une recherche comme « chiffres » doit permettre de retrouver directement les pense-bêtes sur les nombres. Garder leurs schémas, exemples et prononciations, les deux lexiques alphabétiques et les règles de déblocage ; consulter une fiche ne modifie pas la progression.
+
 - **Demande du 2 novembre 2026 : aucun mot nouveau seulement dans Notions.** Chaque nouveau mot ou expression, y compris une forme possédée ou un mot-outil, doit avoir une étiquette traduite dans Vocabulaire avant sa première conversation ou sélection. `course-vocabulary.ts` et `vocabulary-cards.ts` relient le registre lexical à cette présentation ; les tests parcourent les dialogues et sélections. La Bibliothèque remplace l’ancien lexique : leçons débloquées en lecture libre et lexiques alphabétiques MG→FR / FR→MG. Filtrer avec les mêmes règles de déblocage, y compris les liens directs, et ne pas modifier le carnet par consultation. Voir [LIBRARY.md](../../docs/LIBRARY.md).
 
 - **Demande du 29 octobre 2026 : présenter les nouvelles notions avant leurs dialogues.** Une mini-leçon sans dialogue, au format pense-bête, explique une notion à la fois avec une règle courte, des exemples traduits et leurs prononciations. Garder ces fiches consultables à côté du dialogue introductif (au-dessus sur mobile). Cette demande remplace la priorité historique au dialogue en premier ; les dialogues restent le lieu de mise en pratique.

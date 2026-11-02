@@ -3,16 +3,16 @@ import { lessonAvailable } from './engine';
 import { COURSE_VOCABULARY, type CourseWord } from './course-vocabulary';
 import type { Content, Lesson, Progress } from './types';
 
-export type LibraryMode = 'lessons' | 'mg-fr' | 'fr-mg';
-export interface LibraryState { mode: LibraryMode; query: string; lessonId?: string }
-export function readLibraryRoute(hash: string): Pick<LibraryState, 'mode' | 'lessonId'> {
-  const [view, detail] = hash.replace(/^#/u, '').split('/');
+export type LibraryMode = 'lessons' | 'notions' | 'mg-fr' | 'fr-mg';
+export interface LibraryState { mode: LibraryMode; query: string; lessonId?: string; cardId?: string }
+export function readLibraryRoute(hash: string): Omit<LibraryState, 'query'> {
+  const [view, detail, cardId] = hash.replace(/^#/u, '').split('/');
   if (view !== 'vocabulary') return { mode: 'lessons' };
-  if (detail === 'mg-fr' || detail === 'fr-mg') return { mode: detail };
-  return { mode: 'lessons', ...(detail?.startsWith('lesson-') ? { lessonId: detail } : {}) };
+  if (detail === 'mg-fr' || detail === 'fr-mg' || detail === 'notions') return { mode: detail };
+  return { mode: 'lessons', ...(detail?.startsWith('lesson-') ? { lessonId: detail, ...(cardId ? { cardId } : {}) } : {}) };
 }
 export function libraryHash(state: LibraryState): string {
-  return `#vocabulary${state.lessonId ? `/${state.lessonId}` : state.mode === 'lessons' ? '' : `/${state.mode}`}`;
+  return `#vocabulary${state.lessonId ? `/${state.lessonId}${state.cardId ? `/${state.cardId}` : ''}` : state.mode === 'lessons' ? '' : `/${state.mode}`}`;
 }
 export const librarySearchKey = (value: string): string => value.normalize('NFD').replace(/\p{M}/gu, '')
   .toLocaleLowerCase('fr').replace(/[’‘]/gu, "'").trim();

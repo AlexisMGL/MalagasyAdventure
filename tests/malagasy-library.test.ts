@@ -6,6 +6,7 @@ import { getNotionCards } from '../src/malagasy/notion-cards';
 import { completeLesson, createProgress, introduceLesson, recordAnswer } from '../src/malagasy/engine';
 import { libraryLessons, libraryWords, lexiconGroups, lexiconLabel, referenceLesson, unlockedLessons, readLibraryRoute, libraryHash } from '../src/malagasy/library';
 import { renderLibrary } from '../src/malagasy/library-view';
+import { libraryCards, referenceCard } from '../src/malagasy/library-cards';
 import type { Progress } from '../src/malagasy/types';
 import { spokenSelectionsForExercise } from '../src/malagasy/spoken-selections';
 
@@ -53,6 +54,42 @@ describe('Vocabulary before its first conversation', () => {
 });
 
 describe('Unlocked lessons and two alphabetic lexicons', () => {
+  it('indexes every unlocked visual reminder once in its section, with topical search and meaningful titles', () => {
+    const fresh = createProgress();
+    expect(libraryCards(fresh, 'vocabulary')).toHaveLength(2);
+    expect(libraryCards(fresh, 'notion')).toHaveLength(1);
+    expect(libraryCards(fresh, 'vocabulary', 'chiffres')).toEqual([]);
+    const progress = through(CONTENT.lessons.at(-1)!.id);
+    const entries = [...libraryCards(progress, 'vocabulary'), ...libraryCards(progress, 'notion')];
+    expect(entries.map(entry => entry.card.id).sort()).toEqual(CONTENT.lessons.flatMap(lesson => getNotionCards(lesson.id).map(card => card.id)).sort());
+    expect(entries).toHaveLength(172);
+    expect(new Set(entries.map(entry => entry.card.id)).size).toBe(entries.length);
+    expect(entries.every(entry => entry.topic.picture && !entry.title.startsWith('Les mots à reconnaître'))).toBe(true);
+    const numbers = libraryCards(progress, 'vocabulary', 'chiffres');
+    expect(numbers.map(entry => entry.title)).toEqual(expect.arrayContaining(['De zéro à cinq', 'De six à dix', 'De onze à quinze', 'De seize à vingt']));
+    expect(libraryCards(progress, 'notion', 'possession').some(entry => entry.title === 'Mon nom, ton nom')).toBe(true);
+    expect(libraryCards(progress, 'vocabulary', 'ecrire').some(entry => entry.title === 'Lire ou écrire')).toBe(true);
+    expect(libraryCards(progress, 'vocabulary', 'reniko').some(entry => entry.title === 'Ma mère, ton père…')).toBe(true);
+    expect(libraryCards(progress, 'vocabulary', 'dimy').some(entry => entry.title === 'De zéro à cinq')).toBe(true);
+    expect(libraryCards(progress, 'notion', '-ko').some(entry => entry.title === 'Mon nom, ton nom')).toBe(true);
+  });
+
+  it('opens one unlocked card read-only, rejects locked or mismatched card links and preserves legacy lesson links', () => {
+    const progress = through('lesson-07-01');
+    const saved = JSON.stringify(progress);
+    const state = { mode: 'lessons' as const, query: '', lessonId: 'lesson-07-01', cardId: 'notion-07-01-1' };
+    expect(referenceCard(state.lessonId, state.cardId, progress)?.title).toBe('De zéro à cinq');
+    const html = renderLibrary(progress, state);
+    expect(html).toContain('data-reference-card="notion-07-01-1"');
+    expect(html.match(/data-notion-id=/gu)).toHaveLength(1);
+    expect(html).toContain('replay-notion');
+    expect(html).not.toContain('https://');
+    expect(JSON.stringify(progress)).toBe(saved);
+    expect(referenceCard('lesson-01-01', 'notion-07-01-1', progress)).toBeUndefined();
+    expect(referenceCard('lesson-02-01-01', 'notion-w2-01-01-1', progress)).toBeUndefined();
+    expect(renderLibrary(progress, { ...state, cardId: 'invalid' })).not.toContain('data-reference-card=');
+  });
+
   it('only exposes the first available lesson to a fresh visitor and rejects locked deep links', () => {
     const progress = createProgress();
     expect(unlockedLessons(progress).map(lesson => lesson.id)).toEqual(['lesson-01-01']);
@@ -93,6 +130,9 @@ describe('Unlocked lessons and two alphabetic lexicons', () => {
   it('keeps library links separate from world-path links and handles invalid details safely', () => {
     expect(readLibraryRoute('#vocabulary/fr-mg')).toEqual({ mode: 'fr-mg' });
     expect(readLibraryRoute('#vocabulary/lesson-04-02')).toEqual({ mode: 'lessons', lessonId: 'lesson-04-02' });
+    expect(readLibraryRoute('#vocabulary/notions')).toEqual({ mode: 'notions' });
+    const cardState = { mode: 'lessons' as const, query: '', lessonId: 'lesson-07-01', cardId: 'notion-07-01-1' };
+    expect(readLibraryRoute(libraryHash(cardState))).toEqual({ mode: 'lessons', lessonId: cardState.lessonId, cardId: cardState.cardId });
     expect(readLibraryRoute('#vocabulary/<script>')).toEqual({ mode: 'lessons' });
     expect(readLibraryRoute('#path/world-02')).toEqual({ mode: 'lessons' });
     expect(libraryHash({ mode: 'mg-fr', query: '' })).toBe('#vocabulary/mg-fr');

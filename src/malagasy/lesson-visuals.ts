@@ -103,6 +103,18 @@ function picture(name: LearningPicture, hidden = false): string {
   return `<svg class="ma-learning-picture" viewBox="0 0 96 96" ${hidden ? 'aria-hidden="true"' : `role="img" aria-label="${e(item.label)}"`} focusable="false">${hidden ? '' : `<title>${e(item.label)}</title>`}${item.art()}</svg>`;
 }
 
+/** A recognisable index icon, reusing the drawings shown inside each reminder. */
+export function renderLearningThumbnail(visual: LearningVisual, fallback: LearningPicture): string {
+  if (visual.kind === 'pictorial') return picture(visual.items[0]?.picture ?? fallback, true);
+  if (visual.kind === 'possession') return picture(visual.pairs[0]?.picture ?? fallback, true);
+  if (visual.kind === 'quantity') return picture('number', true);
+  if (visual.kind === 'clock') return picture('clock', true);
+  if (visual.kind === 'spatial') return `<span aria-hidden="true">${spatialPicture(visual.items[0]?.location ?? 'here', visual.items[0]?.subject ?? 'book')}</span>`;
+  if (visual.kind === 'directions') return `<svg viewBox="0 0 96 96" aria-hidden="true" focusable="false"><path d="M48 80V22m-12 12 12-12 12 12M48 50H18m12-12L18 50l12 12m18-12h30M66 38l12 12-12 12" fill="none" stroke="${ink}" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+  if (visual.kind === 'sounds') return `<svg viewBox="0 0 96 96" aria-hidden="true" focusable="false"><text x="48" y="57" text-anchor="middle" fill="${ink}" font-family="Georgia,serif" font-size="42">Aa</text><path d="M21 75h54" stroke="${coral}" stroke-width="5" stroke-linecap="round"/></svg>`;
+  return picture(fallback, true);
+}
+
 const roleLabels: Record<WordRole, string> = { predicate: 'Ce qu’on dit', subject: 'Qui ?', object: 'Quoi ?', marker: 'Mot-outil', place: 'Lieu', quantity: 'Combien ?', neutral: 'Repère' };
 const visualLabels: Record<LearningVisual['kind'], string> = {
   pictorial: 'Les mots en images', sentence: 'La phrase, bloc par bloc', possession: 'Un mot, deux personnes de référence',

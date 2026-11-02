@@ -28,11 +28,14 @@ async function importProgress(page: Page, progress: Progress): Promise<void> {
 async function saved(page: Page): Promise<string | null> { return page.evaluate(key => localStorage.getItem(key), SAVE_KEY); }
 async function fits(page: Page): Promise<void> { expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true); }
 
-test('a fresh library exposes one lesson and four words, with alphabetic directions and keyboard tabs', async ({ page }) => {
+test('a fresh carnet separates its two vocabulary cards and one notion, with four words and keyboard tabs', async ({ page }) => {
   await page.goto('/#vocabulary');
-  await expect(page.getByRole('heading', { name: 'Ma bibliothèque.' })).toBeVisible();
-  await expect(page.locator('.ma-library-lesson')).toHaveCount(1);
-  await page.getByRole('tab', { name: 'Leçons', exact: true }).press('ArrowRight');
+  await expect(page.getByRole('heading', { name: 'Mon carnet.' })).toBeVisible();
+  await expect(page.locator('.ma-carnet-card')).toHaveCount(2);
+  await page.getByRole('tab', { name: 'Vocabulaire', exact: true }).press('ArrowRight');
+  await expect(page.getByRole('tab', { name: 'Notions', exact: true })).toBeFocused();
+  await expect(page.locator('.ma-carnet-card')).toHaveCount(1);
+  await page.getByRole('tab', { name: 'Notions', exact: true }).press('ArrowRight');
   await expect(page.getByRole('tab', { name: 'Malgache → Français', exact: true })).toBeFocused();
   await expect(page.locator('.ma-library-word')).toHaveCount(4);
   expect(await page.locator('.ma-library-word dt').allTextContents()).toEqual(['Azafady', 'Misaotra', 'Salama', 'Veloma']);
@@ -50,22 +53,27 @@ test('an old save opens a reference with new vocabulary and notions without chan
   await importProgress(page, through('lesson-04-01'));
   const before = await saved(page);
   await page.goto('/#vocabulary');
-  await page.locator('[data-library-lesson="lesson-04-02"]').click();
+  await page.getByRole('tab', { name: 'Notions', exact: true }).click();
+  await page.locator('#ma-search').fill('possession');
+  await page.locator('[data-library-card="notion-04-02-2"]').click();
   await expect(page.locator('[data-reference-lesson]')).toHaveAttribute('data-reference-lesson', 'lesson-04-02');
-  await expect(page.locator('#ma-reference-vocabulary')).toContainText('reniko');
-  await expect(page.locator('#ma-reference-vocabulary')).toContainText('manana');
-  await expect(page.locator('#ma-reference-notion')).toContainText('Ma mère, ta mère');
+  await expect(page.locator('[data-reference-card]')).toHaveAttribute('data-reference-card', 'notion-04-02-2');
+  await expect(page.locator('.ma-notion-card')).toHaveCount(1);
+  await expect(page.locator('.ma-notion-card')).toContainText('Ma mère, ta mère');
   expect(await saved(page)).toBe(before);
   await page.reload();
   await expect(page.locator('[data-reference-lesson]')).toHaveAttribute('data-reference-lesson', 'lesson-04-02');
   expect(await saved(page)).toBe(before);
-  await page.getByRole('button', { name: '← Toutes mes leçons', exact: true }).click();
+  await page.getByRole('button', { name: '← Toutes les fiches de notions', exact: true }).click();
+  await expect(page.getByRole('tab', { name: 'Notions', exact: true })).toHaveAttribute('aria-selected', 'true');
   await page.getByRole('tab', { name: 'Français → Malgache', exact: true }).click();
   await page.locator('#ma-search').fill('ma mère');
   const mother = page.locator('.ma-library-word').filter({ has: page.getByText('reniko', { exact: true }) });
   await expect(mother).toBeVisible();
   await mother.locator('[data-library-lesson]').click();
   await expect(page.locator('[data-reference-lesson]')).toHaveAttribute('data-reference-lesson', 'lesson-04-02');
+  await expect(page.locator('.ma-notion-card')).toHaveCount(1);
+  await expect(page.locator('.ma-notion-card')).toContainText('reniko');
   expect(await saved(page)).toBe(before);
 });
 
@@ -73,7 +81,12 @@ test('a locked reference URL does not reveal a lesson, cards or audio controls',
   await page.goto('/#vocabulary/lesson-02-01-01');
   await expect(page.getByText('Cette leçon n’est pas encore débloquée.', { exact: false })).toBeVisible();
   await expect(page.locator('[data-reference-lesson], [data-action="replay-notion"]')).toHaveCount(0);
-  await expect(page.locator('.ma-library-lesson')).toHaveCount(1);
+  await expect(page.locator('.ma-carnet-card')).toHaveCount(2);
+  await page.goto('/#vocabulary/lesson-07-01/notion-07-01-1');
+  await expect(page.getByText('Cette fiche n’est pas disponible.', { exact: false })).toBeVisible();
+  await expect(page.locator('[data-reference-card], [data-action="replay-notion"]')).toHaveCount(0);
+  await page.goto('/#vocabulary/lesson-01-01/notion-07-01-1');
+  await expect(page.locator('[data-reference-card], [data-action="replay-notion"]')).toHaveCount(0);
 });
 
 test('all v1-unlocked words appear in both alphabetic lexicons and links preserve the world path', async ({ page }) => {
@@ -81,7 +94,9 @@ test('all v1-unlocked words appear in both alphabetic lexicons and links preserv
   const before = await saved(page);
   await page.goto('/#path/world-02');
   await page.getByRole('button', { name: 'Bibliothèque', exact: true }).click();
-  await expect(page.locator('.ma-library-lesson')).toHaveCount(72);
+  await expect(page.locator('.ma-carnet-card')).toHaveCount(86);
+  await page.getByRole('tab', { name: 'Notions', exact: true }).click();
+  await expect(page.locator('.ma-carnet-card')).toHaveCount(86);
   for (const [label, locale] of [['Malgache → Français', 'mg'], ['Français → Malgache', 'fr']]) {
     await page.getByRole('tab', { name: label, exact: true }).click();
     await expect(page.locator('.ma-library-word')).toHaveCount(COURSE_VOCABULARY.length);
@@ -98,10 +113,25 @@ test('all v1-unlocked words appear in both alphabetic lexicons and links preserv
 
 for (const width of [340, 390, 1440]) test(`library search, reference and alphabet fit ${width}px`, async ({ page }) => {
   await page.setViewportSize({ width, height: 920 });
-  await importProgress(page, through('lesson-05-03'));
+  await importProgress(page, through('lesson-07-03'));
   await page.goto('/#vocabulary');
   await fits(page);
   await page.screenshot({ path: `.tools/screens/library-lessons-${width}.png` });
+  await page.locator('#ma-search').fill('chiffres');
+  await expect(page.locator('.ma-carnet-card')).toHaveCount(4);
+  await expect(page.locator('.ma-carnet-icon svg')).toHaveCount(4);
+  await page.screenshot({ path: `.tools/screens/carnet-chiffres-${width}.png` });
+  await page.locator('[data-library-card="notion-07-01-1"]').click();
+  await expect(page.locator('.ma-notion-card')).toHaveCount(1);
+  await expect(page.locator('.ma-notion-card h2')).toHaveText('De zéro à cinq');
+  await fits(page);
+  await page.screenshot({ path: `.tools/screens/carnet-fiche-${width}.png` });
+  await page.getByRole('button', { name: '← Toutes les fiches de vocabulaire', exact: true }).click();
+  await expect(page.locator('#ma-search')).toHaveValue('chiffres');
+  await page.locator('#ma-search').fill('');
+  await page.locator('.ma-carnet-index summary').click();
+  await page.locator('[data-library-topic="numbers"]').click();
+  await expect(page.locator('#ma-topic-numbers>h2')).toBeFocused();
   await page.getByRole('tab', { name: 'Malgache → Français', exact: true }).click();
   await fits(page);
   await page.getByRole('button', { name: 'Aller à la lettre A', exact: true }).click();
@@ -136,19 +166,19 @@ test('reference audio reuses a real whole recording and stops when leaving the l
     };
     Observed.prototype = Native.prototype; Object.setPrototypeOf(Observed, Native); window.Audio = Observed as unknown as typeof Audio;
   });
-  await page.goto('/#vocabulary/lesson-01-01');
+  await page.goto('/#vocabulary/lesson-01-01/notion-01-01-1');
   const before = await saved(page);
   const audioResponse = page.waitForResponse(response => response.url().includes('/malagasy/voices/') && response.status() < 300);
   await page.locator('[data-action="replay-notion"]').first().click();
   expect((await (await audioResponse).body()).length).toBeGreaterThan(500);
   const events = () => page.evaluate(() => (window as unknown as { libraryAudioEvents: string[] }).libraryAudioEvents);
   await expect.poll(events).toContain('playing');
-  await page.getByRole('button', { name: '← Toutes mes leçons', exact: true }).click();
+  await page.getByRole('button', { name: '← Toutes les fiches de vocabulaire', exact: true }).click();
   await expect.poll(() => page.evaluate(() => (window as unknown as { libraryAudioActive: () => number }).libraryAudioActive())).toBe(0);
   expect(await saved(page)).toBe(before);
 });
 
-test('all forty-eight learning references fit a narrow screen', async ({ page }) => {
+test('all individual cards and legacy learning references fit a narrow screen', async ({ page }) => {
   test.setTimeout(120_000);
   await page.setViewportSize({ width: 340, height: 920 });
   await importProgress(page, through(CONTENT.lessons.at(-1)!.id));
@@ -156,5 +186,11 @@ test('all forty-eight learning references fit a narrow screen', async ({ page })
     await page.goto(`/#vocabulary/${lesson.id}`);
     await expect(page.locator('[data-reference-lesson]')).toHaveAttribute('data-reference-lesson', lesson.id);
     await fits(page);
+    for (const card of getNotionCards(lesson.id)) {
+      await page.goto(`/#vocabulary/${lesson.id}/${card.id}`);
+      await expect(page.locator('[data-reference-card]')).toHaveAttribute('data-reference-card', card.id);
+      await expect(page.locator('.ma-notion-card')).toHaveCount(1);
+      await fits(page);
+    }
   }
 });

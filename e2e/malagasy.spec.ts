@@ -610,7 +610,7 @@ test('citations stay in Sources and Credits while lessons and lexicon remain imm
   await expect(page.locator('.ma-main')).toContainText('relecture');
   await page.locator('[data-view="vocabulary"]').click();
   await expect(page.locator('audio')).toHaveCount(0);
-  await expect(page.locator('.ma-library-lesson')).toHaveCount(1);
+  await expect(page.locator('.ma-carnet-card')).toHaveCount(2);
   await page.getByRole('tab', { name: 'Malgache → Français', exact: true }).click();
   await expect(page.locator('.ma-library-word')).toHaveCount(4);
   await page.locator('#ma-search').fill('salama');
