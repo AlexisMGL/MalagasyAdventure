@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   package:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
@@ -26,12 +26,14 @@ jobs:
         working-directory: android
         run: |
           set -o pipefail
-          if bash gradlew --no-daemon lintRelease assembleDebug bundleRelease 2>&1 | tee build.log; then
+          if bash gradlew --no-daemon --console=plain --stacktrace --max-workers=2 lintRelease assembleDebug bundleRelease 2>&1 | tee build.log; then
             exit 0
           else
-            tail -n 65 build.log | while IFS= read -r line; do
-              echo "::error::$line"
-            done
+            message=$(tail -n 90 build.log)
+            message="${message//'%'/'%25'}"
+            message="${message//$'\r'/'%0D'}"
+            message="${message//$'\n'/'%0A'}"
+            echo "::error title=Android build::$message"
             exit 1
           fi
       - name: Explain package status
