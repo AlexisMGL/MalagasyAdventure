@@ -166,3 +166,10 @@ export function loadAccountRecovery(userId: string, storage?: SaveStorage): stri
     return json !== null && json.length <= MAX_BYTES ? json : null;
   } catch { return null; }
 }
+
+export function removeAccountProgress(userId: string): boolean {
+  const key = accountSaveKey(userId);
+  if (!key) return false;
+  try { localStorage.removeItem(key); localStorage.removeItem(`${key}.recovery`); return true; }
+  catch { return false; }
+}

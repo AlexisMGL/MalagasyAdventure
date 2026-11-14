@@ -72,6 +72,10 @@ async function provider(page: Page, initial?: CloudRow) {
       'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': 'GET,POST,PUT,DELETE,OPTIONS' } }); return; }
     calls.push({ path: url.pathname, method: request.method(), body, url: url.href });
     if (url.pathname === '/functions/v1/username-signup') { await reply(route, { ok: true }); return; }
+    if (url.pathname === '/functions/v1/delete-account') {
+      if (body?.password !== PASSWORD || body?.confirmation !== 'SUPPRIMER') { await reply(route, { code: 'incorrect_password' }, 401); return; }
+      rows.delete(ALICE); await reply(route, { ok: true }); return;
+    }
     if (url.pathname === '/auth/v1/recover') { await reply(route, {}); return; }
     if (url.pathname === '/auth/v1/token') {
       if (invalidLogin) { await reply(route, { error_code: 'invalid_credentials', code: 'invalid_credentials', msg: 'Invalid login credentials' }, 400); return; }
@@ -106,6 +110,38 @@ async function openAccount(page: Page): Promise<void> {
   await page.locator('[data-view="account"]').click();
   await expect(page.locator('#ma-account-form')).toBeVisible();
 }
+
+for (const width of [340, 390, 1440]) test(`account deletion requires confirmation and preserves the guest carnet at ${width}px`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 920 });
+  const backend = await provider(page, { progress: learned(), revision: 1 });
+  await page.goto('/#account'); const guest = await localSave(page, SAVE_KEY);
+  await login(page); await expect(page.locator('.ma-account-sync')).toContainText('Progression sauvegardée');
+  await page.locator('#ma-delete-account summary').click();
+  await page.locator('#ma-delete-password').fill('wrong-password');
+  await page.locator('#ma-delete-confirm').check();
+  await page.getByRole('button', { name: 'Supprimer définitivement mon compte', exact: true }).click();
+  await expect(page.locator('#ma-account-message')).toContainText('incorrect');
+  expect(backend.rows.has(ALICE)).toBe(true);
+  await page.locator('#ma-delete-password').fill(PASSWORD);
+  await page.locator('#ma-delete-confirm').check();
+  await page.getByRole('button', { name: 'Supprimer définitivement mon compte', exact: true }).click();
+  await expect(page.locator('#ma-account-message')).toContainText('ont été supprimés');
+  await expect(page.locator('#ma-account-form')).toBeVisible();
+  expect(backend.rows.has(ALICE)).toBe(false);
+  expect(await localSave(page, accountKey(ALICE))).toBeNull();
+  expect(await localSave(page, SAVE_KEY)).toEqual(guest);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('public privacy and deletion instructions are available without signing in', async ({ page }) => {
+  for (const path of ['/confidentialite.html', '/suppression-compte.html']) {
+    const response = await page.goto(path);
+    expect(response?.status()).toBe(200);
+    await expect(page.getByRole('link', { name: 'alexismg.lallement@gmail.com', exact: true })).toBeVisible();
+    await page.setViewportSize({ width: 340, height: 920 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  }
+});
 async function login(page: Page, email = EMAIL): Promise<void> {
   await page.locator('#ma-account-identifier').fill(email);
   await page.locator('#ma-account-password').fill(PASSWORD);

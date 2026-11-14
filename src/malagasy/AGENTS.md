@@ -123,6 +123,8 @@ Lire ce fichier avant toute évolution de l’app ou de son intégration au cata
 
 ## Architecture, sauvegarde et extensions
 
+- Demande du 14 novembre 2026 : préparer une app Google Play via une enveloppe Android TWA qui ouvre la même publication Netlify. Les modifications web suivent les pushes publiés ; les changements du paquet Android demandent une release dédiée. Ne pas embarquer les mondes, ajouter de mode hors ligne ou renommer les sauvegardes. Garder les secrets de signature hors de Git ; attendre le vrai certificat Google Play pour Digital Asset Links. L’adresse publique d’assistance autorisée est `alexismg.lallement@gmail.com`. Voir `docs/ANDROID.md`.
+
 - Demande du 1er novembre 2026 : PWA installable connectée, sans mode hors ligne ni téléchargement des mondes. Garder une seule publication pour site/app, l’installation guidée selon le navigateur, les marges système sur mobile et la navigation au pouce. Aucun rechargement automatique pendant une leçon ou une saisie ; proposer les nouvelles versions entre les séances. Ne pas introduire de service worker/cache de contenu ou modifier les sauvegardes v1 pour cette étape. Voir `docs/PWA.md`.
 
 - Séparer curriculum, contenu, rendu/validation d’exercices, connaissances/révision, progression, persistance, audio et crédits. Garder les algorithmes purs et injecter les dates dans leurs tests.

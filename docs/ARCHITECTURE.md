@@ -2,6 +2,8 @@
 
 La PWA connectée utilise la même application et la même publication. Le manifeste et les icônes permettent son installation ; `pwa.ts` pilote la proposition d’installation et détecte les nouveaux builds via `version.json`, sans service worker ni cache de monde. La navigation mobile passe en bas ; les mises à jour sont proposées hors des exercices et formulaires de compte, sans rechargement automatique. Voir [PWA.md](PWA.md).
 
+La préparation Google Play ajoute `android/`, une enveloppe TWA qui ouvre cette même origine Netlify (API cible 36, minimum 24). Le workflow Android compile uniquement les changements du paquet. `public/.well-known/assetlinks.json` attend l’empreinte réelle du certificat de signature Google Play ; `scripts/android-assetlinks.mjs` valide son format et l’identifiant du paquet. Les pages statiques de confidentialité et de suppression restent accessibles hors de l’app. `delete-account` vérifie session, mot de passe et confirmation, révoque les sessions puis efface le compte Auth et son carnet en cascade. Aucun schéma de progression ni mode hors ligne supplémentaire. Voir [ANDROID.md](ANDROID.md).
+
 Malagasy Adventure est une application autonome en TypeScript strict, DOM natif et Vite. Le dépôt ne contient pas le catalogue Arcade ni ses autres jeux. `/` et `/malagasy-adventure` ouvrent la même application statique. Le mode découverte reste local ; un compte Supabase facultatif sauvegarde la progression, sans framework ajouté ni serveur applicatif permanent.
 
 ## Modules et responsabilités

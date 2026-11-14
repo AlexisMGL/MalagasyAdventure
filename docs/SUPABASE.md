@@ -18,6 +18,10 @@ La migration `20261029065147_username_signup_limits.sql` crée `malagasy_private
 
 ## Sauvegarde privée et compatibilité
 
+Préparation Google Play du 14 novembre 2026 : `delete-account` permet une suppression définitive depuis Mon compte, après session vérifiée, mot de passe actuel et confirmation explicite. La cible vient exclusivement de `auth.getUser(token)`, jamais d’un identifiant fourni dans le corps. La fonction révoque les sessions puis supprime l’utilisateur Auth ; la clé étrangère existante `learning_progress.user_id` supprime son carnet en cascade. Le client efface aussi son cache local dédié, sans toucher au carnet invité ou aux autres comptes. Le cache et les exports sur d’autres appareils restent à effacer sur ces appareils.
+
+La fonction utilise la clé serveur uniquement dans les secrets Supabase existants, ne journalise pas de mot de passe et conserve la validation JWT de la gateway. Son déploiement a été vérifié avec un compte jetable créé pour ce test : jeton invalide refusé, mauvais mot de passe sans suppression, confirmation réussie, ancienne connexion et écriture refusées ensuite. Le compte jetable a été supprimé. Les tests navigateur couvrent le même parcours à 340, 390 et 1440 px et la conservation du carnet invité. Le connecteur SQL de cette session a renvoyé une erreur d’authentification serveur ; aucun schéma n’a été modifié pour cette fonctionnalité. Le contrôle réel passe par les API Auth, Functions et de progression.
+
 La migration `20261028183929_learning_progress.sql` reste inchangée : table `learning_progress`, politiques RLS et fonction atomique `save_learning_progress`. Les mots de passe ne font jamais partie du JSON v1.
 
 - Sans compte : clé locale existante, rappel non bloquant, export/import.

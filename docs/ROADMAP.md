@@ -33,6 +33,8 @@ La construction reste statique Vite/TypeScript, compatible Netlify. Ces modifica
 
 ## Prochain travail utile
 
+Préparation Google Play du 14 novembre 2026 : enveloppe TWA compilée et lintée, AAB signé localement, visuels de fiche, confidentialité et suppression de compte préparés. **Pas encore de publication sur le Store** : le compte développeur reste à créer, la signature Google Play à associer au site, puis le test fermé et la revue Google à effectuer. Les changements web continueront de suivre les publications Netlify ; les changements du paquet Android auront leur propre release. Voir [ANDROID.md](ANDROID.md).
+
 Le programme culturel corrigé le 28 octobre 2026 est réparti dans **les vingt mondes dès Antananarivo** : souverains aux mondes 1–7, relations britanniques dès le monde 2, conquête et vie coloniale aux mondes 7–8, royaumes régionaux aux mondes 9 et 11, occupation de 1942 au monde 12, nationalisme au monde 13, 1947 au monde 14 et indépendance au monde 16. Les derniers mondes approfondissent ces repères. Les groupes culturels sont découverts dans plusieurs régions, puis comparés, au lieu d’être tous introduits à Maroantsetra. Les fiches détaillent ce fil ; les futurs cours restent à rédiger et verrouillés. L’étape 19 garde Maroantsetra et l’ID `world-19`. Voir [le programme détaillé](CURRICULUM.md).
 
 L’accès au compte comporte un bouton textuel « Se connecter » dans l’en-tête, visible aussi sur mobile, en complément du rappel découverte et du menu. Le jalon historique de chaque parcours ouvre ses repères après le seuil requis. Le mode découverte reste immédiatement accessible.

@@ -31,6 +31,7 @@ function setup(initial = progress(3), blockedStorage = false) {
       if (blockedStorage) throw new Error('Storage denied');
       values.set(key, value);
     }),
+    removeItem: vi.fn((key: string) => { values.delete(key); }),
   };
   vi.stubGlobal('localStorage', storage);
   vi.stubGlobal('location', new URL('https://malagasyadventure.netlify.app/malagasy-adventure#account'));
@@ -78,6 +79,37 @@ function setup(initial = progress(3), blockedStorage = false) {
 
 beforeEach(() => { vi.useFakeTimers(); vi.clearAllMocks(); });
 afterEach(() => { vi.clearAllTimers(); vi.useRealTimers(); vi.unstubAllGlobals(); });
+
+describe('account deletion session boundaries', () => {
+  const form = () => {
+    vi.stubGlobal('FormData', class { get(key: string) { return key === 'password' ? 'current-password' : key === 'confirmation' ? 'SUPPRIMER' : null; } });
+    return {} as HTMLFormElement;
+  };
+  it('removes the account cache and recovery without restoring them on logout or erasing the guest carnet', async () => {
+    const ctx = setup(); ctx.emit('SIGNED_IN', session(ALICE)); await vi.advanceTimersByTimeAsync(1);
+    const key = `${SAVE_KEY}.account.${ALICE}`;
+    ctx.values.set(`${key}.recovery`, 'old account recovery');
+    vi.mocked(supabase!.functions.invoke).mockResolvedValue({ data: { ok: true }, error: null });
+    vi.mocked(supabase!.auth.signOut).mockResolvedValue({ error: null });
+    await ctx.account.deleteAccount(form());
+    expect(ctx.account.userId).toBeNull();
+    expect(ctx.values.has(key)).toBe(false); expect(ctx.values.has(`${key}.recovery`)).toBe(false);
+    expect(ctx.values.get(SAVE_KEY)).toBe(serializeSave(progress(3)));
+  });
+  it('does not sign out a different account that signed in while deletion was in flight', async () => {
+    const ctx = setup(); ctx.emit('SIGNED_IN', session(ALICE)); await vi.advanceTimersByTimeAsync(1);
+    ctx.values.set(`${SAVE_KEY}.account.${BOB}`, serializeSave(progress(41)));
+    let finish!: (value: { data: { ok: boolean }; error: null }) => void;
+    vi.mocked(supabase!.functions.invoke).mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+    const deletion = ctx.account.deleteAccount(form());
+    ctx.emit('SIGNED_IN', session(BOB)); await vi.advanceTimersByTimeAsync(1);
+    finish({ data: { ok: true }, error: null }); await deletion;
+    expect(ctx.account.userId).toBe(BOB); expect(supabase!.auth.signOut).not.toHaveBeenCalled();
+    expect(ctx.values.has(`${SAVE_KEY}.account.${ALICE}`)).toBe(false);
+    expect(ctx.values.has(`${SAVE_KEY}.account.${BOB}`)).toBe(true);
+    expect(loadAccountProgress(BOB)).toEqual(progress(41));
+  });
+});
 
 describe('account controller session boundaries', () => {
   it('ignores a queued SIGNED_IN after a later SIGNED_OUT', async () => {

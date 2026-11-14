@@ -2,7 +2,7 @@ import type { Session } from '@supabase/supabase-js';
 import type { Progress } from './types';
 import { CONTENT } from './content';
 import { CloudProgressSync, type CloudSyncState } from './cloud-sync';
-import { loadProgress, loadAccountProgress, saveAccountProgress } from './storage';
+import { loadProgress, loadAccountProgress, saveAccountProgress, removeAccountProgress } from './storage';
 import { supabase, cloudTransport, authErrorMessage } from './supabase';
 import type { AccountMode, AccountViewState } from './account-view';
 import { accountIdentifier, loginEmail, normalizeUsername, usernameEmail } from './account-identity';
@@ -28,6 +28,7 @@ export class MalagasyAccount {
   private sync: CloudProgressSync | null = null;
   private authEpoch = 0;
   private guestProgress: Progress | null = null;
+  private deletingUserId: string | null = null;
   private options: AccountOptions;
 
   constructor(options: AccountOptions) { this.options = options; }
@@ -67,7 +68,7 @@ export class MalagasyAccount {
     const id = session?.user.id ?? null;
     if (id === this.userId) { this.options.onChange(); return; }
     if (!this.userId) this.guestProgress = this.options.getProgress();
-    if (this.userId) saveAccountProgress(this.options.getProgress(), this.userId);
+    if (this.userId && this.userId !== this.deletingUserId) saveAccountProgress(this.options.getProgress(), this.userId);
     this.sync?.stop(); this.sync = null;
     this.userId = id; this.state.email = session ? accountIdentifier(session.user.email) : null;
     this.state.conflict = undefined;
@@ -161,5 +162,30 @@ export class MalagasyAccount {
       this.changeSession(null); this.state.message = 'Vous êtes déconnecté. Votre carnet de découverte reste disponible.';
     } catch (error) { this.state.error = true; this.state.message = authErrorMessage(error); }
     finally { this.state.busy = false; this.options.onChange(); }
+  }
+
+  async deleteAccount(form: HTMLFormElement): Promise<void> {
+    if (!supabase || !this.userId || this.state.busy) return;
+    const values = new FormData(form), password = String(values.get('password') ?? '');
+    if (!password || values.get('confirmation') !== 'SUPPRIMER') return;
+    this.state.busy = true; this.state.error = false; this.state.message = ''; this.options.onChange();
+    const id = this.userId;
+    try {
+      const { data, error } = await supabase.functions.invoke('delete-account', { body: { password, confirmation: 'SUPPRIMER' } });
+      if (error || data?.ok !== true) {
+        let code = '';
+        try { code = (await (error?.context as Response).json()).code; } catch { /* No readable response. */ }
+        throw new Error(code === 'incorrect_password' ? 'Le mot de passe est incorrect. Le compte a été conservé.' : 'La suppression n’a pas abouti. Votre compte est conservé ; réessayez ou contactez l’assistance.');
+      }
+      const removed = removeAccountProgress(id);
+      // Another tab may have switched accounts while the server was deleting this one.
+      if (this.userId === id) {
+        this.deletingUserId = id; this.sync?.stop(); this.sync = null;
+        await supabase.auth.signOut({ scope: 'local' });
+        this.changeSession(null);
+      }
+      this.state.message = `Votre compte et sa progression en ligne ont été supprimés.${removed ? '' : ' Effacez les données de ce site pour retirer aussi la copie locale : le navigateur a refusé son effacement.'}`;
+    } catch (error) { this.state.error = true; this.state.message = (error as Error).message; }
+    finally { this.deletingUserId = null; this.state.busy = false; this.options.onChange(); }
   }
 }

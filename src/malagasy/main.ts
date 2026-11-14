@@ -25,7 +25,7 @@ import { OMNIVOICE_NOTICE } from './omnivoice-voices';
 import './voices.css';
 import './account.css';
 import { MalagasyAccount } from './account';
-import { renderAccountPage, renderAccountReminder, type AccountMode } from './account-view';
+import { renderAccountPage, renderAccountReminder, renderDeleteAccountPanel, type AccountMode } from './account-view';
 import { MalagasyPwa } from './pwa';
 import { renderInstallPage, renderInstallStatus, renderUpdateNotice } from './pwa-view';
 import './pwa.css';
@@ -169,7 +169,7 @@ function sessionPage(): string {
 }
 
 function render(autoplayVoices = false): void {
-  app.innerHTML = `<div class="ma-app ${session ? 'ma-in-session' : ''}">${sidebar()}<div class="ma-workspace">${topbar()}<div id="ma-pwa-update">${renderUpdateNotice(pwa.state, safeToUpdate())}</div>${storageWarning ? `<div class="ma-storage-warning" role="status">${e(storageWarning)} <button data-view="backup">Ma sauvegarde</button></div>` : ''}<main class="ma-main" id="ma-main">${view !== 'account' && !session ? renderAccountReminder(account.state) : ''}${session ? sessionPage() : ({ path: pathPage, worlds: worldsPage, reviews: reviewsPage, vocabulary: vocabularyPage, stats: statsPage, sources: sourcesPage, backup: backupPage, account: () => renderAccountPage(account.state), install: () => renderInstallPage(pwa.state) })[view]()}</main><footer class="ma-footer"><span>MALAGASY ADVENTURE</span><span>APPRENDRE. RENCONTRER. EXPLORER.</span></footer></div><dialog class="ma-dialog" id="ma-dialog" aria-labelledby="ma-dialog-title"></dialog><div class="ma-toast" id="ma-toast" role="status" aria-live="polite"></div></div>`;
+  app.innerHTML = `<div class="ma-app ${session ? 'ma-in-session' : ''}">${sidebar()}<div class="ma-workspace">${topbar()}<div id="ma-pwa-update">${renderUpdateNotice(pwa.state, safeToUpdate())}</div>${storageWarning ? `<div class="ma-storage-warning" role="status">${e(storageWarning)} <button data-view="backup">Ma sauvegarde</button></div>` : ''}<main class="ma-main" id="ma-main">${view !== 'account' && !session ? renderAccountReminder(account.state) : ''}${session ? sessionPage() : ({ path: pathPage, worlds: worldsPage, reviews: reviewsPage, vocabulary: vocabularyPage, stats: statsPage, sources: sourcesPage, backup: backupPage, account: () => renderAccountPage(account.state) + renderDeleteAccountPanel(account.state), install: () => renderInstallPage(pwa.state) })[view]()}</main><footer class="ma-footer"><span>MALAGASY ADVENTURE</span><span><a href="/confidentialite.html">Confidentialité</a> · <a href="/suppression-compte.html">Suppression de compte</a></span></footer></div><dialog class="ma-dialog" id="ma-dialog" aria-labelledby="ma-dialog-title"></dialog><div class="ma-toast" id="ma-toast" role="status" aria-live="polite"></div></div>`;
   synchronizeVoices(autoplayVoices);
   renderedAccountMode = account.state.mode;
 }
@@ -187,18 +187,22 @@ function refreshPwa(): void {
 /** Background sync must not rebuild an active dialogue or a partially typed form. */
 function refreshAccount(): void {
   if (view === 'account' && !session) {
-    const form = app.querySelector<HTMLFormElement>('#ma-account-form');
+    const form = app.querySelector<HTMLFormElement>('#ma-account-form, #ma-delete-account-form');
     const sameMode = form && renderedAccountMode === account.state.mode;
     const values = sameMode ? [...form.querySelectorAll<HTMLInputElement>('input')]
       .filter(input => !account.state.busy || input.name === 'identifier').map(input => ({
-      id: input.id, value: input.value, start: input.selectionStart, end: input.selectionEnd,
+      id: input.id, value: input.value, checked: input.checked, start: input.selectionStart, end: input.selectionEnd,
     })) : [];
     const focused = document.activeElement?.id;
+    const deleteOpen = app.querySelector<HTMLDetailsElement>('#ma-delete-account')?.open;
     render();
+    const deletePanel = app.querySelector<HTMLDetailsElement>('#ma-delete-account');
+    if (deletePanel && deleteOpen) deletePanel.open = true;
     for (const value of values) {
       const input = document.getElementById(value.id) as HTMLInputElement | null;
       if (input) {
         input.value = value.value;
+        input.checked = value.checked;
         if (input.type === 'password' && value.start !== null) input.setSelectionRange(value.start, value.end);
       }
     }
@@ -458,7 +462,7 @@ async function previewImport(file?: File): Promise<void> {
   }
 }
 
-app.addEventListener('submit', event => { if ((event.target as HTMLElement).id === 'ma-account-form') { event.preventDefault(); void account.submit(event.target as HTMLFormElement); return; } if ((event.target as HTMLElement).id === 'ma-exercise-form') { event.preventDefault(); checkAnswer(); } });
+app.addEventListener('submit', event => { if ((event.target as HTMLElement).id === 'ma-delete-account-form') { event.preventDefault(); void account.deleteAccount(event.target as HTMLFormElement); return; } if ((event.target as HTMLElement).id === 'ma-account-form') { event.preventDefault(); void account.submit(event.target as HTMLFormElement); return; } if ((event.target as HTMLElement).id === 'ma-exercise-form') { event.preventDefault(); checkAnswer(); } });
 app.addEventListener('input', event => {
   const input = event.target as HTMLInputElement;
   if (input.id === 'ma-answer' && session && !session.answered) { session.draft.text = input.value; const submit = app.querySelector<HTMLButtonElement>('#ma-submit'); if (submit) submit.disabled = !answerReady(); }

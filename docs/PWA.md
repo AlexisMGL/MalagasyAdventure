@@ -2,6 +2,8 @@
 
 Malagasy Adventure partage une seule base de code et une seule publication Netlify entre site et application installée. Cette première PWA nécessite Internet. Elle ne propose aucun téléchargement de monde, service worker, préchargement audio ni cache applicatif hors ligne.
 
+Demande du 14 novembre 2026 : une enveloppe Android TWA dans `android/` prépare la distribution Google Play en conservant ce fonctionnement. Voir [ANDROID.md](ANDROID.md) pour les signatures, les tests Google et l’état du dépôt. Une compilation seule ne signifie pas que l’app est publiée sur le Store.
+
 ## Installation
 
 Sur mobile, ouvrir **Plus d’options → Installer l’application**. Sur ordinateur, utiliser **Installer l’application** dans le menu latéral.
