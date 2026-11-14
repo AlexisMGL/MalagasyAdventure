@@ -24,7 +24,16 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: Compile Android 16 wrapper and lint
         working-directory: android
-        run: bash gradlew --no-daemon lintRelease assembleDebug bundleRelease
+        run: |
+          set -o pipefail
+          if bash gradlew --no-daemon lintRelease assembleDebug bundleRelease 2>&1 | tee build.log; then
+            exit 0
+          else
+            tail -n 65 build.log | while IFS= read -r line; do
+              echo "::error::$line"
+            done
+            exit 1
+          fi
       - name: Explain package status
         run: |
           echo '## Malagasy Adventure — Android' >> "$GITHUB_STEP_SUMMARY"
@@ -32,6 +41,7 @@ jobs:
           echo 'Before publication: configure the upload key, enable Play App Signing and publish the Play signing-certificate fingerprint in assetlinks.json. See docs/ANDROID.md.' >> "$GITHUB_STEP_SUMMARY"
           echo 'The wrapper opens the live Netlify site. Website releases do not need another Android build.' >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: malagasy-android-review
           retention-days: 30
@@ -40,3 +50,4 @@ jobs:
             android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/bundle/release/app-release.aab
             android/app/build/reports/lint-results-release.html
+            android/build.log
