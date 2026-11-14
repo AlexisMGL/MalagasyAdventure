@@ -4,7 +4,7 @@ Enveloppe Android TWA générée avec `@bubblewrap/core` 1.27.0 (GoogleChromeLab
 
 Le contenu est toujours chargé depuis `https://malagasyadventure.netlify.app/`. Aucun monde, JS, audio ou compte n’est embarqué dans ce paquet. Les publications Netlify mettent donc aussi à jour le contenu de l’app. Le mécanisme existant de mise à jour conserve les réponses en cours.
 
-Identifiant stable : `app.netlify.malagasyadventure`, version initiale `1.0.0` / `1`, cible Android 16 / API 36, minimum API 23. Maki existant, notifications et géolocalisation désactivées, aucune publicité ni bibliothèque de suivi ajoutée.
+Identifiant stable : `app.netlify.malagasyadventure`, version initiale `1.0.0` / `1`, cible Android 16 / API 36, minimum Android 7 / API 24 (requis par Android Browser Helper 2.7.4). Maki existant, notifications et géolocalisation désactivées, aucune publicité ni bibliothèque de suivi ajoutée.
 
 Voir [le guide de publication](../docs/ANDROID.md). Le workflow GitHub compile et vérifie le paquet ; sa première version fournit un APK de test et un AAB non signé, **pas encore publiable**. La clé d’envoi et l’empreinte de signature Google Play seront définies après création du compte développeur.
 

@@ -29,7 +29,8 @@ jobs:
           if bash gradlew --no-daemon --console=plain --stacktrace --max-workers=2 lintRelease assembleDebug bundleRelease 2>&1 | tee build.log; then
             exit 0
           else
-            message=$(tail -n 90 build.log)
+            message=$(sed -n '/FAILURE:/,+35p' build.log)
+            if [ -z "$message" ]; then message=$(tail -n 35 build.log); fi
             message="${message//'%'/'%25'}"
             message="${message//$'\r'/'%0D'}"
             message="${message//$'\n'/'%0A'}"
